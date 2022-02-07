@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer des statistiques{% endblock %}
+
+{% block body %}
+{# {{ dump(users) }}
+{{ dump(nationalities) }} #}
+    <form>
+        {# <input type="checkbox" name="tourangeau"></input> #}
+
+        {# <label>Animateur</label>
+        <select name="animator" class="form-select" id="skill">
+            <option></option>
+            {% for user in users %}
+                <option>{{ user.username }}</option>
+            {% endfor %}
+        </select> #}
+
+        <label>Date de début</label>
+        <input type="date" method="POST" placeholder="Choisissez une date de début" role="search" name="date_start"></input>
+
+        <label>Date de fin</label>
+        <input type="date" method="POST" placeholder="Choisissez une date de fin" role="search" name="date_end"></input>
+
+        <label>Date d'entrée en playlist</label>
+        <input type="date" method="POST" placeholder="Choisissez une date de saisie" role="search" name="date_playlist"></input>
+
+        <label>Provenance</label>
+        <select name="nationality" class="form-select" id="nationality">
+            <option></option>
+            {% for nationality in nationalities %}
+                <option>{{ nationality.lib }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Langue</label>
+        <select name="language" class="form-select" id="language">
+            <option></option>
+            <option>Francophone</option>
+            <option>Anglophone</option>
+        </select>
+
+        <label>Nom de la playlist</label>
+        <input type="text" method="POST" placeholder="Nommez votre playlist" name="name"></input>
+
+        <label>Nombre de titres</label>
+        <input type="number" method="POST" placeholder="Nombre de titre" name="number"></input>
+
+        <select method="POST" name="classement">
+            <option value="stats">Statistique</option>
+            <option value="">Export</option>
+            <option value="">Export CMS</option>
+            <option value="nbPerDisc">Nombre de passage par disque</option>
+        </select>
+        
+        <button type="submit" id="search">Générer</button>
+
+        <section class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Numéro d'inventaire</th>
+                        <th>Groupe</th>
+                        <th>Album</th>
+                        <th>Label</th>
+        
+                        <th>Format</th>
+                        <th>Genre</th>
+                        <th>Nationalité</th>
+                        <th>Langue</th>
+        
+                        <th>Date d'arrivée</th>
+                        <th>Date d'entrée en playlist</th>
+        
+                        <th>Nom de l'emprunteur</th>
+                        <th>Motif de sortie</th>
+        
+                        <th>Aucard</th>
+                        <th>Concert</th>
+                        <th>Férarock</th>
+        
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if results %}
+                    {% for disc in results %}
+                    <tr>
+                        <td>{{ disc.numInventory }}</td>
+                        <td>{{ disc.groupe }}</td>
+                        <td>{{ disc.album }}</td>
+                        <td>{{ disc.label }}</td>
+        
+                        {% if disc.type %}
+                        <td>{{ disc.type.type }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+        
+                        {% if disc.genre %}
+                        <td>{{ disc.genre.genre }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+        
+                        {% if disc.nationality %}
+                        <td>{{ disc.nationality.nationality }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+        
+                        {% if disc.language %}
+                        <td>{{ disc.language.language }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+        
+                        <td>{{ disc.arrivalDate|date("m/d/Y") }}</td>
+        
+                        {% if disc.leaveDate %}
+                        <td>{{ disc.leaveDate|date("m/d/Y") }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+        
+                        {% if disc.leaveName %}
+                        <td>{{ disc.leaveName }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+        
+                        {% if disc.leaveReason %}
+                        <td>{{ disc.leaveReason.sortie }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+        
+                        {% if disc.aucard %}
+                        <td>{{ disc.aucard }}</td>
+                        {% else %}
+                        <td>0</td>
+                        {% endif %}
+        
+                        {% if disc.concert %}
+                        <td>{{ disc.concert }}</td>
+                        {% else %}
+                        <td>0</td>
+                        {% endif %}
+        
+                        {% if disc.ferarock %}
+                        <td>{{ disc.ferarock }}</td>
+                        {% else %}
+                        <td>0</td>
+                        {% endif %}
+        
+                        <th>
+                            <a href="{{ path('edit_disc', {'id': disc.id}) }}" class="table-link">Modifier</a>
+                            <a href="{{ path('delete_disc', {'id': disc.id}) }}" class="table-link">Supprimer</a>
+                        </th>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        
+        </section>
+    </form>
+{% endblock %}

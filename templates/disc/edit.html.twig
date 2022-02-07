@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un disque
+{% endblock %}
+{% block body %}
+
+	<div class="container">
+		<h1 class="text-center mb-5">Modifier le disque</h1>
+		<div class="row justify-content-center">
+			<div class="col-5">
+				{{ form_start(edit_disc_form) }}
+				<div class="form-disc">
+					<div class="form-column">
+						<div class="form-group">
+							{{ form_row(edit_disc_form.album, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+							{{ form_row(edit_disc_form.groupe , {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+							{{ form_row(edit_disc_form.label, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+						</div>
+						<div class="row">
+							<div class="col-6">
+								{{ form_row(edit_disc_form.type, {'attr': {'class': 'mg-15 form-select mb-3'}}) }}
+								{{ form_row(edit_disc_form.genre, {'attr': {'class': 'mg-15 form-select mb-3'}}) }}
+							</div>
+							<div class="col-6">
+								{{ form_row(edit_disc_form.nationality, {'attr': {'class': 'mg-15 form-select mb-3'}}) }}
+								{{ form_row(edit_disc_form.language, {'attr': {'class': 'mg-15 form-select mb-3'}}) }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-5">
+				<div class="form-column">
+					<div class="form-group">
+						{{ form_row(edit_disc_form.arrivalDate, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+						{{ form_row(edit_disc_form.leaveDate, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+					</div>
+					<div class="form-area">
+						{{ form_row(edit_disc_form.leaveName, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<div class="form-group">
+								{{ form_row(edit_disc_form.leaveReason, {'attr': {'class': 'mg-15 form-select mb-1'}}) }}
+
+								{{ form_row(edit_disc_form.concert, {'attr': {'class': 'mg-15 mb-1'}}) }}
+								{{ form_row(edit_disc_form.aucard, {'attr': {'class': 'mg-15 mb-1'}}) }}
+								{{ form_row(edit_disc_form.ferarock, {'attr': {'class': 'mg-15 mb-1'}}) }}
+							</div>
+						</div>
+
+						<div class="col-6">
+							<div id="valueNumInventory" class="form-group">
+								<label for="numInventory">Numéro d'inventaire</label>
+								<input name="numInventory" type="text" class="form-control" value={{ num_inventory }} readonly/>
+
+
+							</div>
+							<div class="col text-center">
+								<button type="button" class="btn btn-outline-warning mt-3 py-3" id="generateNumInventory">Générer un numéro</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-6 text-center mb-5">
+				{{ form_row(edit_disc_form.submit) }}
+			</div>
+			{{ form_end(edit_disc_form) }}
+		</div>
+	</div>
+{% endblock %}

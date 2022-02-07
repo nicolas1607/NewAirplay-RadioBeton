@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modify le motif de sortie
+{% endblock %}
+
+{% block body %}
+	<section class="mt-5">
+		<h2 class="text-center">Modifier le motif de sortie</h2>
+		<div class="row justify-content-center">
+			<div class="col-sm-6">
+
+				{{ form(modifyLeaveReasonForm) }}
+
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

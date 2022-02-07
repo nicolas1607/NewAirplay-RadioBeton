@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modify Genre
+{% endblock %}
+
+{% block body %}
+	<section class="mt-5">
+		<h2 class="text-center">Modifier le Genre</h2>
+		<div class="row justify-content-center">
+			<div class="col-sm-6">
+
+				{{ form(modifyGenreForm) }}
+
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer des statistiques{% endblock %}
+
+{% block body %}
+{# {{ dump(users) }}
+{{ dump(nationalities) }} #}
+    <form>
+        {# <input type="checkbox" name="tourangeau"></input> #}
+
+        {# <label>Animateur</label>
+        <select name="animator" class="form-select" id="skill">
+            <option></option>
+            {% for user in users %}
+                <option>{{ user.username }}</option>
+            {% endfor %}
+        </select> #}
+
+        <label>Date de début</label>
+        <input type="date" method="POST" placeholder="Choisissez une date de début" role="search" name="date_start"></input>
+
+        <label>Date de fin</label>
+        <input type="date" method="POST" placeholder="Choisissez une date de fin" role="search" name="date_end"></input>
+
+        <label>Date d'entrée en playlist</label>
+        <input type="date" method="POST" placeholder="Choisissez une date de saisie" role="search" name="date_playlist"></input>
+
+        <label>Provenance</label>
+        <select name="nationality" class="form-select" id="nationality">
+            <option></option>
+            {% for nationality in nationalities %}
+                <option>{{ nationality.lib }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Langue</label>
+        <select name="language" class="form-select" id="language">
+            <option></option>
+            <option>Francophone</option>
+            <option>Anglophone</option>
+        </select>
+
+        <label>Nom de la playlist</label>
+        <input type="text" method="POST" placeholder="Nommez votre playlist" name="name"></input>
+
+        <label>Nombre de titres</label>
+        <input type="number" method="POST" placeholder="Nombre de titre" name="number"></input>
+
+        <select method="POST" name="classement">
+            <option value="stats">Statistique</option>
+            <option value="">Export</option>
+            <option value="">Export CMS</option>
+            <option value="nbPerDisc">Nombre de passage par disque</option>
+        </select>
+        
+        <button type="submit" id="search">Générer</button>
+
+        <section class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre de passage</th>
+                        <th>Groupe</th>
+                        <th>Album</th>
+                        <th>Label</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if results %}
+                    {% for disc in results %}
+                    <pre>
+                        {{ dump(disc.playlist) }}
+                    </pre>
+                    <tr>
+                        <td>{{ disc.playlist|length }}</td>
+                        <td>{{ disc.groupe }}</td>
+                        <td>{{ disc.album }}</td>
+                        <td>{{ disc.label }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        
+        </section>
+    </form>
+{% endblock %}

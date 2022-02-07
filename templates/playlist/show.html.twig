@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Voir ma playlist{% endblock %}
+
+{% block body %}
+<style>
+    a {
+        text-decoration: none;
+        color: lightgray;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .content {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 2rem;
+        font-size: 1rem;
+    }
+
+    .card {
+        position: relative;
+        box-shadow: 2px 2px 2px lightgray;
+    }
+
+    .card:hover {
+        transform: translateY(-.4rem);
+    }
+
+    .card-delete {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 1rem 1.5rem;
+    }
+
+    .card-delete:hover {
+        transform: scale(1.2);
+        color: black;
+    }
+</style>
+
+<div class="container">
+    
+        <div class="header">
+            <h1>Playlist {{ playlist.name }} par {{ playlist.animator }}</h1>
+            <h2>{{ playlist.entryDate|date("d/m/Y") }}</h2>
+        </div>
+
+        <form action="{{ path('add_disc_playlist', {'playlist': playlist.id}) }}">
+            <select id="discs" name="discs[]" multiple>
+                <option data-placeholder="true"></option>
+                {# {% for disc in playlist.discs %}
+                    <option value="{{ disc.id }}">{{ disc.numInventory }}</option>
+                {% endfor %} #}
+            </select>
+            <button class="btn btn-secondary">Ajouter</button>
+        </form>
+
+        <div class="content">
+            {% set i = 1 %}
+            {% for disc in playlist.discs %}
+            <div class="card">
+                <a class="card-delete" href="{{ path('delete_disc_playlist', {'playlist': playlist.id, 'disc': disc.id}) }}" class="btn btn-secondary">X</a>
+                <div class="card-body">
+                    <h5 class="card-title">D{{ i }} - {{ disc.numInventory }}</h5>
+                    <p class="card-text">Album : {{ disc.album }}</p>
+                    <p class="card-text">Groupe : {{ disc.groupe }}</p>
+                    <p class="card-text">Label : {{ disc.label }}</p>
+                    
+                </div>
+            </div>
+            {% set i = i + 1 %}
+            {% endfor %}
+        </div>
+    
+</div>
+{% endblock %}

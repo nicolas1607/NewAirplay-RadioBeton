@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add LeaveReason
+{% endblock %}
+
+{% block body %}
+	<section class="mt-5">
+		<h2 class="text-center">Ajouter un motif de sortie</h2>
+		<div class="row justify-content-center">
+			<div class="col-sm-6">
+
+				{{ form(addleaveReasonType) }}
+
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

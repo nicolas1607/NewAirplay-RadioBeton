@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rechercher une playlist
+{% endblock %}
+
+{% block body %}
+
+	<div class="container">
+		<h2 class="text-center mb-5">Rechercher une playlist</h2>
+
+		{{ form_start(searchPlaylistForm) }}
+		<div class="row justify-content-center">
+			<div class="col-md-6 col-lg-4">
+				{{ form_row(searchPlaylistForm.name , {'attr': {'class': 'form-control mb-3'}}) }}
+			</div>
+			<div class="col-md-6 col-lg-4">
+				{{ form_row(searchPlaylistForm.animator, {'attr': {'class': 'form-control mb-3'}}) }}
+			</div>
+			<div class="col-md-6 col-lg-4">
+				{{ form_row(searchPlaylistForm.entry_date, {'attr': {'class': 'form-control mb-3'}}) }}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col text-center">
+				{{ form_row(searchPlaylistForm.rechercher) }}
+			</div>
+		</div>
+		{{ form_end(searchPlaylistForm) }}
+
+	</div>
+
+	<section class="container">
+		<table class="table mt-5 align-middle">
+			<thead>
+				<tr class="text-center">
+					<th>Date de saisie</th>
+					<th>Animateur</th>
+					<th>Nom de la playlist</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if playlists %}
+					{% for pl in playlists %}
+						<tr class="text-center">
+							<td>{{ pl.entryDate|date("d/m/Y") }}</td>
+							<td>{{ pl.animator }}</td>
+							<td>{{ pl.name }}</td>
+							<td class="table-action">
+								<a href="{{ path('show_playlist', {'id': pl.id}) }}" class="btn btn-outline-dark">Gerer</a>
+							</td>
+						</tr>
+					{% endfor %}
+				{% endif %}
+			</tbody>
+		</table>
+
+	</section>
+{% endblock %}
