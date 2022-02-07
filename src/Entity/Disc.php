@@ -110,15 +110,19 @@ class Disc
     private $type;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Playlist::class, inversedBy="discs")
+     * @ORM\OneToMany(targetEntity=PlaylistHasDisc::class, mappedBy="disc")
      */
-    private $playlist;
+    private $playlistHasDiscs;
+
+   
+
+
+   
 
 
     public function __construct()
     {
         $this->playlistHasDiscs = new ArrayCollection();
-        $this->playlist = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -343,26 +347,36 @@ class Disc
     }
 
     /**
-     * @return Collection|Playlist[]
+     * @return Collection|PlaylistHasDisc[]
      */
-    public function getPlaylist(): Collection
+    public function getPlaylistHasDiscs(): Collection
     {
-        return $this->playlist;
+        return $this->playlistHasDiscs;
     }
 
-    public function addPlaylist(Playlist $playlist): self
+    public function addPlaylistHasDisc(PlaylistHasDisc $playlistHasDisc): self
     {
-        if (!$this->playlist->contains($playlist)) {
-            $this->playlist[] = $playlist;
+        if (!$this->playlistHasDiscs->contains($playlistHasDisc)) {
+            $this->playlistHasDiscs[] = $playlistHasDisc;
+            $playlistHasDisc->setDisc($this);
         }
 
         return $this;
     }
 
-    public function removePlaylist(Playlist $playlist): self
+    public function removePlaylistHasDisc(PlaylistHasDisc $playlistHasDisc): self
     {
-        $this->playlist->removeElement($playlist);
+        if ($this->playlistHasDiscs->removeElement($playlistHasDisc)) {
+            // set the owning side to null (unless already changed)
+            if ($playlistHasDisc->getDisc() === $this) {
+                $playlistHasDisc->setDisc(null);
+            }
+        }
 
         return $this;
     }
+
+
+   
+    
 }
