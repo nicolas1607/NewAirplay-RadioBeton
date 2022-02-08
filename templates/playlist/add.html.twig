@@ -7,43 +7,43 @@
 	{# {{ dump(discs) }} #}
 	<div class="container">
 		<form class="">
-<div class="row">
-<div class="col-4">
-			<label for="date">Date</label>
-			<input class="form-control" type="date" id="date" name="date" value="dd/mm/yyyy" min="1980-01-01" max="2050-12-31">
-</div>
+			<div class="row">
+				<div class="col-4">
+					<label for="date">Date</label>
+					<input class="form-control" type="date" id="date" name="date" value="dd/mm/yyyy" min="1980-01-01" max="2050-12-31">
+				</div>
 
 
-<div class="col-4">
+				<div class="col-4">
 
-			<label for="title">Nom</label>
-			<input class="form-control" type="text" id="title" name="title" placeholder="Saissez un nom de playlist">
-</div>
-<div class="col-4">
-			<label for="name">Animateur</label>
-			<input class="form-control" list="names-choice" id="name" name="name" placeholder="sélectionnez un animateur"/>
-			<datalist id="names-choice">
-				<option value="Jérôme"></option>
-				<option value="Léandro"></option>
-				<option value="Edouard"></option>
-				<option value="Nicolas"></option>
-			</datalist>
-</div>
+					<label for="title">Nom</label>
+					<input class="form-control" type="text" id="title" name="title" placeholder="Saissez un nom de playlist">
+				</div>
+				<div class="col-4">
+					<label for="name">Animateur</label>
+					<input class="form-control" list="names-choice" id="name" name="name" placeholder="sélectionnez un animateur"/>
+					<datalist id="names-choice">
+						<option value="Jérôme"></option>
+						<option value="Léandro"></option>
+						<option value="Edouard"></option>
+						<option value="Nicolas"></option>
+					</datalist>
+				</div>
 
-</div>
+			</div>
 			{# <label for="discs">Disque</label>
-			        <input list="discs-choice" id="discs" name="disc" placeholder="sélectionnez un disque"/>
-			        <datalist id="discs-choice">
-			            {% for disc in discs %}
-			                <option value="{{ disc.numInventory }}">
-			            {% endfor %}
-			        </datalist> #}
+						        <input list="discs-choice" id="discs" name="disc" placeholder="sélectionnez un disque"/>
+						        <datalist id="discs-choice">
+						            {% for disc in discs %}
+						                <option value="{{ disc.numInventory }}">
+						            {% endfor %}
+						        </datalist> #}
 
 			<select class="mt-3" id="discs" name="discs[]" multiple class="">
 				<option data-placeholder="true"></option>
 				{# {% for disc in discs %}
-				                <option value="{{ disc.id }}">{{ disc.numInventory }}</option>
-				            {% endfor %} #}
+								                <option value="{{ disc.id }}">{{ disc.numInventory }}</option>
+								            {% endfor %} #}
 			</select>
 
 			<div class="mt-5">
