@@ -53,10 +53,7 @@ class StatisticsController extends AbstractController
 
         // Nombre de passage par disque
         elseif ($classement == 'nbPerDisc') {
-            if ($animator || $datePlaylist || $dateStart || $dateEnd || $datePlaylist || $nationality || $language) {
-                $results = $this->discRepo->findNbPassagePerDisc($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
-                // $results = $this->discRepo->findAll();
-            }
+            $results = $this->discRepo->findNbPassagePerDisc($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
             return $this->render('statistics/perdisc.html.twig', [
                 'nationalities' => $nationalities,
                 'results' => $results
