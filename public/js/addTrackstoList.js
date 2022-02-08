@@ -38,10 +38,10 @@ addNumero.addEventListener('click', (ev) => {
 });
 
 function createBadge(disc){
-    const index = Object.values(numerosList.children).length;
+    const indexBadge = Object.values(numerosList.children).length;
 
     const badge = document.createElement('li');
-    badge.setAttribute('data-index', index);
+    badge.setAttribute('data-index', indexBadge);
     
     const badgeValues = document.createElement('div');
 
@@ -65,11 +65,10 @@ function createBadge(disc){
 };
 
 function createSelectOption(disc){
-    const index = Object.values(select.options).length;
+    const indexOption = Object.values(select.options).length;
 
     const option = document.createElement('option');
-    option.setAttribute('data-index', index);
-    // option.setAttribute('data-id', disc.id);
+    option.setAttribute('data-index', indexOption);
     option.setAttribute('selected', 'selected');
     option.textContent = disc.id;
 
@@ -80,35 +79,13 @@ function deleteBadge(badge, list, select, id){
     let options = Object.values(select.options);
     let badgeIndex = badge.dataset.index;
 
-    options.forEach( (option, index) => {
-        if( Number(option.textContent) === id && Number(badgeIndex) === index ){
-            // select.removeChild(option);
-            // list.removeChild(badge);
-            console.log(option.textContent);
-            console.log(id);
-            console.log(badgeIndex);
-            console.log(index);
+    options.forEach( option => {
+        let optionIndex = option.dataset.index;
 
+        if( Number(option.textContent) === id && Number(badgeIndex) === Number(optionIndex) ){
             select.removeChild(option);
             list.removeChild(badge);
-
         }
-    })
 
-    // options.forEach( (option, index) => {
-    //     if( Number(option.textContent) === id )
-    // })
-    // let badges = Object.values(list.children);
-
-    // badges.forEach( (badge, index) => {
-    //     options.forEach( (option, ind) => {
-    //         if( Number(option.textContent) === id && index === ind){
-    //             // select.removeChild(option[index]);
-    //             // list.removeChild(badge);
-    //             console.log(option);
-    //             console.log(select);
-                
-    //         }
-    //     })
-    // });
+    });
 }
