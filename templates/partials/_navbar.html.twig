@@ -1,7 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
 	<div class="contain-nav container-fluid">
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
-			aria-controls="navbarColor01" aria-expanded="false" aria-label="Basculer la navigation">
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Basculer la navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
@@ -14,78 +13,64 @@
 				</li>
 
 				{% if app.user %}
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-						aria-haspopup="true" aria-expanded="false">Disque</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="{{path('add_disc')}}">Saisis de disque</a>
-						<a class="dropdown-item" href="{{path('search_disc')}}">Recherche de disque</a>
-					</div>
-				</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Disque</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="{{path('add_disc')}}">Saisie de disque</a>
+							<a class="dropdown-item" href="{{path('search_disc')}}">Recherche de disque</a>
+						</div>
+					</li>
 
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-						aria-haspopup="true" aria-expanded="false">Playlist</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="{{path('playlist_add')}}">Saisis de playlist</a>
-						<a class="dropdown-item" href="{{path('search_playlist')}}">Recherche de playlist</a>
-					</div>
-				</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Playlist</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="{{path('playlist_add')}}">Saisie de playlist</a>
+							<a class="dropdown-item" href="{{path('search_playlist')}}">Recherche de playlist</a>
+						</div>
+					</li>
 
-				<li class="nav-item">
-					<a class="nav-link" href="{{path('statistics')}}">Éditer des statistiques
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('statistics')}}">Éditer des statistiques
 
-					</a>
-				</li>
+						</a>
+					</li>
 				{% endif %}
 
 			</ul>
 
 			{# lien inscription si non connecter #}
 			{% if not app.user %}
-			<div>
-				<ul class="navbar-nav me-auto">
-					<li class="nav-item"><a class="nav-link" href="{{path('add_user')}}">
-							<font style="vertical-align: inherit;">
-								<font style="vertical-align: inherit;">Inscription</font>
-							</font>
-					</li>
-					</li>
+				<div><ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link"href="{{path('add_user')}}"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Inscription</font></font></li>
+						</li>
 					</a></li>
-				</ul>
-			</div>
-			{% endif %}
-
-			{# lien deconnection si connecter sinon s'idenfier #}
-			<div>
-				<ul class="navbar-nav me-auto">
-
-					{% if app.user %}
-					<li class="nav-item">
-						<a class="nav-link" href="{{path('app_logout')}}">
-							<font style="vertical-align: inherit;">
-								<font style="vertical-align: inherit;">Se déconnecter</font>
-							</font>
-					</li>
-					</li>
-					</a>
-					</li>
-					{% else %}
-					<li class="nav-item">
-						<a class="nav-link" href="{{path('app_login')}}">
-							<font style="vertical-align: inherit;">
-								<font style="vertical-align: inherit;">S'identifier</font>
-							</font>
-					</li>
-					</li>
-					</a>
-					</li>{% endif %}
-				</ul>
-			</div>{# lien du profil si connecter #}<div>{% if app.user %}<div class="row justify-content-center">
-					<a href="" class="text-white text-center text-decoration-none">
-						Profil
-					</a>
-				</div>{% endif %}</div>
+			</ul>
 		</div>
-	</div>
-</nav>
+	{% endif %}
+
+	{# lien deconnection si connecter sinon s'idenfier #}
+	<div>
+		<ul class="navbar-nav me-auto">
+
+			{% if app.user %}
+				<li class="nav-item">
+					<a class="nav-link" href="{{path('app_logout')}}">
+						<font style="vertical-align: inherit;">
+							<font style="vertical-align: inherit;">Se déconnecter</font>
+						</font>
+					</li>
+				</li>
+			</a>
+		</li>
+	{% else %}
+		<li class="nav-item">
+			<a class="nav-link" href="{{path('app_login')}}">
+				<font style="vertical-align: inherit;">
+					<font style="vertical-align: inherit;">S'identifier</font>
+				</font>
+			</li>
+		</li>
+	</a>
+</li>{% endif %}</ul></div>{# lien du profil si connecter #}<div>{% if app.user %}<div class="row justify-content-center">
+<a href="" class="text-white text-center text-decoration-none">
+	Profil
+</a></div>{% endif %}</div></div></div></nav>

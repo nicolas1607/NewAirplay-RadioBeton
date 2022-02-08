@@ -13,61 +13,47 @@
 					<input class="form-control" type="date" id="date" name="date" value="dd/mm/yyyy" min="1980-01-01" max="2050-12-31">
 				</div>
 
-
-			<div class="col-4">
-				<label for="title">Nom</label>
-				<input class="form-control" type="text" id="title" name="title" placeholder="Saissez un nom de playlist">
-			</div>
-
-			<div class="col-4">
-				<label for="name">Animateur</label>
-				<input class="form-control" list="names-choice" id="name" name="name" placeholder="sélectionnez un animateur"/>
-				<datalist id="names-choice">
-					<option value="Jérôme"></option>
-					<option value="Léandro"></option>
-					<option value="Edouard"></option>
-					<option value="Nicolas"></option>
-				</datalist>
-			</div>
-
-			</div>
-
-			{# <label for="discs">Disque</label>
-					<input list="discs-choice" id="discs" name="disc" placeholder="sélectionnez un disque"/>
-					<datalist id="discs-choice">
-						{% for disc in discs %}
-							<option value="{{ disc.numInventory }}">
-						{% endfor %}
-					</datalist> #}
-
-			{# <select class="mt-3" id="discs" name="discs[]" multiple class="">
-				<option data-placeholder="true">
-				</option> #}
-				{# {% for disc in discs %}
-								<option value="{{ disc.id }}">{{ disc.numInventory }}</option>
-							{% endfor %} #}
-			{# </select> #}
-			<div>
-				<input type="text" placeholder="saisissez vos numéros" id="numero">
-				
-				<input type="submit" id="add-numero" value="+"></input>
-
-				<div style="height: 200px; border: 2px solid black;">
-					<ul id="list-numeros" style="height: 100%; border: 2px solid black; margin: 5px;" name="discs[]">
-					</ul>
+				<div class="col-4">
+					<label for="title">Nom</label>
+					<input class="form-control" type="text" id="title" name="title" placeholder="Saissez un nom de playlist">
 				</div>
 
-				<select multiple="multiple" name="discs[]" id="select" hidden>
-				</select>
+				<div class="col-4">
+					<label for="name">Animateur</label>
+					<input class="form-control" list="names-choice" id="name" name="name" placeholder="sélectionnez un animateur"/>
+					<datalist id="names-choice">
+						<option value="Jérôme"></option>
+						<option value="Léandro"></option>
+						<option value="Edouard"></option>
+						<option value="Nicolas"></option>
+					</datalist>
+				</div>
+
+			</div>
+
+			<div>
+				<div class="col-md-6 my-3">
+					<label for="numero">Numéro d'inventaire</label>
+
+					<div class="d-flex"><input type="text" placeholder="Numéro d'inventaire" id="numero" class="form-control me-3">
+						<button type="submit" id="add-numero" class="btn btn-outline-dark">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+				</div>
+
+				<div>
+					<ul id="list-numeros" name="discs[]"></ul>
+				</div>
+
+				<select multiple="multiple" name="discs[]" id="select" hidden></select>
 			</div>
 
 			<div class="mt-5">
-				<button>Ajouter</button>
+				<button class="btn btn-outline-warning">Ajouter</button>
 			</div>
 
 
 		</form>
 	</div>
-
-
 {% endblock %}

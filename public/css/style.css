@@ -29,3 +29,17 @@ body{
 .ss-value-delete{
     margin-left: 20px !important;
 }
+
+#add-numero{
+    border-radius: 7px;
+}
+#buttonDeleteLi{
+    margin-top: 5px;
+    border-radius: 7px;
+}
+#badgeValues{
+    align-items: center;
+}
+.bg-radio{
+    background-color: #F7D117;
+}
