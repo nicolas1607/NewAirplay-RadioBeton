@@ -47,69 +47,6 @@
 							<td>{{ disc.groupe }}</td>
 							<td>{{ disc.album }}</td>
 							<td>{{ disc.label }}</td>
-
-							{# {% if disc.type %}
-																																																																																																																	<td>{{ disc.type.type }}</td>
-																																																																																																																{% else %}
-																																																																																																																	<td></td>
-																																																																																																																{% endif %}
-																																																																																																									
-																																																																																																																{% if disc.genre %}
-																																																																																																																	<td>{{ disc.genre.genre }}</td>
-																																																																																																																{% else %}
-																																																																																																																	<td></td>
-																																																																																																																{% endif %}
-																																																																																																									
-																																																																																																																{% if disc.nationality %}
-																																																																																																																	<td>{{ disc.nationality.nationality }}</td>
-																																																																																																																{% else %}
-																																																																																																																	<td></td>
-																																																																																																																{% endif %}
-																																																																																																									
-																																																																																																																{% if disc.language %}
-																																																																																																																	<td>{{ disc.language.language }}</td>
-																																																																																																																{% else %}
-																																																																																																																	<td></td>
-																																																																																																																{% endif %}
-																																																																																																									
-																																																																																																																<td>{{ disc.arrivalDate|date("m/d/Y") }}</td>
-																																																																																																									
-																																																																																																																{% if disc.leaveDate %}
-																																																																																																																	<td>{{ disc.leaveDate|date("m/d/Y") }}</td>
-																																																																																																																{% else %}
-																																																																																																																	<td></td>
-																																																																																																																{% endif %}
-																																																																																																									
-																																																																																																																{% if disc.leaveName %}
-																																																																																																																	<td>{{ disc.leaveName }}</td>
-																																																																																																																{% else %}
-																																																																																																																	<td></td>
-																																																																																																																{% endif %}
-																																																																																																									
-																																																																																																																{% if disc.leaveReason %}
-																																																																																																																	<td>{{ disc.leaveReason.sortie }}</td>
-																																																																																																																{% else %}
-																																																																																																																	<td></td>
-																																																																																																																{% endif %}
-																																																																																																									
-																																																																																																																{% if disc.aucard %}
-																																																																																																																	<td>{{ disc.aucard }}</td>
-																																																																																																																{% else %}
-																																																																																																																	<td>0</td>
-																																																																																																																{% endif %}
-																																																																																																									
-																																																																																																																{% if disc.concert %}
-																																																																																																																	<td>{{ disc.concert }}</td>
-																																																																																																																{% else %}
-																																																																																																																	<td>0</td>
-																																																																																																																{% endif %}
-																																																																																																									
-																																																																																																																{% if disc.ferarock %}
-																																																																																																																	<td>{{ disc.ferarock }}</td>
-																																																																																																																{% else %}
-																																																																																																																	<td>0</td>
-																																																																																																																{% endif %} #}
-
 							<td>
 								<a href="{{ path('edit_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark mt-2">Modifier</a>
 								<a href="{{ path('delete_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark mt-2">Supprimer</a>
