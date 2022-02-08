@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PlaylistController extends AbstractController
@@ -88,8 +89,16 @@ class PlaylistController extends AbstractController
         }
         $animators = array_unique($animatorsAll, SORT_REGULAR);
 
+        // $discs = $this->em->getRepository(Disc::class)->findAll();
+        // $discsNum = [];
+        // foreach ($discs as $disc)
+        // {
+        //     array_push($discsNum, [$disc->getNumInventory(), $disc->getGroupe(), $disc->getAlbum(), $disc->getId()]);
+        // }
+
         return $this->render('playlist/add.html.twig', [
-            'animators' => $animators
+            'animators' => $animators,
+            // 'discs_nums' => $discsNum,
         ]);
     }
 
@@ -170,5 +179,27 @@ class PlaylistController extends AbstractController
         $this->em->flush();
 
         return $this->redirectToRoute('show_playlist', ['id' => $playlist->getId()]);
+    }
+
+    /**
+     * @Route("/playlist/test/{numero}", name="test")
+     */
+    public function test($numero)
+    {
+        $disc = $this->em->getRepository(Disc::class)->findOneBy([
+            'num_inventory' => $numero
+        ]);
+
+        $response = new JsonResponse([
+            'id' => $disc->getId(),
+            'group' => $disc->getGroupe(),
+            'album' => $disc->getAlbum(),
+            'inventory_num' => $disc->getNumInventory()
+        ]);
+
+        if($response)
+        {
+            return $response;
+        }
     }
 }
