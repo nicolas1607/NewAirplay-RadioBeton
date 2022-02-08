@@ -31,15 +31,15 @@
         <select name="nationality" class="form-select" id="nationality">
             <option></option>
             {% for nationality in nationalities %}
-                <option>{{ nationality.lib }}</option>
+                <option value="{{ nationality.id }}">{{ nationality.lib }}</option>
             {% endfor %}
         </select>
 
         <label>Langue</label>
         <select name="language" class="form-select" id="language">
             <option></option>
-            <option>Francophone</option>
-            <option>Anglophone</option>
+            <option value="1">Français</option>
+            <option value="2">Autre</option>
         </select>
 
         <label>Nom de la playlist</label>
