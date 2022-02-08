@@ -3,118 +3,139 @@
 {% block title %}Éditer des statistiques{% endblock %}
 
 {% block body %}
-{# {{ dump(users) }}
-{{ dump(nationalities) }} #}
-
+<form >
     <div class="container">
-    <form>
-        {# <input type="checkbox" name="tourangeau"></input> #}
-
-        {# <label>Animateur</label>
-        <select name="animator" class="form-select" id="skill">
-            <option></option>
-            {% for user in users %}
-                <option>{{ user.username }}</option>
-            {% endfor %}
-        </select> #}
-
-        <label>Date de début</label>
-        <input type="date" method="POST" placeholder="Choisissez une date de début" role="search" name="date_start"></input>
-
-        <label>Date de fin</label>
-        <input type="date" method="POST" placeholder="Choisissez une date de fin" role="search" name="date_end"></input>
-
-        <label>Date d'entrée en playlist</label>
-        <input type="date" method="POST" placeholder="Choisissez une date de saisie" role="search" name="date_playlist"></input>
-
-        <label>Provenance</label>
-        <select name="nationality" class="form-select" id="nationality">
-            <option></option>
-            {% for nationality in nationalities %}
-                <option value="{{ nationality.id }}">{{ nationality.lib }}</option>
-            {% endfor %}
-        </select>
-
-        <label>Langue</label>
-        <select name="language" class="form-select" id="language">
-            <option></option>
-            <option value="1">Français</option>
-            <option value="2">Autre</option>
-        </select>
-
-        <label>Nom de la playlist</label>
-        <input type="text" method="POST" placeholder="Nommez votre playlist" name="name"></input>
-
-        <label>Nombre de titres</label>
-        <input type="number" method="POST" placeholder="Nombre de titre" name="number"></input>
-
-        <select method="POST" name="classement">
+        <div class="row justify-content-center my-3">
+            <div class="col-md-4">
+                <label for="date">Date de début</label>
+                <input class="form-control" type="date" method="POST" placeholder="Choisissez une date de début" role="search" name="date_start">
+            </div>
+            <div class="col-md-4">
+                <label for="date">Date de fin</label>
+                <input class="form-control" type="date" method="POST" placeholder="Choisissez une date de fin" role="search" name="date_end">
+            </div>
+        </div>
+        <div class="row justify-content-center my-3">
+            <div class="col-md-8">
+                <label for="date">Date d'entrée en playlist</label>
+                <input class="form-control" type="date" method="POST" placeholder="Choisissez une date de saisie" role="search" name="date_playlist">
+            </div>
+        </div>
+        <div class="row justify-content-center my-3">
+            <div class="col-md-4">
+                <label for="date">Provenance</label>
+                <select class="form-control" name="nationality" class="form-select" id="nationality">
+                    <option></option>
+                    {% for nationality in nationalities %}
+                        <option value="{{ nationality.id }}">{{ nationality.lib }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="date">Langue</label>
+                <select class="form-control" name="language" class="form-select" id="language">
+                    <option></option>
+                    <option value="1">Français</option>
+                    <option value="2">Autre</option>
+                </select>
+            </div>
+        </div>
+        <div class="row justify-content-center my-3">
+            <div class="col-md-8">
+                <label for="date">Nom de la playlist</label>
+                <input class="form-control" type="text" method="POST" placeholder="Nommez votre playlist" name="name"></input>
+            </div>
+        </div>
+        <div class="row justify-content-center my-3">
+            <div class="col-md-8">
+                <label for="date">Nombre de titres</label>
+                <input class="form-control" type="number" method="POST" placeholder="Nombre de titre" name="number"></input>
+            </div>
+        </div>
+        <select id="classement" method="POST" name="classement" hidden>
+            <option value=""></option>
             <option value="stats">Statistique</option>
-            <option value="">Export</option>
-            <option value="">Export CMS</option>
+            <option value="export">Export</option>
+            <option value="exportCMS">Export CMS</option>
             <option value="nbPerDisc">Nombre de passage par disque</option>
         </select>
-        
-        <button type="submit" id="search">Générer</button>
+        <div class="row justify-content-center my-3">
+            <div class="col-md-8 text-center">
+                <button id="stats" class="btn btn-outline-warning px-3 m-2">Statistique</button>
+                <button id="export" class="btn btn-outline-warning px-3 m-2">Export</button>
+                <button id="exportCMS" class="btn btn-outline-warning px-3 m-2">Export CMS</button>
+                <button id="nbPerDisc" class="btn btn-outline-warning px-3 m-2">Nombre de passage par disque</button>
+            </div>
+        </div>
+    </div>
+</form>
 
-        <section class="container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Catégorie</th>
-                        <th>Nombre de disque</th>
-                        <th>Pourcentage</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if resultsGenre %}
-                    <tr><td><strong>Genre</strong></td></tr>
-                    {% for genre in resultsGenre %}
-                    <tr>
-                        {% for key in genre|keys %}
-                            {% if key == 2 %}
-                            <td>{{ genre[key]|number_format(2, '.') }}%</td>
-                            {% else %}
-                            <td>{{ genre[key] }}</td>
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
+<section class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Catégorie</th>
+                <th>Nombre de disque</th>
+                <th>Pourcentage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if resultsGenre %}
+            <tr><td><strong>Genre</strong></td></tr>
+            {% for genre in resultsGenre %}
+            <tr>
+                {% for key in genre|keys %}
+                    {% if key == 2 %}
+                    <td>{{ genre[key]|number_format(2, '.') }}%</td>
+                    {% else %}
+                    <td>{{ genre[key] }}</td>
                     {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            {% endif %}
 
-                    {% if resultsNatio %}
-                    <tr><td><strong>Nationalité</strong></td></tr>
-                    {% for natio in resultsNatio %}
-                    <tr>
-                        {% for key in natio|keys %}
-                            {% if key == 2 %}
-                            <td>{{ natio[key]|number_format(2, '.') }}%</td>
-                            {% else %}
-                            <td>{{ natio[key] }}</td>
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
+            {% if resultsNatio %}
+            <tr><td><strong>Nationalité</strong></td></tr>
+            {% for natio in resultsNatio %}
+            <tr>
+                {% for key in natio|keys %}
+                    {% if key == 2 %}
+                    <td>{{ natio[key]|number_format(2, '.') }}%</td>
+                    {% else %}
+                    <td>{{ natio[key] }}</td>
                     {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            {% endif %}
 
-                    {% if resultsType %}
-                    <tr><td><strong>Type</strong></td></tr>
-                    {% for type in resultsType %}
-                    <tr>
-                        {% for key in type|keys %}
-                            {% if key == 2 %}
-                            <td>{{ type[key]|number_format(2, '.') }}%</td>
-                            {% else %}
-                            <td>{{ type[key] }}</td>
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
+            {% if resultsType %}
+            <tr><td><strong>Type</strong></td></tr>
+            {% for type in resultsType %}
+            <tr>
+                {% for key in type|keys %}
+                    {% if key == 2 %}
+                    <td>{{ type[key]|number_format(2, '.') }}%</td>
+                    {% else %}
+                    <td>{{ type[key] }}</td>
                     {% endif %}
-                </tbody>
-            </table>
-        
-        </section>
-    </form>
-    <div/>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</section>
+
+<script>
+    const select = document.querySelector('#classement');
+    const stats = ["stats", "export", "exportCMS", "nbPerDisc"];
+    stats.forEach(function(stat) {
+        const btn = document.querySelector('#'+stat);
+        btn.addEventListener('click', () => {
+            select.value = stat;
+        });
+    });
+</script>
 {% endblock %}
