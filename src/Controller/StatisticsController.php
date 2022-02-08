@@ -2,11 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Disc;
-use App\Entity\User;
 use App\Entity\Nationality;
 use App\Repository\DiscRepository;
-use App\Repository\PlaylistRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +26,6 @@ class StatisticsController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        // $users = $this->em->getRepository(User::class)->findAll();
         $nationalities = $this->em->getRepository(Nationality::class)->findAll();
 
         $animator = $request->query->get('animator');
@@ -44,13 +40,10 @@ class StatisticsController extends AbstractController
 
         // Statistiques
         if ($classement == 'stats') {
-            // if ($animator || $datePlaylist || $dateStart || $dateEnd || $datePlaylist || $nationality || $language) {
             $resultsGenre = $this->discRepo->findStatGenre($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
             $resultsNatio = $this->discRepo->findStatNatio($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
             $resultsType = $this->discRepo->findStatType($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
-            // }
             return $this->render('statistics/statistics.html.twig', [
-                // 'users' => $users,
                 'nationalities' => $nationalities,
                 'resultsGenre' => $resultsGenre,
                 'resultsNatio' => $resultsNatio,
@@ -63,10 +56,8 @@ class StatisticsController extends AbstractController
             if ($animator || $datePlaylist || $dateStart || $dateEnd || $datePlaylist || $nationality || $language) {
                 $results = $this->discRepo->findNbPassagePerDisc($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
                 // $results = $this->discRepo->findAll();
-                var_dump($results);
             }
             return $this->render('statistics/perdisc.html.twig', [
-                // 'users' => $users,
                 'nationalities' => $nationalities,
                 'results' => $results
             ]);
@@ -75,7 +66,6 @@ class StatisticsController extends AbstractController
         // New classement
         else {
             return $this->render('statistics/index.html.twig', [
-                // 'users' => $users,
                 'nationalities' => $nationalities,
                 'results' => null
             ]);

@@ -103,8 +103,6 @@ class DiscRepository extends ServiceEntityRepository
         if ($nb) $count = $nb;
         else $count = $this->findCount($animator, $startDate, $endDate, $date, $natio, $language, $nb)[0][1];
 
-        var_dump($count);
-
         $search = "SELECT g.lib, count(d.genre), (count(d.genre)*100 / " . $count . ")
                    FROM App:disc d 
                    INNER JOIN App:playlisthasdisc phd 
@@ -138,8 +136,6 @@ class DiscRepository extends ServiceEntityRepository
         if ($nb) $count = $nb;
         else $count = $this->findCount($animator, $startDate, $endDate, $date, $natio, $language, $nb)[0][1];
 
-        var_dump($count);
-
         $search = "SELECT n.lib, count(d.nationality), (count(d.nationality)*100 / " . $count . ")
                    FROM App:disc d 
                    INNER JOIN App:playlisthasdisc phd 
@@ -171,8 +167,6 @@ class DiscRepository extends ServiceEntityRepository
     {
         if ($nb) $count = $nb;
         else $count = $this->findCount($animator, $startDate, $endDate, $date, $natio, $language, $nb)[0][1];
-
-        var_dump($count);
 
         $search = "SELECT t.lib, count(d.type), (count(d.type)*100 / " . $count . ")
                    FROM App:disc d 
