@@ -51,15 +51,20 @@
         <h2>{{ playlist.entryDate|date("d/m/Y") }}</h2>
     </div>
 
-    {# <form action="{{ path('add_disc_playlist', {'playlist': playlist.id}) }}">
-        <select id="discs" name="discs[]" multiple>
-            <option data-placeholder="true"></option>
-            {% for list in playlist.playlistHasDiscs %}
-                <option value="{{ list.disc.id }}">{{ list.disc.numInventory }}</option>
-            {% endfor %}
-        </select>
-        <button class="btn btn-secondary">Ajouter</button>
-    </form> #}
+    <form action="{{ path('add_disc_playlist', {'playlist': playlist.id}) }}">
+        <div>
+            <div class="col-md-6 my-3">
+                <label for="numero">Numéro d'inventaire</label>
+
+                <div class="d-flex">
+                    <input type="text" placeholder="Numéro d'inventaire" name="disc" id="numero" class="form-control me-3">
+                    <button type="submit" class="btn btn-outline-dark">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
 
     <div class="content">
         {% set i = 1 %}

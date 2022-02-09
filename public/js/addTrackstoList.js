@@ -3,6 +3,8 @@ const addNumero = document.querySelector('#add-numero');
 const numerosList = document.querySelector('#list-numeros');
 const select = document.querySelector('#select');
 
+const wrongInventoryNumMessage = document.querySelector('#wrong_inventory_number_alert');
+
 const successMessage = document.querySelector('#playlist_success_message');
 if(successMessage){
     setTimeout( () => {
@@ -33,12 +35,18 @@ addNumero.addEventListener('click', (ev) => {
                         createSelectOption(disc);
                     });
                 } else {
-                    alert('Attention ! Le n°' + value + ' n\'est pas valide.');
+                    wrongInventoryNumMessage.hidden = false;
+                    setTimeout( () => {
+                        wrongInventoryNumMessage.hidden = true;
+                    }, 1000);
                 }
             })
     }
     else {
-        alert('Attention ! La valeur saisie n\'est pas valide.');
+        wrongInventoryNumMessage.hidden = false;
+        setTimeout( () => {
+            wrongInventoryNumMessage.hidden = true;
+        }, 1000);
     }
 });
 
