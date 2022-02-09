@@ -3,6 +3,13 @@ const addNumero = document.querySelector('#add-numero');
 const numerosList = document.querySelector('#list-numeros');
 const select = document.querySelector('#select');
 
+const successMessage = document.querySelector('#playlist_success_message');
+if(successMessage){
+    setTimeout( () => {
+        successMessage.remove();
+    }, 3000);
+};
+
 let validDisc = null;
 
 addNumero.addEventListener('click', (ev) => {
