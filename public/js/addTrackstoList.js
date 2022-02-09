@@ -13,7 +13,7 @@ addNumero.addEventListener('click', (ev) => {
     
     if(regex.test(value) && value !== '0' )
     {
-        fetch('/playlist/test/' + value, {
+        fetch('/playlist/request_disc/' + value, {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
