@@ -17,9 +17,8 @@ addNumero.addEventListener('click', (ev) => {
 
     const value = numero.value;
     const regex = new RegExp(/[0-9]/);
-    
-    if(regex.test(value) && value !== '0' )
-    {
+
+    if (regex.test(value) && value !== '0') {
         fetch('/playlist/request_disc/' + value, {
             method: 'get',
             headers: {
@@ -69,6 +68,7 @@ function createBadge(disc) {
     button.appendChild(poubelle);
     button.setAttribute('type', 'button');
     button.classList.add("btn");
+    button.classList.add("mt-0");
     button.classList.add("btn-sm");
     button.classList.add("btn-light");
     button.id = "buttonDeleteLi";
@@ -86,7 +86,7 @@ function createBadge(disc) {
 };
 
 function createSelectOption(disc) {
-    const index = Object.values(select.options).length;
+    const indexOption = Object.values(select.options).length;
 
     const option = document.createElement('option');
     option.setAttribute('data-index', index);

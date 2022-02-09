@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Éditer des statistiques
-{% endblock %}
+{% block title %}Éditer des statistiques{% endblock %}
 
 {% block body %}
 <form >
@@ -42,45 +41,70 @@
             </div>
         </div>
         <div class="row justify-content-center my-3">
-            <div class="col-md-4">
-                <label for="name">Nom de la playlist</label>
+            <div class="col-md-8">
+                <label for="date">Nom de la playlist</label>
                 <input class="form-control" type="text" method="POST" placeholder="Nommez votre playlist" name="name"></input>
-            </div>
-            <div class="col-md-4">
-                <label for="date">Nombre de titres</label>
-                <input class="form-control" type="number" method="POST" placeholder="Nombre de titres" name="number"></input>
             </div>
         </div>
         <div class="row justify-content-center my-3">
-            <div class="col-md-4">
-                <label for="format">Format de l'export</label>
-                <select class="form-select" method="POST" name="format">
-                    <option value="pdf">Format PDF</option>
-                    <option value="excel">Format Excel</option>
-                </select>
+            <div class="col-md-8">
+                <label for="date">Nombre de titres</label>
+                <input class="form-control" type="number" method="POST" placeholder="Nombre de titre" name="number"></input>
             </div>
         </div>
         <select id="classement" method="POST" name="classement" hidden>
             <option value=""></option>
             <option value="stats">Statistique</option>
-            {# <option value="export">Export</option>
-            <option value="exportCMS">Export CMS</option> #}
+            <option value="export">Export</option>
+            <option value="exportCMS">Export CMS</option>
             <option value="nbPerDisc">Nombre de passage par disque</option>
         </select>
-        <div class="row justify-content-center" style="margin-top: 4rem;">
+        <div class="row justify-content-center my-3">
             <div class="col-md-8 text-center">
                 <button id="stats" class="btn btn-outline-warning px-3 m-2">Statistique</button>
-                {# <button id="export" class="btn btn-outline-warning px-3 m-2">Export</button>
-                <button id="exportCMS" class="btn btn-outline-warning px-3 m-2">Export CMS</button> #}
+                <button id="export" class="btn btn-outline-warning px-3 m-2">Export</button>
+                <button id="exportCMS" class="btn btn-outline-warning px-3 m-2">Export CMS</button>
                 <button id="nbPerDisc" class="btn btn-outline-warning px-3 m-2">Nombre de passage par disque</button>
             </div>
         </div>
     </div>
 </form>
 
+<section class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre de passage</th>
+                <th>Groupe</th>
+                <th>Album</th>
+                <th>Label</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if results %}
+            {% for disc in results %}
+            <tr>
+                {% if disc.natio == 2 %}
+                    <td><strong>{{ disc.nb }}</strong></td>
+                    <td><strong>{{ disc.groupe }}</strong></td>
+                    <td><strong>{{ disc.album }}</strong></td>
+                    <td><strong>{{ disc.label }}</strong></td>
+                {% else %}
+                    <td>{{ disc.nb }}</td>
+                    <td>{{ disc.groupe }}</td>
+                    <td>{{ disc.album }}</td>
+                    <td>{{ disc.label }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</section>
+
 <script>
     const select = document.querySelector('#classement');
-    const stats = ["stats", "nbPerDisc"];
+    const stats = ["stats", "export", "exportCMS", "nbPerDisc"];
     stats.forEach(function(stat) {
         const btn = document.querySelector('#'+stat);
         btn.addEventListener('click', () => {
