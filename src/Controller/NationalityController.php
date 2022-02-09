@@ -7,6 +7,7 @@ use App\Form\NationalityType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class NationalityController extends AbstractController
@@ -20,6 +21,7 @@ class NationalityController extends AbstractController
     
     /**
      * @Route("/nationality", name="nationality")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(): Response
     {
@@ -32,6 +34,7 @@ class NationalityController extends AbstractController
 
     /**
      * @Route("/nationality/add", name="add_nationality")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addNationality(Request $request): Response 
     {
@@ -57,6 +60,7 @@ class NationalityController extends AbstractController
 
     /**
      * @Route("/nationality/modify/{id}", name="modify_nationality")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function modifyNationality(Nationality $nationality, Request $request): Response 
     {
@@ -81,6 +85,7 @@ class NationalityController extends AbstractController
 
     /**
      * @Route("/nationality/delete/{id}", name="delete_nationality")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteNationality(Nationality $nationality): Response 
     {
