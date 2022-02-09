@@ -114,9 +114,9 @@ class DiscType extends AbstractType
                 'required' => false,
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Valider',
+                'label' => 'Valider la saisie',
                 'attr' => [
-                    'class' => 'btn btn-outline-warning py-3 px-5'
+                    'class' => 'btn btn-outline-warning py-3'
                 ]
             ]);
     }
