@@ -156,19 +156,22 @@ class PlaylistController extends AbstractController
     }
 
     /**
-     * @Route("/playlist/delete/disc/{playlist}/{disc}", name="delete_disc_playlist")
+     * @Route("/playlist/delete/{id}", name="delete_disc_playlist")
      */
-    public function deleteDisc(Playlist $playlist, Disc $disc): Response
+    public function deleteDisc(Request $request, PlaylistHasDisc $id): Response
     {
-        $playlist->removeDisc($disc);
-        $disc->removePlaylist($playlist);
-
-        $this->em->persist($disc);
-        $this->em->persist($playlist);
-
+        // dd($id);
+        
+        $this->em->remove($id);
         $this->em->flush();
 
-        return $this->redirectToRoute('show_playlist', ['id' => $playlist->getId()]);
+        $this->addFlash(
+            'delete_track_success',
+            'Rock\'n Roll ! Le titre a été retiré de la playliste.'
+        );
+
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
     }
 
     /**

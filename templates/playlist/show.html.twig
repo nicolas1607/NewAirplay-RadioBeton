@@ -46,37 +46,37 @@
 
 <div class="container">
     
-        <div class="header">
-            <h1>Playlist {{ playlist.name }} par {{ playlist.animator }}</h1>
-            <h2>{{ playlist.entryDate|date("d/m/Y") }}</h2>
-        </div>
+    <div class="header">
+        <h1>Playlist {{ playlist.name }} par {{ playlist.animator }}</h1>
+        <h2>{{ playlist.entryDate|date("d/m/Y") }}</h2>
+    </div>
 
-        <form action="{{ path('add_disc_playlist', {'playlist': playlist.id}) }}">
-            <select id="discs" name="discs[]" multiple>
-                <option data-placeholder="true"></option>
-                {# {% for disc in playlist.discs %}
-                    <option value="{{ disc.id }}">{{ disc.numInventory }}</option>
-                {% endfor %} #}
-            </select>
-            <button class="btn btn-secondary">Ajouter</button>
-        </form>
+    {# <form action="{{ path('add_disc_playlist', {'playlist': playlist.id}) }}">
+        <select id="discs" name="discs[]" multiple>
+            <option data-placeholder="true"></option>
+            {% for list in playlist.playlistHasDiscs %}
+                <option value="{{ list.disc.id }}">{{ list.disc.numInventory }}</option>
+            {% endfor %}
+        </select>
+        <button class="btn btn-secondary">Ajouter</button>
+    </form> #}
 
-        <div class="content">
-            {% set i = 1 %}
-            {% for disc in playlist.discs %}
+    <div class="content">
+        {% set i = 1 %}
+        {% for list in playlist.playlistHasDiscs %}
             <div class="card">
-                <a class="card-delete" href="{{ path('delete_disc_playlist', {'playlist': playlist.id, 'disc': disc.id}) }}" class="btn btn-secondary">X</a>
+                <a class="card-delete" href="{{ path('delete_disc_playlist', {'id': list.id}) }}" class="btn btn-secondary">X</a>
                 <div class="card-body">
-                    <h5 class="card-title">D{{ i }} - {{ disc.numInventory }}</h5>
-                    <p class="card-text">Album : {{ disc.album }}</p>
-                    <p class="card-text">Groupe : {{ disc.groupe }}</p>
-                    <p class="card-text">Label : {{ disc.label }}</p>
+                    <h5 class="card-title">D{{ i }} - {{ list.disc.numInventory }}</h5>
+                    <p class="card-text">Album : {{ list.disc.album }}</p>
+                    <p class="card-text">Groupe : {{ list.disc.groupe }}</p>
+                    <p class="card-text">Label : {{ list.disc.label }}</p>
                     
                 </div>
             </div>
             {% set i = i + 1 %}
-            {% endfor %}
-        </div>
+        {% endfor %}
+    </div>
     
 </div>
 {% endblock %}
