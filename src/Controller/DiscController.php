@@ -142,7 +142,7 @@ class DiscController extends AbstractController
 
     //     // Increase row cursor after header write
     //         $sheet->fromArray($this->getData(),null, 'A2', true);
-        
+
 
     //     $writer = new Xlsx($spreadsheet);
 

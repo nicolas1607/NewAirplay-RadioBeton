@@ -5,10 +5,13 @@ namespace App\Controller;
 use App\Entity\Nationality;
 use App\Repository\DiscRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Constraints\Length;
 
 class StatisticsController extends AbstractController
 {
@@ -43,6 +46,7 @@ class StatisticsController extends AbstractController
             $resultsGenre = $this->discRepo->findStatGenre($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
             $resultsNatio = $this->discRepo->findStatNatio($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
             $resultsType = $this->discRepo->findStatType($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
+
             return $this->render('statistics/statistics.html.twig', [
                 'nationalities' => $nationalities,
                 'resultsGenre' => $resultsGenre,
@@ -54,10 +58,35 @@ class StatisticsController extends AbstractController
         // Nombre de passage par disque
         elseif ($classement == 'nbPerDisc') {
             $results = $this->discRepo->findNbPassagePerDisc($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
-            return $this->render('statistics/perdisc.html.twig', [
-                'nationalities' => $nationalities,
-                'results' => $results
-            ]);
+
+            // Update CSV
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setTitle('Nombre de passage par disque');
+
+            $sheet->getCell('B1')->setValue('Album');
+            $sheet->getCell('C1')->setValue('Groupe');
+            $sheet->getCell('D1')->setValue('Label');
+
+            for ($i = 0; $i < count($results); $i++) {
+                $disc = $results[$i];
+                $sheet->getCell('A' . strval($i + 2))->setValue($disc['nb']);
+                $sheet->getCell('B' . strval($i + 2))->setValue($disc['album']);
+                $sheet->getCell('C' . strval($i + 2))->setValue($disc['groupe']);
+                $sheet->getCell('D' . strval($i + 2))->setValue($disc['label']);
+            }
+
+            // Update XLSX
+            $writer = new Xlsx($spreadsheet);
+            if ($name != "" || $name != null) {
+                $writer->save($name . '.xlsx');
+            } else {
+                $writer->save($this->getParameter('excel') . '/nb_passage_disc.xlsx');
+            }
+
+            // Download XLSX
+            $pdfPath = $this->getParameter('excel') . '/nb_passage_disc.xlsx';
+            return $this->file($pdfPath);
         }
 
         // New classement
