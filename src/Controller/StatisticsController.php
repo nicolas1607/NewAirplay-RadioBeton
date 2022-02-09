@@ -120,7 +120,6 @@ class StatisticsController extends AbstractController
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             $sheet->setTitle('Nombre de passage par disque');
-
             $sheet->getCell('B1')->setValue('Album');
             $sheet->getCell('C1')->setValue('Groupe');
             $sheet->getCell('D1')->setValue('Label');
@@ -133,7 +132,6 @@ class StatisticsController extends AbstractController
                 $sheet->getCell('D' . strval($i + 2))->setValue($disc['label']);
             }
 
-
             // Update XLSX
             $writer = new Xlsx($spreadsheet);
             if ($name != "" || $name != null) {
@@ -141,7 +139,6 @@ class StatisticsController extends AbstractController
             } else {
                 $writer->save($this->getParameter('excel') . '/nb_passage_disc.xlsx');
             }
-
             // Download XLSX
             if ($name != "" || $name != null) {
                 $pdfPath = $this->getParameter('excel') . '/' . $name . '.xlsx';
