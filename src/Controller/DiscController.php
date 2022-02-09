@@ -12,6 +12,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DiscController extends AbstractController
@@ -27,6 +28,7 @@ class DiscController extends AbstractController
 
     /**
      * @Route("/disc/add", name="add_disc")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function add(Request $request): Response
     {
@@ -54,6 +56,7 @@ class DiscController extends AbstractController
 
     /**
      * @Route("/disc/search", name="search_disc")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function search(Request $request): Response
     {
@@ -79,6 +82,7 @@ class DiscController extends AbstractController
 
     /**
      * @Route("/disc/edit/{id}", name="edit_disc")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function edit(Request $request, Disc $id): Response
     {
@@ -99,6 +103,7 @@ class DiscController extends AbstractController
 
     /**
      * @Route("/disc/delete/{id}", name="delete_disc")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function delete(Request $request, Disc $disc): Response
     {
