@@ -78,8 +78,8 @@ function createBadge(disc) {
     numero.value = "";
 };
 
-function createSelectOption(disc){
-    const indexOption = Object.values(select.options).length;
+function createSelectOption(disc) {
+    const index = Object.values(select.options).length;
 
     const option = document.createElement('option');
     option.setAttribute('data-index', indexOption);
