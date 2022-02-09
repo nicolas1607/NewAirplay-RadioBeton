@@ -76,16 +76,21 @@ class StatisticsController extends AbstractController
                 $sheet->getCell('D' . strval($i + 2))->setValue($disc['label']);
             }
 
+
             // Update XLSX
             $writer = new Xlsx($spreadsheet);
             if ($name != "" || $name != null) {
-                $writer->save($name . '.xlsx');
+                $writer->save($this->getParameter('excel') . '/' . $name . '.xlsx');
             } else {
                 $writer->save($this->getParameter('excel') . '/nb_passage_disc.xlsx');
             }
 
             // Download XLSX
-            $pdfPath = $this->getParameter('excel') . '/nb_passage_disc.xlsx';
+            if ($name != "" || $name != null) {
+                $pdfPath = $this->getParameter('excel') . '/' . $name . '.xlsx';
+            } else {
+                $pdfPath = $this->getParameter('excel') . '/nb_passage_disc.xlsx';
+            }
             return $this->file($pdfPath);
         }
 
