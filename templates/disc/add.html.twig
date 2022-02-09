@@ -12,9 +12,13 @@
 				{{ form_start(add_disc_form) }}
 				<div class="form-disc">
 					<div class="form-column">
-						<div class="form-group">
-							{{ form_row(add_disc_form.album, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
-							{{ form_row(add_disc_form.groupe , {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+						<div class="row">
+							<div class="col-6">
+								{{ form_row(add_disc_form.album, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+							</div>
+							<div class="col-6">
+								{{ form_row(add_disc_form.groupe , {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+							</div>
 							{{ form_row(add_disc_form.label, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
 						</div>
 						<div class="row">
@@ -33,48 +37,47 @@
 
 			<div class="col-5">
 				<div class="form-column">
-					<div class="form-group">
-						{{ form_row(add_disc_form.arrivalDate, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
-						{{ form_row(add_disc_form.leaveDate, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+					<div class="row">
+						<div class="col-6">
+							{{ form_row(add_disc_form.arrivalDate, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+						</div>
+						<div class="col-6">
+							{{ form_row(add_disc_form.leaveDate, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+						</div>
 					</div>
-					<div class="form-area">
-						{{ form_row(add_disc_form.leaveName, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+					<div class="row">
+						<div class="col-6">
+							{{ form_row(add_disc_form.leaveName, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+						</div>
+						<div class="col-6">
+							{{ form_row(add_disc_form.leaveReason, {'attr': {'class': 'mg-15 form-select mb-1'}}) }}
+						</div>
 					</div>
 
 					<div class="row">
-						<div class="col-6">
-							<div class="form-group">
-								{{ form_row(add_disc_form.leaveReason, {'attr': {'class': 'mg-15 form-select mb-1'}}) }}
+						<div class="col-12">
+							<div class="d-flex justify-content-between align-items-center" style="height: 5.5rem;">
+								{{ form_row(add_disc_form.concert, {'attr': {'class': 'mg-15 mb-1'}}) }}
+								{{ form_row(add_disc_form.aucard, {'attr': {'class': 'mg-15 mb-1'}}) }}
+								{{ form_row(add_disc_form.ferarock, {'attr': {'class': 'mg-15 mb-1'}}) }}
 							</div>
-						</div>
-
-						<div class="col-6">
-							<div id="valueNumInventory" class="form-group">
-								<label for="numInventory">Numéro d'inventaire</label>
-								<input name="numInventory" type="text" class="form-control" value={{ num_inventory }} readonly/>
-
-
+							<div class="row">
+								<div class="col-6">
+									<div id="valueNumInventory" class="form-group">
+										<label for="numInventory">Numéro d'inventaire</label>
+										<input name="numInventory" type="text" class="form-control" value={{ num_inventory }} readonly/>
+									</div>
+									<div class="col text-center">
+										<button type="button" class="btn btn-outline-warning mt-3 py-3" style="width: 12rem;" id="generateNumInventory">Générer n° inventaire</button>
+									</div>
+								</div>
+								<div class="col-6 mt-3 d-flex justify-content-center">
+									{{ form_row(add_disc_form.submit, {'attr': {'style': 'width: 12rem; margin:auto'}}) }}
+								</div>
 							</div>
-							<div class="col text-center">
-								<button type="button" class="btn btn-outline-warning mt-3 py-3" id="generateNumInventory">Générer un numéro d'inventaire</button>
-							</div>
-							{# <div class="example-wrapper">
-															<h1>
-																<a href="{{ path('export') }}">Export -></a>
-															</h1>
-														</div> #}
-						</div>
-						<div class="col-6 d-flex justify-content-between">
-							{{ form_row(add_disc_form.concert, {'attr': {'class': 'mg-15 mb-1'}}) }}
-							{{ form_row(add_disc_form.aucard, {'attr': {'class': 'mg-15 mb-1'}}) }}
-							{{ form_row(add_disc_form.ferarock, {'attr': {'class': 'mg-15 mb-1'}}) }}
 						</div>
 					</div>
-
 				</div>
-			</div>
-			<div class="col-6 text-center mb-5">
-				{{ form_row(add_disc_form.submit) }}
 			</div>
 			{{ form_end(add_disc_form) }}
 		</div>
@@ -82,21 +85,21 @@
 
 	<script>
 		// Gère le numéro d'inventaire à 0 ou non
-const numInventory = document.querySelector('#valueNumInventory input').value;
-document.querySelector('#valueNumInventory input').value = 0;
-const leaveDate = document.querySelector('#disc_leaveDate');
-leaveDate.addEventListener('change', () => {
-document.querySelector('#valueNumInventory input').value = numInventory;
-});
+		const numInventory = document.querySelector('#valueNumInventory input').value;
+		document.querySelector('#valueNumInventory input').value = 0;
+		const leaveDate = document.querySelector('#disc_leaveDate');
+		leaveDate.addEventListener('change', () => {
+		document.querySelector('#valueNumInventory input').value = numInventory;
+		});
 
-// Gère le boutton 'Générer numéro d'inventaire'
-const generateNumInventory = document.querySelector('#generateNumInventory');
-const valueNumInventory = document.querySelector('#valueNumInventory');
-if (generateNumInventory) {
-generateNumInventory.addEventListener('click', () => {
-valueNumInventory.style.display = 'block';
-generateNumInventory.remove();
-});
-}
+		// Gère le boutton 'Générer numéro d'inventaire'
+		const generateNumInventory = document.querySelector('#generateNumInventory');
+		const valueNumInventory = document.querySelector('#valueNumInventory');
+		if (generateNumInventory) {
+		generateNumInventory.addEventListener('click', () => {
+		valueNumInventory.style.display = 'block';
+		generateNumInventory.remove();
+		});
+		}
 	</script>
 {% endblock %}
