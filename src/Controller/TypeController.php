@@ -8,24 +8,26 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TypeController extends AbstractController
 {
     private EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em) 
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
-    
+
     /**
      * @Route("/type", name="type")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(): Response
     {
         $types = $this->em->getRepository(Type::class)->findAll();
-        
+
         return $this->render('type/index.html.twig', [
             'types' => $types,
         ]);
@@ -33,16 +35,16 @@ class TypeController extends AbstractController
 
     /**
      * @Route("/type/add/{id}", name="add_type")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
-    public function addType(Request $request): Response 
+    public function addType(Request $request): Response
     {
         $type = new Type;
         $addTypeForm = $this->createForm(TypeType::class, $type);
 
         $addTypeForm->handleRequest($request);
 
-        if($addTypeForm->isSubmitted() && $addTypeForm->isValid())
-        {
+        if ($addTypeForm->isSubmitted() && $addTypeForm->isValid()) {
             $type = $addTypeForm->getData();
 
             $this->em->persist($type);
@@ -58,15 +60,15 @@ class TypeController extends AbstractController
 
     /**
      * @Route("/type/modify/{id}", name="modify_form")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
-    public function modifyType(Type $type, Request $request): Response 
+    public function modifyType(Type $type, Request $request): Response
     {
         $modifyTypeForm = $this->createForm(TypeType::class, $type);
 
         $modifyTypeForm->handleRequest($request);
 
-        if($modifyTypeForm->isSubmitted() && $modifyTypeForm->isValid())
-        {
+        if ($modifyTypeForm->isSubmitted() && $modifyTypeForm->isValid()) {
             $type = $modifyTypeForm->getData();
 
             $this->em->persist($type);
@@ -82,8 +84,9 @@ class TypeController extends AbstractController
 
     /**
      * @Route("/type/delete/{id}", name="delete_type")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
-    public function deleteType(Type $type): Response 
+    public function deleteType(Type $type): Response
     {
         $this->em->remove($type);
         $this->em->flush();
