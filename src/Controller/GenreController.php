@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GenreController extends AbstractController
@@ -22,6 +23,7 @@ class GenreController extends AbstractController
 
     /**
      * @Route("/genre", name="genre")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(): Response
     {
@@ -35,6 +37,7 @@ class GenreController extends AbstractController
 
     /**
      * @Route("/genre/add", name="add_genre")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addGenre(Request $request): Response
     {
@@ -59,6 +62,7 @@ class GenreController extends AbstractController
 
     /**
      * @Route("/genre/modify/{id}", name="modify_genre")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function modifyGenre(Genre $genre, Request $request): Response
     {
@@ -82,6 +86,7 @@ class GenreController extends AbstractController
 
     /**
      * @Route("/genre/delete/{id}", name="delete_genre")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteGenre(Genre $id)
     {
