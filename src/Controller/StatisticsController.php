@@ -89,9 +89,9 @@ class StatisticsController extends AbstractController
 
                 // on donne un nom de fichier
                 if ($name != "" || $name != null) {
-                    $nomPDF = $name . '-' . substr(uniqid(), 0, 4) . '.pdf';
+                    $nomPDF = $name . '-' . substr(uniqid(), -4) . '.pdf';
                 } elseif ($classement == "stats") {
-                    $nomPDF = 'Stats' . '-' . substr(uniqid(), 0, 4) . '.pdf';
+                    $nomPDF = 'Stats' . '-' . substr(uniqid(), -4) . '.pdf';
                 }
 
                 // on le save dans le dossier statistics/pdf
@@ -136,9 +136,9 @@ class StatisticsController extends AbstractController
                 // Update XLSX
                 $writer = new Xlsx($spreadsheet);
                 if ($name != "" || $name != null) {
-                    $path = $this->getParameter('excel') . '/' . $name . '-' . substr(uniqid(), 0, 4) . '.xlsx';
+                    $path = $this->getParameter('excel') . '/' . $name . '-' . substr(uniqid(), -4) . '.xlsx';
                 } else {
-                    $path = $this->getParameter('excel') . '/Stats-' . substr(uniqid(), 0, 4) . '.xlsx';
+                    $path = $this->getParameter('excel') . '/Stats-' . substr(uniqid(), -4) . '.xlsx';
                 }
                 $writer->save($path);
                 return $this->file($path);
@@ -168,9 +168,9 @@ class StatisticsController extends AbstractController
 
                 $writer = new Xlsx($spreadsheet);
                 if ($name != "" || $name != null) {
-                    $path = $this->getParameter('excel') . '/' . $name . '-' . substr(uniqid(), 0, 4) . '.xlsx';
+                    $path = $this->getParameter('excel') . '/' . $name . '-' . substr(uniqid(), -4) . '.xlsx';
                 } else {
-                    $path = $this->getParameter('excel') . '/NbPerDisc-' . substr(uniqid(), 0, 4) . '.xlsx';
+                    $path = $this->getParameter('excel') . '/NbPerDisc-' . substr(uniqid(), -4) . '.xlsx';
                 }
                 $writer->save($path);
                 return $this->file($path);
@@ -212,9 +212,9 @@ class StatisticsController extends AbstractController
 
                 // on donne un nom de fichier
                 if ($name != "" || $name != null) {
-                    $nomPDF = $name . '-' . substr(uniqid(), 0, 4) . '.pdf';
+                    $nomPDF = $name . '-' . substr(uniqid(), -4) . '.pdf';
                 } elseif ($classement == "nbPerDisc") {
-                    $nomPDF = 'NbPerDisc' . '-' . substr(uniqid(), 0, 4) . '.pdf';
+                    $nomPDF = 'NbPerDisc' . '-' . substr(uniqid(), -4) . '.pdf';
                 }
 
                 // on le save dans le dossier statistics/pdf
