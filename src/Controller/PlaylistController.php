@@ -54,7 +54,7 @@ class PlaylistController extends AbstractController
                 ->setEntryDate(new \DateTimeImmutable($entryDate));
 
             $discs = $request->query->get('discs');
-
+            
             // 'discs' étant un tableau, injection dans 'playlist_disc' de chaque id 'disc' associé à chaque 'id' de playlist
             $wrongDiscs = [];
             foreach ($discs as $disc) {
@@ -89,16 +89,8 @@ class PlaylistController extends AbstractController
         }
         $animators = array_unique($animatorsAll, SORT_REGULAR);
 
-        // $discs = $this->em->getRepository(Disc::class)->findAll();
-        // $discsNum = [];
-        // foreach ($discs as $disc)
-        // {
-        //     array_push($discsNum, [$disc->getNumInventory(), $disc->getGroupe(), $disc->getAlbum(), $disc->getId()]);
-        // }
-
         return $this->render('playlist/add.html.twig', [
-            'animators' => $animators,
-            // 'discs_nums' => $discsNum,
+            'animators' => $animators
         ]);
     }
 
@@ -147,7 +139,9 @@ class PlaylistController extends AbstractController
             $discs = $request->query->get('discs');
 
             foreach ($discs as $disc) {
-                $disc = $this->em->getRepository(Disc::class)->findOneBy(['num_inventory' => $disc]);
+                $disc = $this->em->getRepository(Disc::class)->findOneBy([
+                    'num_inventory' => $disc
+                ]);
                 if ($disc) {
                     $playlist->addDisc($disc);
                     $disc->addPlaylist($playlist);
@@ -182,9 +176,9 @@ class PlaylistController extends AbstractController
     }
 
     /**
-     * @Route("/playlist/test/{numero}", name="test")
+     * @Route("/playlist/request_disc/{numero}", name="request_disc")
      */
-    public function test($numero)
+    public function requestDisc($numero)
     {
         $disc = $this->em->getRepository(Disc::class)->findOneBy([
             'num_inventory' => $numero

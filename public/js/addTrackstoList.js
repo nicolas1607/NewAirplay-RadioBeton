@@ -10,9 +10,10 @@ addNumero.addEventListener('click', (ev) => {
 
     const value = numero.value;
     const regex = new RegExp(/[0-9]/);
-
-    if (regex.test(value) && value !== '0') {
-        fetch('/playlist/test/' + value, {
+    
+    if(regex.test(value) && value !== '0' )
+    {
+        fetch('/playlist/request_disc/' + value, {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
@@ -81,8 +82,7 @@ function createSelectOption(disc) {
     const index = Object.values(select.options).length;
 
     const option = document.createElement('option');
-    option.setAttribute('data-index', index);
-    // option.setAttribute('data-id', disc.id);
+    option.setAttribute('data-index', indexOption);
     option.setAttribute('selected', 'selected');
     option.textContent = disc.id;
 
