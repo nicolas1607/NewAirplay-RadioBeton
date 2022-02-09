@@ -86,7 +86,7 @@ function createBadge(disc) {
 };
 
 function createSelectOption(disc) {
-    const indexOption = Object.values(select.options).length;
+    const index = Object.values(select.options).length;
 
     const option = document.createElement('option');
     option.setAttribute('data-index', index);

@@ -31,6 +31,12 @@
 					{{ message }}
 				</p>
 			{% endfor %}
+
+			{% for message in app.flashes('delete_track_success') %}
+				<p class="mb-0 alert-success" id="playlist_success_message">
+					{{ message }}
+				</p>
+			{% endfor %}
 		</div>
 
 		{% block body %}{% endblock %}
