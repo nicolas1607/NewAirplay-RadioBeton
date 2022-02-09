@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Disc;
 use App\Entity\Playlist;
 use App\Form\PlaylistType;
+use App\Entity\PlaylistHasDisc;
 use App\Form\SearchPlaylistType;
 use App\Repository\PlaylistRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,45 +42,40 @@ class PlaylistController extends AbstractController
      */
     public function addPlaylist(Request $request): Response
     {
-        // Traitement de la requête envoyée depuis le formulaire de saisie de playlist en fonction de la requête et de l aprésence d'un nom (champ requis)
-        if ($request && $request->query->get('name')) {
-            $playlist = new Playlist;
+        $date = $request->query->get('date');
+        $name = $request->query->get('title');
+        $animator = $request->query->get('name');
+        $discs = $request->query->get('discs');
 
-            $entryDate = $request->query->get('date');
-            $animator = $request->query->get('name');
-            $name = $request->query->get('title');
+        if($date || $name || $animator || $discs)
+        {
+            $playlist = new PlayList();
 
-            $playlist->setAnimator($animator)
-                ->setName($name)
-                ->setEntryDate(new \DateTimeImmutable($entryDate));
+            $playlist->setEntryDate(new \DateTime($date))
+                     ->setName($name)
+                     ->setAnimator($animator);
 
-            $discs = $request->query->get('discs');
-            
-            // 'discs' étant un tableau, injection dans 'playlist_disc' de chaque id 'disc' associé à chaque 'id' de playlist
-            $wrongDiscs = [];
-            foreach ($discs as $disc) {
-                $discObject = $this->em->getRepository(Disc::class)->findOneBy(['num_inventory' => $disc]);
-                if ($discObject) {
-                    $playlist->addDisc($discObject);
-                } else {
-                    // $this->addFlash('danger', 'Attention ! le n° d\'inventaire ' . $disc . ' n\'existe pas...');
-                    array_push($wrongDiscs, $disc);
-                }
+            foreach($discs as $id)
+            {
+                $relation = new PlaylistHasDisc;
+                
+                $disc = $this->em->getRepository(Disc::class)->findOneBy([
+                    'id' => $id
+                ]);
+
+                $playlist->addPlaylistHasDisc( $relation->setDisc($disc) );
             }
+        
+            $this->em->persist($playlist);
+            $this->em->flush();
 
-            if (count($wrongDiscs) > 0) {
-                foreach ($wrongDiscs as $wrongDisc) {
-                    $this->addFlash('danger', 'Attention ! le n° d\'inventaire ' . $wrongDisc . ' n\'existe pas...');
-                }
+            $this->addFlash(
+                'playlist_success',
+                'Rock\'n Roll ! Une nouvelle playlist vient d\'être créée !'
+            );
 
-                return $this->redirectToRoute('playlist_add');
-            } else {
-                $this->em->persist($playlist);
-                $this->em->flush();
-
-                return $this->redirectToRoute('show_playlist', ['id' => $playlist->getId()]);
-            }
-        };
+            return $this->redirectToRoute('playlist_add');
+        }
 
         // Récupération des animateurs depuis la table 'playlist', pour ensuite les dédoublonner et les renvoyer vers le front
         $playlists = $this->em->getRepository(Playlist::class)->findAll();

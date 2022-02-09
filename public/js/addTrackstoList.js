@@ -3,6 +3,13 @@ const addNumero = document.querySelector('#add-numero');
 const numerosList = document.querySelector('#list-numeros');
 const select = document.querySelector('#select');
 
+const successMessage = document.querySelector('#playlist_success_message');
+if(successMessage){
+    setTimeout( () => {
+        successMessage.remove();
+    }, 3000);
+};
+
 let validDisc = null;
 
 addNumero.addEventListener('click', (ev) => {
@@ -82,7 +89,7 @@ function createSelectOption(disc) {
     const indexOption = Object.values(select.options).length;
 
     const option = document.createElement('option');
-    option.setAttribute('data-index', indexOption);
+    option.setAttribute('data-index', index);
     option.setAttribute('selected', 'selected');
     option.textContent = disc.id;
 

@@ -25,6 +25,14 @@
 			{% include "partials/_navbar.html.twig" %}
 		</header>
 
+		<div class="container">
+			{% for message in app.flashes('playlist_success') %}
+				<p class="mb-0 alert-success" id="playlist_success_message">
+					{{ message }}
+				</p>
+			{% endfor %}
+		</div>
+
 		{% block body %}{% endblock %}
 
 		{% block javascripts %}

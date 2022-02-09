@@ -6,22 +6,22 @@
 {% block body %}
 
 	<div class="container">
-		<form class="" method="post">
+		<form class="" action="{{ path('playlist_add') }}" method="GET">
 
 			<div class="row">
 				<div class="col-4">
 					<label for="date">Date</label>
-					<input class="form-control" type="date" id="date" name="date" value="dd/mm/yyyy" min="1980-01-01" max="2050-12-31">
+					<input class="form-control" type="date" id="date" name="date" value="dd/mm/yyyy" min="1980-01-01" max="2050-12-31" required>
 				</div>
 
 				<div class="col-4">
 					<label for="title">Nom</label>
-					<input class="form-control" type="text" id="title" name="title" placeholder="Saissez un nom de playlist">
+					<input class="form-control" type="text" id="title" name="title" placeholder="Saissez un nom de playlist" required>
 				</div>
 
 				<div class="col-4">
 					<label for="name">Animateur</label>
-					<input class="form-control" list="names-choice" id="name" name="name" placeholder="sélectionnez un animateur"/>
+					<input class="form-control" list="names-choice" id="name" name="name" placeholder="sélectionnez un animateur" required>
 					<datalist id="names-choice">
 						<option value="Jérôme"></option>
 						<option value="Léandro"></option>
@@ -29,7 +29,6 @@
 						<option value="Nicolas"></option>
 					</datalist>
 				</div>
-
 			</div>
 
 			<div>
@@ -51,7 +50,7 @@
 			</div>
 
 			<div class="mt-5">
-				<button class="btn btn-outline-warning">Ajouter</button>
+				<button type="submit" class="btn btn-outline-warning">Ajouter</button>
 			</div>
 
 		</form>
