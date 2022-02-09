@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer des statistiques{% endblock %}
+
+{% block body %}
+<form >
+    <div class="container">
+        <div class="row justify-content-center my-3">
+            <div class="col-md-4">
+                <label for="date">Date de début</label>
+                <input class="form-control" type="date" method="POST" placeholder="Choisissez une date de début" role="search" name="date_start">
+            </div>
+            <div class="col-md-4">
+                <label for="date">Date de fin</label>
+                <input class="form-control" type="date" method="POST" placeholder="Choisissez une date de fin" role="search" name="date_end">
+            </div>
+        </div>
+        <div class="row justify-content-center my-3">
+            <div class="col-md-8">
+                <label for="date">Date d'entrée en playlist</label>
+                <input class="form-control" type="date" method="POST" placeholder="Choisissez une date de saisie" role="search" name="date_playlist">
+            </div>
+        </div>
+        <div class="row justify-content-center my-3">
+            <div class="col-md-4">
+                <label for="date">Provenance</label>
+                <select class="form-control" name="nationality" class="form-select" id="nationality">
+                    <option></option>
+                    {% for nationality in nationalities %}
+                        <option value="{{ nationality.id }}">{{ nationality.lib }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="date">Langue</label>
+                <select class="form-control" name="language" class="form-select" id="language">
+                    <option></option>
+                    <option value="1">Français</option>
+                    <option value="2">Autre</option>
+                </select>
+            </div>
+        </div>
+        <div class="row justify-content-center my-3">
+            <div class="col-md-8">
+                <label for="date">Nom de la playlist</label>
+                <input class="form-control" type="text" method="POST" placeholder="Nommez votre playlist" name="name"></input>
+            </div>
+        </div>
+        <div class="row justify-content-center my-3">
+            <div class="col-md-8">
+                <label for="date">Nombre de titres</label>
+                <input class="form-control" type="number" method="POST" placeholder="Nombre de titre" name="number"></input>
+            </div>
+        </div>
+        <select id="classement" method="POST" name="classement" hidden>
+            <option value=""></option>
+            <option value="stats">Statistique</option>
+            <option value="export">Export</option>
+            <option value="exportCMS">Export CMS</option>
+            <option value="nbPerDisc">Nombre de passage par disque</option>
+        </select>
+        <div class="row justify-content-center my-3">
+            <div class="col-md-8 text-center">
+                <button id="stats" class="btn btn-outline-warning px-3 m-2">Statistique</button>
+                <button id="export" class="btn btn-outline-warning px-3 m-2">Export</button>
+                <button id="exportCMS" class="btn btn-outline-warning px-3 m-2">Export CMS</button>
+                <button id="nbPerDisc" class="btn btn-outline-warning px-3 m-2">Nombre de passage par disque</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<section class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre de passage</th>
+                <th>Groupe</th>
+                <th>Album</th>
+                <th>Label</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if results %}
+            {% for disc in results %}
+            <tr>
+                {% if disc.natio == 2 %}
+                    <td><strong>{{ disc.nb }}</strong></td>
+                    <td><strong>{{ disc.groupe }}</strong></td>
+                    <td><strong>{{ disc.album }}</strong></td>
+                    <td><strong>{{ disc.label }}</strong></td>
+                {% else %}
+                    <td>{{ disc.nb }}</td>
+                    <td>{{ disc.groupe }}</td>
+                    <td>{{ disc.album }}</td>
+                    <td>{{ disc.label }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</section>
+
+<script>
+    const select = document.querySelector('#classement');
+    const stats = ["stats", "export", "exportCMS", "nbPerDisc"];
+    stats.forEach(function(stat) {
+        const btn = document.querySelector('#'+stat);
+        btn.addEventListener('click', () => {
+            select.value = stat;
+        });
+    });
+</script>
+{% endblock %}
