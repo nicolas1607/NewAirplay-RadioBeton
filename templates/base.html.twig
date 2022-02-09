@@ -27,25 +27,25 @@
 
 		<div class="container">
 			{% for message in app.flashes('playlist_success') %}
-				<p class="mb-0 alert-success">
+				<p class="mb-0 alert alert-success">
 					{{ message }}
 				</p>
 			{% endfor %}
 
 			{% for message in app.flashes('delete_track_success') %}
-				<p class="mb-0 alert-success">
+				<p class="mb-0 alert alert-success">
 					{{ message }}
 				</p>
 			{% endfor %}
 
 			{% for message in app.flashes('add_disc_to_existing_playlist_success') %}
-				<p class="mb-0 alert-success">
+				<p class="mb-0 alert alert-success">
 					{{ message }}
 				</p>
 			{% endfor %}
 
 			{% for message in app.flashes('add_disc_to_existing_playlist_alert') %}
-				<p class="mb-0 alert-danger">
+				<p class="mb-0 alert alert-danger">
 					{{ message }}
 				</p>
 			{% endfor %}
@@ -57,6 +57,8 @@
 			<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.1/js/bootstrap.min.js'></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js"></script>
 			<script src="/js/addTrackstoList.js"></script>
+			<script src="/js/attributeInventoryNum.js"></script>
+			<script src="/js/selectExportFormat.js"></script>
 		{% endblock %}
 
 	</div>
