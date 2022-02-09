@@ -1,9 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PlaylistController!
+{% block title %}AirPlay | nouvelle playliste
 {% endblock %}
 
 {% block body %}
+	<div class="container">
+		<p class="mb-0 alert-danger" id="wrong_inventory_number_alert" hidden>
+			'Nope ! Le numéro est invalide'
+		</p>
+	</div>
 
 	<div class="container">
 		<form class="" action="{{ path('playlist_add') }}" method="GET">

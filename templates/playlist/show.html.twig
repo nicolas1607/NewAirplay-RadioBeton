@@ -1,48 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Voir ma playlist{% endblock %}
+{% block title %}AirPlay | ma playliste{% endblock %}
 
 {% block body %}
-<style>
-    a {
-        text-decoration: none;
-        color: lightgray;
-    }
-
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .content {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 2rem;
-        font-size: 1rem;
-    }
-
-    .card {
-        position: relative;
-        box-shadow: 2px 2px 2px lightgray;
-    }
-
-    .card:hover {
-        transform: translateY(-.4rem);
-    }
-
-    .card-delete {
-        position: absolute;
-        right: 0;
-        top: 0;
-        padding: 1rem 1.5rem;
-    }
-
-    .card-delete:hover {
-        transform: scale(1.2);
-        color: black;
-    }
-</style>
 
 <div class="container">
     
@@ -51,15 +11,20 @@
         <h2>{{ playlist.entryDate|date("d/m/Y") }}</h2>
     </div>
 
-    {# <form action="{{ path('add_disc_playlist', {'playlist': playlist.id}) }}">
-        <select id="discs" name="discs[]" multiple>
-            <option data-placeholder="true"></option>
-            {% for list in playlist.playlistHasDiscs %}
-                <option value="{{ list.disc.id }}">{{ list.disc.numInventory }}</option>
-            {% endfor %}
-        </select>
-        <button class="btn btn-secondary">Ajouter</button>
-    </form> #}
+    <form action="{{ path('add_disc_playlist', {'playlist': playlist.id}) }}">
+        <div>
+            <div class="col-md-6 my-3">
+                <label for="numero">Numéro d'inventaire</label>
+
+                <div class="d-flex">
+                    <input type="text" placeholder="Numéro d'inventaire" name="disc" id="numero" class="form-control me-3">
+                    <button type="submit" class="btn btn-outline-dark">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
 
     <div class="content">
         {% set i = 1 %}

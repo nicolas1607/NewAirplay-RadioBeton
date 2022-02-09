@@ -132,25 +132,37 @@ class PlaylistController extends AbstractController
     {
         if ($request) {
 
-            $discs = $request->query->get('discs');
+            $inventoryNum = $request->query->get('disc');
 
-            foreach ($discs as $disc) {
-                $disc = $this->em->getRepository(Disc::class)->findOneBy([
-                    'num_inventory' => $disc
-                ]);
-                if ($disc) {
-                    $playlist->addDisc($disc);
-                    $disc->addPlaylist($playlist);
+            $disc = $this->em->getRepository(Disc::class)->findOneBy([
+                'num_inventory' => $inventoryNum
+            ]);
 
-                    $this->em->persist($disc);
-                    $this->em->persist($playlist);
-                } else {
-                    // $this->addFlash('')
-                }
+            if($disc)
+            {
+                $relation = new PlaylistHasDisc;
+
+                $relation->setDisc($disc)
+                         ->setPlaylist($playlist);
+                
+                $playlist->addPlaylistHasDisc($relation);
+
+                $this->addFlash(
+                    'add_disc_to_existing_playlist_success',
+                    'Bibopalulla ! Le track a été ajouté à la playliste.'
+                );
             }
-        }
+            else
+            {
+                $this->addFlash(
+                    'add_disc_to_existing_playlist_alert',
+                    'Oups ! Ce track n\'existe pas.'
+                );
+            }
 
-        $this->em->flush();
+            $this->em->persist($playlist);
+            $this->em->flush();
+        }
 
         return $this->redirectToRoute('show_playlist', ['id' => $playlist->getId()]);
     }
