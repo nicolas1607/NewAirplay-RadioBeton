@@ -12,27 +12,29 @@
 					</a>
 				</li>
 
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Disque</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="{{path('add_disc')}}">Saisis de disque</a>
-						<a class="dropdown-item" href="{{path('search_disc')}}">Recherche de disque</a>
-					</div>
-				</li>
+				{% if app.user %}
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Disque</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="{{path('add_disc')}}">Saisie de disque</a>
+							<a class="dropdown-item" href="{{path('search_disc')}}">Recherche de disque</a>
+						</div>
+					</li>
 
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Playlist</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="{{path('playlist_add')}}">Saisis de playlist</a>
-						<a class="dropdown-item" href="{{path('search_playlist')}}">Recherche de playlist</a>
-					</div>
-				</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Playlist</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="{{path('playlist_add')}}">Saisie de playlist</a>
+							<a class="dropdown-item" href="{{path('search_playlist')}}">Recherche de playlist</a>
+						</div>
+					</li>
 
-				<li class="nav-item">
-					<a class="nav-link" href="{{path('statistics')}}">Éditer des statistiques
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('statistics')}}">Éditer des statistiques
 
-					</a>
-				</li>
+						</a>
+					</li>
+				{% endif %}
 
 			</ul>
 
@@ -45,7 +47,7 @@
 		</div>
 	{% endif %}
 
-	{# lien deconnection si connecter sinon s'idenfier  #}
+	{# lien deconnection si connecter sinon s'idenfier #}
 	<div>
 		<ul class="navbar-nav me-auto">
 

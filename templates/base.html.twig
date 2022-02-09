@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>
-			{% block title %}Radio beton
-			{% endblock %}
-		</title>
 
-		{% block stylesheets %}
-			<link rel="stylesheet" href="{{asset('css/style.css')}}">
-			<link rel="stylesheet" href="https://bootswatch.com/5/litera/bootstrap.min.css">
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
-			<link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.css" rel="stylesheet"></link> 
+<head>
+	<meta charset="UTF-8">
+	<title>
+		{% block title %}Radio beton
 		{% endblock %}
+	</title>
 
-	</head>
+	{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('css/style.css')}}">
+	<link rel="stylesheet" href="https://bootswatch.com/5/litera/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.css" rel="stylesheet">
+	</link>
+	{% endblock %}
 
-	<body>
+</head>
+
+<body>
 	<div class="main-containt">
 
 		<header>
@@ -56,5 +58,6 @@
 		{% endblock %}
 
 	</div>
-	</body>
+</body>
+
 </html>

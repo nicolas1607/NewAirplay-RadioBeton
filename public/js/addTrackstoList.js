@@ -19,45 +19,59 @@ addNumero.addEventListener('click', (ev) => {
                 'Content-Type': 'application/json',
             }
         })
-        .then(function(request){
-            if(request.ok){
-                request.text().then( (response) => {
-                    let disc = JSON.parse(response);
-                    createBadge(disc);
-                    createSelectOption(disc);
-                });
-            }else{
-                alert('Attention ! Le n°' + value + ' n\'est pas valide.');
-            }
-        })
+            .then(function (request) {
+                if (request.ok) {
+                    request.text().then((response) => {
+                        let disc = JSON.parse(response);
+                        createBadge(disc);
+                        createSelectOption(disc);
+                    });
+                } else {
+                    alert('Attention ! Le n°' + value + ' n\'est pas valide.');
+                }
+            })
     }
-    else
-    {
+    else {
         alert('Attention ! La valeur saisie n\'est pas valide.');
     }
 });
 
-function createBadge(disc){
-    const indexBadge = Object.values(numerosList.children).length;
+function createBadge(disc) {
+    const index = Object.values(numerosList.children).length;
 
     const badge = document.createElement('li');
-    badge.setAttribute('data-index', indexBadge);
-    
-    const badgeValues = document.createElement('div');
+    badge.classList.add("badge");
+    badge.classList.add("bg-radio");
+    badge.classList.add("m-2");
+    badge.setAttribute('data-index', index);
 
-    const values = document.createElement('div');
+    const badgeValues = document.createElement('div');
+    badgeValues.classList.add("d-flex");
+    badgeValues.id = "badgeValues";
+
+    const values = document.createElement('p');
+    values.classList.add("mb-0");
+    values.classList.add("me-3");
     values.textContent = disc.inventory_num + ' | ' + disc.album + ' | ' + disc.group;
 
     const button = document.createElement('button');
-    button.textContent = 'X';
+    const poubelle = document.createElement('i');
+    poubelle.classList.add("fas");
+    poubelle.classList.add("fa-trash-alt");
+
+    button.appendChild(poubelle);
     button.setAttribute('type', 'button');
+    button.classList.add("btn");
+    button.classList.add("btn-sm");
+    button.classList.add("btn-light");
+    button.id = "buttonDeleteLi";
     button.addEventListener('click', () => {
         deleteBadge(badge, numerosList, select, disc.id);
     });
 
     badgeValues.appendChild(values);
     badgeValues.appendChild(button);
-    
+
     badge.appendChild(badgeValues);
     numerosList.appendChild(badge);
 
@@ -75,17 +89,14 @@ function createSelectOption(disc){
     select.appendChild(option);
 }
 
-function deleteBadge(badge, list, select, id){
+function deleteBadge(badge, list, select, id) {
     let options = Object.values(select.options);
     let badgeIndex = badge.dataset.index;
-
-    options.forEach( option => {
+    options.forEach(option => {
         let optionIndex = option.dataset.index;
-
-        if( Number(option.textContent) === id && Number(badgeIndex) === Number(optionIndex) ){
+        if (Number(option.textContent) === id && Number(badgeIndex) === Number(optionIndex)) {
             select.removeChild(option);
             list.removeChild(badge);
         }
-
     });
 }
