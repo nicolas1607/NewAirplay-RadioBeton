@@ -61,6 +61,7 @@ function createBadge(disc) {
     button.appendChild(poubelle);
     button.setAttribute('type', 'button');
     button.classList.add("btn");
+    button.classList.add("mt-0");
     button.classList.add("btn-sm");
     button.classList.add("btn-light");
     button.id = "buttonDeleteLi";
