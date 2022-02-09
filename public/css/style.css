@@ -36,9 +36,16 @@ body{
 #buttonDeleteLi{
     margin-top: 5px;
     border-radius: 7px;
+    transition: .3s all;
+}
+#buttonDeleteLi:hover{
+    transform: scale(1.2);
 }
 #badgeValues{
     align-items: center;
+}
+#badgeValues p{
+    text-shadow: 1px 1px 2px #757474;
 }
 .bg-radio{
     background-color: #F7D117;

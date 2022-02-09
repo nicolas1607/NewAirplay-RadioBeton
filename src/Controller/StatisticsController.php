@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Entity\Nationality;
 use App\Repository\DiscRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,8 +12,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class StatisticsController extends AbstractController
 {
@@ -43,17 +45,72 @@ class StatisticsController extends AbstractController
 
         // Statistiques
         if ($classement == 'stats') {
+
+            // on defini des options pour le pdf
+            $optionsPdf = new Options();
+
+            // police
+            $optionsPdf->setDefaultFont('Arial');
+            $optionsPdf->setIsRemoteEnabled(true);
+            $optionsPdf->setIsHtml5ParserEnabled(true);
+            $optionsPdf->isRemoteEnabled(true);
+
+            // on instancie domPDf - on lui passe les options
+            $domPdf = new Dompdf($optionsPdf);
+            $content = stream_context_create([
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                ]
+            ]);
+            $domPdf->setHttpContext($content);
+
             $resultsGenre = $this->discRepo->findStatGenre($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
             $resultsNatio = $this->discRepo->findStatNatio($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
             $resultsType = $this->discRepo->findStatType($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
 
-            return $this->render('statistics/statistics.html.twig', [
+            // on genere le html avec les données de la fiche
+            $html = $this->renderView('statistics/download-pdf.html.twig', [
                 'nationalities' => $nationalities,
                 'resultsGenre' => $resultsGenre,
                 'resultsNatio' => $resultsNatio,
-                'resultsType' => $resultsType
+                'resultsType' => $resultsType,
+                'dateStart' => $dateStart,
+                'dateEnd' => $dateEnd,
+                'datePlaylist' => $datePlaylist,
+                'name' => $name
             ]);
+
+            // on transmet le contenue html dans le domPDF
+            $domPdf->loadHtml($html);
+            $domPdf->setPaper('A4', 'portrait');
+            $domPdf->render();
+
+            // on donne un nom de fichier
+            $nomPDF = 'Export-PDF' . '-' . uniqid() . '.pdf';
+
+            // on le save dans le dossier statistics/pdf
+            // $domPdf->save($this->getParameter('excel') . '/nb_passage_disc.xlsx');
+            $pdf = $domPdf->output();
+            $file_location = $this->getParameter('pdf') . $nomPDF;
+            file_put_contents($file_location, $pdf);
+
+            // on envois le pdf au navigateur et permettre de télécharger
+            $domPdf->stream($nomPDF, [
+                'Attachement' => true,
+            ]);
+            // on return la response car le stream n'est pas une reponse
+            return new Response();
+
+            // return $this->render('statistics/statistics.html.twig', [
+            //     'nationalities' => $nationalities,
+            //     'resultsGenre' => $resultsGenre,
+            //     'resultsNatio' => $resultsNatio,
+            //     'resultsType' => $resultsType
+            // ]);
         }
+
 
         // Nombre de passage par disque
         elseif ($classement == 'nbPerDisc') {
