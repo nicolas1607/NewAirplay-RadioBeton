@@ -5,20 +5,26 @@
 
 {% block body %}
 
-	<h1 class="text-center">Répartition des disques diffusés
-	</h1>
-	<h2 class="text-center">Playlist :
-		{{name}}
-	</h2>
-	<h3 class="text-center">Airplay du
-		{{dateStart}}
-		au
-		{{dateEnd}}
-	</h3>
-	<p class="mb-0 text-center">
-		Date d'entrée des disques à partir de :
-		{{datePlaylist}}
-	</p>
+	<h1 class="text-center">Répartition des disques diffusés</h1>
+	{% if name != "" %}
+		<h2 class="text-center">Playlist : {{name}}</h2>
+	{% else %}
+		<h2 class="text-center">Playlist : Statistiques</h2>
+	{% endif %}
+
+	{% if dateStart != "" and dateEnd != "" %}
+		<h3 class="text-center">Airplay du {{dateStart}} au {{dateEnd}}</h3>
+	{% elseif dateStart != "" %}
+		<h3 class="text-center">Airplay à partir du {{dateStart}}</h3>
+	{% elseif dateEnd != "" %}
+		<h3 class="text-center">Airplay jusqu'au {{dateEnd}}</h3>
+	{% else %}
+		<h3 class="text-center">Airplay</h3>
+	{% endif %}
+
+	{% if datePlaylist != "" %}
+		<p class="mb-0 text-center">Date d'entrée des disques à partir de : {{datePlaylist}}</p>
+	{% endif %}
 
 	<table class="mt-4 mx-auto table">
 		<thead>
@@ -34,6 +40,8 @@
 					<td>
 						<strong>Genre</strong>
 					</td>
+					<td></td>
+					<td></td>
 				</tr>
 				{% for genre in resultsGenre %}
 					<tr>
@@ -53,6 +61,8 @@
 					<td>
 						<strong>Nationalité</strong>
 					</td>
+					<td></td>
+					<td></td>
 				</tr>
 				{% for natio in resultsNatio %}
 					<tr>
@@ -72,6 +82,8 @@
 					<td>
 						<strong>Type</strong>
 					</td>
+					<td></td>
+					<td></td>
 				</tr>
 				{% for type in resultsType %}
 					<tr>
@@ -88,5 +100,10 @@
 		</tbody>
 	</table>
 
+	<style>
+		tr td {
+			text-align: center;
+		}
+	</style>
 
 {% endblock %}

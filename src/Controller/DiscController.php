@@ -96,7 +96,6 @@ class DiscController extends AbstractController
         ]);
     }
 
-
     /**
      * @Route("/disc/delete/{id}", name="delete_disc")
      */
@@ -107,47 +106,4 @@ class DiscController extends AbstractController
 
         return $this->redirect($request->headers->get('referer'));
     }
-
-
-    // private function getData(): array
-    // {
-    //     /**
-    //      * @var $disc Disc[]
-    //      */
-    //     $list = [];
-    //     $discs = $this->em->getRepository(Disc::class)->findAll();
-
-    //     foreach ($discs as $disc) {
-    //         $list[] = [
-    //             $disc->getAlbum(),
-    //             $disc->getGroupe()
-    //         ];
-    //     }
-    //     return $list;
-    // }
-
-    // /**
-    //  * @Route("/export",  name="export")
-    //  */
-    // public function export()
-    // {
-    //     $spreadsheet = new Spreadsheet();
-
-    //     $sheet = $spreadsheet->getActiveSheet();
-
-    //     $sheet->setTitle('Disc List');
-
-    //     $sheet->getCell('A1')->setValue('Album');
-    //     $sheet->getCell('B1')->setValue('Groupe');
-
-    //     // Increase row cursor after header write
-    //         $sheet->fromArray($this->getData(),null, 'A2', true);
-
-
-    //     $writer = new Xlsx($spreadsheet);
-
-    //     $writer->save('helloworld.xlsx');
-
-    //     return $this->redirectToRoute('add_disc');
-    // }
 }
