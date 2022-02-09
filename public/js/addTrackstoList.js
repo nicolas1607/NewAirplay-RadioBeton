@@ -82,7 +82,7 @@ function createSelectOption(disc) {
     const index = Object.values(select.options).length;
 
     const option = document.createElement('option');
-    option.setAttribute('data-index', indexOption);
+    option.setAttribute('data-index', index);
     option.setAttribute('selected', 'selected');
     option.textContent = disc.id;
 
