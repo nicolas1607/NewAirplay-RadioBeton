@@ -26,6 +26,7 @@ class UserType extends AbstractType
                 'choices' => [
                     'bénévole' => 'ROLE_BENEVOLE',
                     'Administrateur' => 'ROLE_ADMIN',
+                    'Super-Administrateur' => 'SUPER_ADMIN'
                 ],
                 'expanded' => false,
                 'multiple' => false,
