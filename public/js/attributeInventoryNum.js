@@ -17,7 +17,9 @@ if (generateNumInventory) {
     });
 }
 
-if (numInventory != "0") {
+console.log(document.querySelector('#valueNumInventory input').getAttribute('data-value'));
+
+if (document.querySelector('#valueNumInventory input').getAttribute('data-value')) {
     document.querySelector('#valueNumInventory input').value = numInventory;
     generateNumInventory.click();
 }
