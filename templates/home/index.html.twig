@@ -1,7 +1,8 @@
-{% if is_granted('ROLE_ADMIN') %}
+{# {% if is_granted('ROLE_ADMIN') %}
     {% include 'disc/add.html.twig' with {
-        'add_disc_form' : form
+        'add_disc_form' : form,
+        'num_inventory' : num_inventory
     } %}
 {% else %}
     {% include 'playlist/add.html.twig' %}
-{% endif %}
+{% endif %} #}
