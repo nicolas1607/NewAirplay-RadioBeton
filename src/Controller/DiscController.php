@@ -73,7 +73,7 @@ class DiscController extends AbstractController
 
             return $this->render('disc/search.html.twig', [
                 'searchDiscForm' => $searchDiscForm->createView(),
-                'discs' => $discs
+                'discs' => $discs,
             ]);
         }
 
@@ -121,6 +121,7 @@ class DiscController extends AbstractController
         $this->em->remove($disc);
         $this->em->flush();
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirectToRoute('search_disc');
+        // return $this->redirect($request->headers->get('referer'));
     }
 }
