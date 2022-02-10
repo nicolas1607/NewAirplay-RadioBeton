@@ -5,57 +5,62 @@
 
 {% block body %}
 
-	<section class="container">
-		<h2 class="text-center mb-5">Rechercher un disque</h2>
+<section class="container">
+	<h2 class="text-center mb-5">Rechercher un disque</h2>
 
-		{{ form_start(searchDiscForm) }}
-		<div class="row justify-content-center">
-			<div class="col-md-6 col-lg-4">
-				{{ form_row(searchDiscForm.num_inventory, {'attr': {'class': 'form-control mb-3'}}) }}
-			</div>
-			<div class="col-md-6 col-lg-4">
-				{{ form_row(searchDiscForm.groupe, {'attr': {'class': 'form-control mb-3'}}) }}
-			</div>
-			<div class="col-md-6 col-lg-4">
-				{{ form_row(searchDiscForm.album, {'attr': {'class': 'form-control mb-3'}}) }}
-			</div>
+	{{ form_start(searchDiscForm) }}
+	<div class="row justify-content-center">
+		<div class="col-md-6 col-lg-4">
+			{{ form_row(searchDiscForm.num_inventory, {'attr': {'class': 'form-control mb-3'}}) }}
 		</div>
-		<div class="row">
-			<div class="col text-center">
-				{{ form_row(searchDiscForm.submit) }}
-			</div>
+		<div class="col-md-6 col-lg-4">
+			{{ form_row(searchDiscForm.groupe, {'attr': {'class': 'form-control mb-3'}}) }}
 		</div>
-		{{ form_end(searchDiscForm) }}
-	</section>
+		<div class="col-md-6 col-lg-4">
+			{{ form_row(searchDiscForm.album, {'attr': {'class': 'form-control mb-3'}}) }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col text-center">
+			{{ form_row(searchDiscForm.submit) }}
+		</div>
+	</div>
+	{{ form_end(searchDiscForm) }}
+</section>
 
-	<section class="container">
-		<table class="table mt-5 text-center align-middle">
-			<thead>
-				<tr>
-					<th>Numéro d'inventaire</th>
-					<th>Groupe</th>
-					<th>Album</th>
-					<th>Nombre de passage</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% if discs %}
-					{% for disc in discs %}
-						<tr>
-							<td class="align-self-center">{{ disc.numInventory }}</td>
-							<td>{{ disc.groupe }}</td>
-							<td>{{ disc.album }}</td>
-							<td>{{ disc.label }}</td>
-							<td>
-								<a href="{{ path('edit_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark mt-2">Modifier</a>
-								<a href="{{ path('delete_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark mt-2">Supprimer</a>
-							</td>
+<section class="container">
+	<table class="table-search-disc table mt-5 text-center align-middle">
+		<thead>
+			<tr>
+				<th>N° inventaire</th>
+				<th>Date d'entrée</th>
+				<th>Groupe</th>
+				<th>Album</th>
+				<th>Label</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% if discs %}
+			{% for disc in discs %}
+			<tr>
+				<td>{{ disc.numInventory }}</td>
+				<td>{{ disc.leaveDate|format_datetime('short', 'none', locale='fr') }}</td>
+				<td>{{ disc.groupe }}</td>
+				<td>{{ disc.album }}</td>
+				<td>{{ disc.label }}</td>
+				<td>
+					<a href="{{ path('edit_disc', {'id': disc.id}) }}"
+						class="table-link btn btn-outline-dark">Modifier</a>
+					<a href="{{ path('delete_disc', {'id': disc.id}) }}"
+						class="table-link btn btn-outline-dark">Supprimer</a>
+				</td>
 
-						</tr>
-					</th>
-				</tr>
+			</tr>
+			</th>
+			</tr>
 			{% endfor %}
-		{% endif %}
-	</tbody>
-</table></section>{% endblock %}
+			{% endif %}
+		</tbody>
+	</table>
+</section>{% endblock %}

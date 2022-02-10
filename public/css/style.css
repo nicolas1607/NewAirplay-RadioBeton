@@ -95,3 +95,16 @@ a {
     top: 2rem;
     right: 2rem;
 }
+
+/* Tableau de résultats */
+.table-search-disc tr {
+    display: grid;
+    grid-template-columns: 1.4fr 2fr 3fr 3fr 2.5fr 2.6fr;
+}
+
+.table-search-disc td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 1rem !important;
+}
