@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Disc;
 use App\Entity\Playlist;
 use App\Form\PlaylistType;
+use App\Entity\PlaylistHasDisc;
 use App\Form\SearchPlaylistType;
 use App\Repository\PlaylistRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PlaylistController extends AbstractController
@@ -27,6 +29,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist", name="playlist")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(): Response
     {
@@ -38,48 +41,44 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/add", name="playlist_add")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addPlaylist(Request $request): Response
     {
-        // Traitement de la requête envoyée depuis le formulaire de saisie de playlist en fonction de la requête et de l aprésence d'un nom (champ requis)
-        if ($request && $request->query->get('name')) {
-            $playlist = new Playlist;
+        $date = $request->query->get('date');
+        $name = $request->query->get('title');
+        $animator = $request->query->get('name');
+        $discs = $request->query->get('discs');
 
-            $entryDate = $request->query->get('date');
-            $animator = $request->query->get('name');
-            $name = $request->query->get('title');
+        if($date || $name || $animator || $discs)
+        {
+            $playlist = new PlayList();
 
-            $playlist->setAnimator($animator)
-                ->setName($name)
-                ->setEntryDate(new \DateTimeImmutable($entryDate));
+            $playlist->setEntryDate(new \DateTime($date))
+                     ->setName($name)
+                     ->setAnimator($animator);
 
-            $discs = $request->query->get('discs');
+            foreach($discs as $id)
+            {
+                $relation = new PlaylistHasDisc;
+                
+                $disc = $this->em->getRepository(Disc::class)->findOneBy([
+                    'id' => $id
+                ]);
 
-            // 'discs' étant un tableau, injection dans 'playlist_disc' de chaque id 'disc' associé à chaque 'id' de playlist
-            $wrongDiscs = [];
-            foreach ($discs as $disc) {
-                $discObject = $this->em->getRepository(Disc::class)->findOneBy(['num_inventory' => $disc]);
-                if ($discObject) {
-                    $playlist->addDisc($discObject);
-                } else {
-                    // $this->addFlash('danger', 'Attention ! le n° d\'inventaire ' . $disc . ' n\'existe pas...');
-                    array_push($wrongDiscs, $disc);
-                }
+                $playlist->addPlaylistHasDisc( $relation->setDisc($disc) );
             }
+        
+            $this->em->persist($playlist);
+            $this->em->flush();
 
-            if (count($wrongDiscs) > 0) {
-                foreach ($wrongDiscs as $wrongDisc) {
-                    $this->addFlash('danger', 'Attention ! le n° d\'inventaire ' . $wrongDisc . ' n\'existe pas...');
-                }
+            $this->addFlash(
+                'playlist_success',
+                'Rock\'n Roll ! Une nouvelle playlist vient d\'être créée !'
+            );
 
-                return $this->redirectToRoute('playlist_add');
-            } else {
-                $this->em->persist($playlist);
-                $this->em->flush();
-
-                return $this->redirectToRoute('show_playlist', ['id' => $playlist->getId()]);
-            }
-        };
+            return $this->redirectToRoute('playlist_add');
+        }
 
         // Récupération des animateurs depuis la table 'playlist', pour ensuite les dédoublonner et les renvoyer vers le front
         $playlists = $this->em->getRepository(Playlist::class)->findAll();
@@ -89,21 +88,14 @@ class PlaylistController extends AbstractController
         }
         $animators = array_unique($animatorsAll, SORT_REGULAR);
 
-        // $discs = $this->em->getRepository(Disc::class)->findAll();
-        // $discsNum = [];
-        // foreach ($discs as $disc)
-        // {
-        //     array_push($discsNum, [$disc->getNumInventory(), $disc->getGroupe(), $disc->getAlbum(), $disc->getId()]);
-        // }
-
         return $this->render('playlist/add.html.twig', [
-            'animators' => $animators,
-            // 'discs_nums' => $discsNum,
+            'animators' => $animators
         ]);
     }
 
     /**
      * @Route("/playlist/search", name="search_playlist")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function search(Request $request): Response
     {
@@ -129,6 +121,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/show/{id}", name="show_playlist")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function show(Playlist $playlist): Response
     {
@@ -139,52 +132,80 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/add/disc/{playlist}", name="add_disc_playlist")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addDisc(Request $request, Playlist $playlist): Response
     {
         if ($request) {
 
-            $discs = $request->query->get('discs');
+            $inventoryNum = $request->query->get('disc');
 
-            foreach ($discs as $disc) {
-                $disc = $this->em->getRepository(Disc::class)->findOneBy(['num_inventory' => $disc]);
-                if ($disc) {
-                    $playlist->addDisc($disc);
-                    $disc->addPlaylist($playlist);
-
-                    $this->em->persist($disc);
-                    $this->em->persist($playlist);
-                } else {
-                    // $this->addFlash('')
+            if($inventoryNum !== "")
+            {
+                $disc = $this->em->getRepository(Disc::class)->findOneBy([
+                    'num_inventory' => $inventoryNum
+                ]);
+    
+                if($disc)
+                {
+                    $relation = new PlaylistHasDisc;
+    
+                    $relation->setDisc($disc)
+                             ->setPlaylist($playlist);
+                    
+                    $playlist->addPlaylistHasDisc($relation);
+    
+                    $this->addFlash(
+                        'add_disc_to_existing_playlist_success',
+                        'Bibopalulla ! Le track a été ajouté à la playliste.'
+                    );
                 }
+                else
+                {
+                    $this->addFlash(
+                        'add_disc_to_existing_playlist_alert',
+                        'Oups ! Ce track n\'existe pas.'
+                    );
+                }
+    
+                $this->em->persist($playlist);
+                $this->em->flush();
+            }
+            else 
+            {
+                $this->addFlash(
+                    'add_disc_to_existing_playlist_alert',
+                    'Oups ! Ce track n\'existe pas.'
+                );
             }
         }
 
-        $this->em->flush();
-
         return $this->redirectToRoute('show_playlist', ['id' => $playlist->getId()]);
     }
 
     /**
-     * @Route("/playlist/delete/disc/{playlist}/{disc}", name="delete_disc_playlist")
+     * @Route("/playlist/delete/{id}", name="delete_disc_playlist")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
-    public function deleteDisc(Playlist $playlist, Disc $disc): Response
+    public function deleteDisc(Request $request, PlaylistHasDisc $id): Response
     {
-        $playlist->removeDisc($disc);
-        $disc->removePlaylist($playlist);
-
-        $this->em->persist($disc);
-        $this->em->persist($playlist);
-
+        $this->em->remove($id);
         $this->em->flush();
 
-        return $this->redirectToRoute('show_playlist', ['id' => $playlist->getId()]);
+        $this->addFlash(
+            'delete_track_success',
+            'Rock\'n Roll ! Le titre a été retiré de la playliste.'
+        );
+
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
     }
 
     /**
-     * @Route("/playlist/test/{numero}", name="test")
+     * @Route("/playlist/request_disc/{numero}", name="request_disc")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
-    public function test($numero)
+    public function requestDisc($numero)
     {
         $disc = $this->em->getRepository(Disc::class)->findOneBy([
             'num_inventory' => $numero

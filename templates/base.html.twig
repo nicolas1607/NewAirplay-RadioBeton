@@ -25,36 +25,46 @@
 			{% include "partials/_navbar.html.twig" %}
 		</header>
 
+		<div class="container">
+			{% for message in app.flashes('playlist_success') %}
+				<p class="mb-0 alert alert-success success-message">
+					{{ message }}
+				</p>
+			{% endfor %}
+
+			{% for message in app.flashes('delete_track_success') %}
+				<p class="mb-0 alert alert-success success-message">
+					{{ message }}
+				</p>
+			{% endfor %}
+
+			{% for message in app.flashes('add_disc_to_existing_playlist_success') %}
+				<p class="mb-0 alert alert-success success-message">
+					{{ message }}
+				</p>
+			{% endfor %}
+
+			{% for message in app.flashes('add_disc_to_existing_playlist_alert') %}
+				<p class="mb-0 alert alert-danger alert-message">
+					{{ message }}
+				</p>
+			{% endfor %}
+
+			{% for message in app.flashes('no_value') %}
+				<p class="mb-0 alert alert-danger alert-message">
+					{{ message }}
+				</p>
+			{% endfor %}
+		</div>
+
 		{% block body %}{% endblock %}
 
 		{% block javascripts %}
 			<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.1/js/bootstrap.min.js'></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js"></script>
 			<script src="/js/addTrackstoList.js"></script>
-            <script>
-            //     new SlimSelect({
-            //         select: '#discs',
-			// 		placeholder: 'Sélectionnez vos titres',
-			// 		// beforeOnChange: (info) => {
-			// 		// 	console.log(info)
-			// 		// 	return false // this will stop propagation
-  			// 		// }	
-  			// 		addToBody: true,
-			// 		addable: function (value) {
-			// 			// return false or null if you do not want to allow value to be submitted
-			// 			// if (value === 'bad') {return false}
-
-			// 			// Return the value string
-			// 			return value // Optional - value alteration // ex: value.toLowerCase()
-
-			// 			// Optional - Return a valid data object. See methods/setData for list of valid options
-			// 			// return {
-			// 			// text: value,
-			// 			// value: value.toLowerCase()
-			// 			// }
-			// 		}
-            //     })
-            // </script>
+			<script src="/js/attributeInventoryNum.js"></script>
+			<script src="/js/selectExportFormat.js"></script>
 		{% endblock %}
 
 	</div>

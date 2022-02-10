@@ -3,6 +3,22 @@ const addNumero = document.querySelector('#add-numero');
 const numerosList = document.querySelector('#list-numeros');
 const select = document.querySelector('#select');
 
+const wrongInventoryNumMessage = document.querySelector('#wrong_inventory_number_alert');
+
+const alertMessage = document.querySelector('.alert-message');
+if(alertMessage){
+    setTimeout( () => {
+        alertMessage.remove();
+    }, 1000);
+};
+
+const successMessage = document.querySelector('.success-message');
+if(successMessage){
+    setTimeout( () => {
+        successMessage.remove();
+    }, 2000);
+};
+
 let validDisc = null;
 
 addNumero.addEventListener('click', (ev) => {
@@ -12,7 +28,7 @@ addNumero.addEventListener('click', (ev) => {
     const regex = new RegExp(/[0-9]/);
 
     if (regex.test(value) && value !== '0') {
-        fetch('/playlist/test/' + value, {
+        fetch('/playlist/request_disc/' + value, {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,12 +42,20 @@ addNumero.addEventListener('click', (ev) => {
                         createSelectOption(disc);
                     });
                 } else {
-                    alert('Attention ! Le n°' + value + ' n\'est pas valide.');
+                    wrongInventoryNumMessage.hidden = false;
+                    setTimeout( () => {
+                        wrongInventoryNumMessage.hidden = true;
+                    }, 1000);
+                    numero.value = "";
                 }
             })
     }
     else {
-        alert('Attention ! La valeur saisie n\'est pas valide.');
+        wrongInventoryNumMessage.hidden = false;
+        setTimeout( () => {
+            wrongInventoryNumMessage.hidden = true;
+        }, 1000);
+        numero.value = "";
     }
 });
 
@@ -83,7 +107,6 @@ function createSelectOption(disc) {
 
     const option = document.createElement('option');
     option.setAttribute('data-index', index);
-    // option.setAttribute('data-id', disc.id);
     option.setAttribute('selected', 'selected');
     option.textContent = disc.id;
 

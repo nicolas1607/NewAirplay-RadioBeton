@@ -74,53 +74,27 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Catégorie</th>
-                <th>Nombre de disque</th>
-                <th>Pourcentage</th>
+                <th>Nombre de passage</th>
+                <th>Groupe</th>
+                <th>Album</th>
+                <th>Label</th>
             </tr>
         </thead>
         <tbody>
-            {% if resultsGenre %}
-            <tr><td><strong>Genre</strong></td></tr>
-            {% for genre in resultsGenre %}
+            {% if results %}
+            {% for disc in results %}
             <tr>
-                {% for key in genre|keys %}
-                    {% if key == 2 %}
-                    <td>{{ genre[key]|number_format(2, '.') }}%</td>
-                    {% else %}
-                    <td>{{ genre[key] }}</td>
-                    {% endif %}
-                {% endfor %}
-            </tr>
-            {% endfor %}
-            {% endif %}
-
-            {% if resultsNatio %}
-            <tr><td><strong>Nationalité</strong></td></tr>
-            {% for natio in resultsNatio %}
-            <tr>
-                {% for key in natio|keys %}
-                    {% if key == 2 %}
-                    <td>{{ natio[key]|number_format(2, '.') }}%</td>
-                    {% else %}
-                    <td>{{ natio[key] }}</td>
-                    {% endif %}
-                {% endfor %}
-            </tr>
-            {% endfor %}
-            {% endif %}
-
-            {% if resultsType %}
-            <tr><td><strong>Type</strong></td></tr>
-            {% for type in resultsType %}
-            <tr>
-                {% for key in type|keys %}
-                    {% if key == 2 %}
-                    <td>{{ type[key]|number_format(2, '.') }}%</td>
-                    {% else %}
-                    <td>{{ type[key] }}</td>
-                    {% endif %}
-                {% endfor %}
+                {% if disc.natio == 2 %}
+                    <td><strong>{{ disc.nb }}</strong></td>
+                    <td><strong>{{ disc.groupe }}</strong></td>
+                    <td><strong>{{ disc.album }}</strong></td>
+                    <td><strong>{{ disc.label }}</strong></td>
+                {% else %}
+                    <td>{{ disc.nb }}</td>
+                    <td>{{ disc.groupe }}</td>
+                    <td>{{ disc.album }}</td>
+                    <td>{{ disc.label }}</td>
+                {% endif %}
             </tr>
             {% endfor %}
             {% endif %}
@@ -129,13 +103,13 @@
 </section>
 
 <script>
-    // const select = document.querySelector('#classement');
-    // const stats = ["stats", "export", "exportCMS", "nbPerDisc"];
-    // stats.forEach(function(stat) {
-    //     const btn = document.querySelector('#'+stat);
-    //     btn.addEventListener('click', () => {
-    //         select.value = stat;
-    //     });
-    // });
+    const select = document.querySelector('#classement');
+    const stats = ["stats", "export", "exportCMS", "nbPerDisc"];
+    stats.forEach(function(stat) {
+        const btn = document.querySelector('#'+stat);
+        btn.addEventListener('click', () => {
+            select.value = stat;
+        });
+    });
 </script>
 {% endblock %}
