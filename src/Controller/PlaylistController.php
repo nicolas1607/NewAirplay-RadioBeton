@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PlaylistController extends AbstractController
@@ -28,6 +29,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist", name="playlist")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(): Response
     {
@@ -39,6 +41,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/add", name="playlist_add")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addPlaylist(Request $request): Response
     {
@@ -92,6 +95,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/search", name="search_playlist")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function search(Request $request): Response
     {
@@ -117,6 +121,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/show/{id}", name="show_playlist")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function show(Playlist $playlist): Response
     {
@@ -127,6 +132,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/add/disc/{playlist}", name="add_disc_playlist")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addDisc(Request $request, Playlist $playlist): Response
     {
@@ -134,34 +140,44 @@ class PlaylistController extends AbstractController
 
             $inventoryNum = $request->query->get('disc');
 
-            $disc = $this->em->getRepository(Disc::class)->findOneBy([
-                'num_inventory' => $inventoryNum
-            ]);
-
-            if($disc)
+            if($inventoryNum !== "")
             {
-                $relation = new PlaylistHasDisc;
-
-                $relation->setDisc($disc)
-                         ->setPlaylist($playlist);
-                
-                $playlist->addPlaylistHasDisc($relation);
-
-                $this->addFlash(
-                    'add_disc_to_existing_playlist_success',
-                    'Bibopalulla ! Le track a été ajouté à la playliste.'
-                );
+                $disc = $this->em->getRepository(Disc::class)->findOneBy([
+                    'num_inventory' => $inventoryNum
+                ]);
+    
+                if($disc)
+                {
+                    $relation = new PlaylistHasDisc;
+    
+                    $relation->setDisc($disc)
+                             ->setPlaylist($playlist);
+                    
+                    $playlist->addPlaylistHasDisc($relation);
+    
+                    $this->addFlash(
+                        'add_disc_to_existing_playlist_success',
+                        'Bibopalulla ! Le track a été ajouté à la playliste.'
+                    );
+                }
+                else
+                {
+                    $this->addFlash(
+                        'add_disc_to_existing_playlist_alert',
+                        'Oups ! Ce track n\'existe pas.'
+                    );
+                }
+    
+                $this->em->persist($playlist);
+                $this->em->flush();
             }
-            else
+            else 
             {
                 $this->addFlash(
                     'add_disc_to_existing_playlist_alert',
                     'Oups ! Ce track n\'existe pas.'
                 );
             }
-
-            $this->em->persist($playlist);
-            $this->em->flush();
         }
 
         return $this->redirectToRoute('show_playlist', ['id' => $playlist->getId()]);
@@ -169,11 +185,10 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/delete/{id}", name="delete_disc_playlist")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteDisc(Request $request, PlaylistHasDisc $id): Response
     {
-        // dd($id);
-        
         $this->em->remove($id);
         $this->em->flush();
 
@@ -188,6 +203,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/request_disc/{numero}", name="request_disc")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function requestDisc($numero)
     {

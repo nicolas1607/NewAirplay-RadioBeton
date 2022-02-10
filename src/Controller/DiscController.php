@@ -95,6 +95,7 @@ class DiscController extends AbstractController
         }
 
         return $this->render('disc/edit.html.twig', [
+            'numInventory' => $id->getNumInventory(),
             'edit_disc_form' => $updateDiscForm->createView(),
             'num_inventory' => $id->getNumInventory()
         ]);

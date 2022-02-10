@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Disc;
+use App\Form\DiscType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -23,8 +26,18 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        $roles = $this->getUser()->getRoles();
+
+        foreach($roles as $role)
+        {
+            if($role === 'ROLE_BENEVOLE')
+            {
+                return $this->redirectToRoute('playlist_add');
+            }
+            else 
+            {
+                return $this->redirectToRoute('add_disc');
+            }
+        }
     }
 }
