@@ -1,3 +1,57 @@
+/* MONTSERRAT */
+@font-face {
+	font-display: swap;
+	font-family: "Montserrat";
+	font-style: normal;
+	font-weight: 300;
+	src: local(""),
+		url("../fonts/montserrat-v18-latin-300.woff") format("woff");
+}
+@font-face {
+	font-display: swap;
+	font-family: "Montserrat";
+	font-style: normal;
+	font-weight: 500;
+	src: local(""),
+		url("../fonts/montserrat-v18-latin-500.woff") format("woff");
+}
+@font-face {
+	font-display: swap;
+	font-family: "Montserrat";
+	font-style: normal;
+	font-weight: 700;
+	src: local(""),
+		url("../fonts/montserrat-v18-latin-700.woff") format("woff");
+}
+@font-face {
+	font-display: swap;
+	font-family: "Montserrat";
+	font-style: normal;
+	font-weight: 800;
+	src: local(""),
+		url("../fonts/montserrat-v18-latin-800.woff") format("woff");
+}
+@font-face {
+	font-display: swap;
+	font-family: "Montserrat";
+	font-style: normal;
+	font-weight: 900;
+	src: local(""),
+		url("../fonts/montserrat-v18-latin-900.woff") format("woff");
+}
+
+h1, h2, h3, h4, h5, h6, p, li, a, .card-text, #badgeValues > p{
+    font-family: "Montserrat";
+	font-style: normal;
+}
+
+.fa-trash-can{
+    color: black;
+}
+.fa-trash-can:hover{
+    color: rgb(102, 102, 102);
+}
+
 body{
     
     position: relative;
@@ -37,15 +91,16 @@ body{
     margin-top: 5px;
     border-radius: 7px;
     transition: .3s all;
+    position: absolute;
+    top: 6px;
+    right: 10px;
 }
 #buttonDeleteLi:hover{
     transform: scale(1.2);
 }
 #badgeValues{
     align-items: center;
-}
-#badgeValues p{
-    text-shadow: 1px 1px 2px #757474;
+    padding: 21px 10px;
 }
 .bg-radio{
     background-color: #F7D117;
@@ -71,6 +126,7 @@ a {
 .card {
     position: relative;
     box-shadow: 2px 2px 2px lightgray;
+    transition: .3s all;
 }
 
 .card:hover {

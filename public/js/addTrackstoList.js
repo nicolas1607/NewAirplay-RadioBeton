@@ -6,15 +6,15 @@ const select = document.querySelector('#select');
 const wrongInventoryNumMessage = document.querySelector('#wrong_inventory_number_alert');
 
 const alertMessage = document.querySelector('.alert-message');
-if(alertMessage){
-    setTimeout( () => {
+if (alertMessage) {
+    setTimeout(() => {
         alertMessage.remove();
     }, 1000);
 };
 
 const successMessage = document.querySelector('.success-message');
-if(successMessage){
-    setTimeout( () => {
+if (successMessage) {
+    setTimeout(() => {
         successMessage.remove();
     }, 2000);
 };
@@ -43,7 +43,7 @@ addNumero.addEventListener('click', (ev) => {
                     });
                 } else {
                     wrongInventoryNumMessage.hidden = false;
-                    setTimeout( () => {
+                    setTimeout(() => {
                         wrongInventoryNumMessage.hidden = true;
                     }, 1000);
                     numero.value = "";
@@ -52,7 +52,7 @@ addNumero.addEventListener('click', (ev) => {
     }
     else {
         wrongInventoryNumMessage.hidden = false;
-        setTimeout( () => {
+        setTimeout(() => {
             wrongInventoryNumMessage.hidden = true;
         }, 1000);
         numero.value = "";
@@ -62,20 +62,32 @@ addNumero.addEventListener('click', (ev) => {
 function createBadge(disc) {
     const index = Object.values(numerosList.children).length;
 
-    const badge = document.createElement('li');
-    badge.classList.add("badge");
+    const badge = document.createElement('div');
+    badge.classList.add("col-md-4");
+    badge.classList.add("card");
     badge.classList.add("bg-radio");
     badge.classList.add("m-2");
     badge.setAttribute('data-index', index);
 
     const badgeValues = document.createElement('div');
-    badgeValues.classList.add("d-flex");
     badgeValues.id = "badgeValues";
 
-    const values = document.createElement('p');
-    values.classList.add("mb-0");
-    values.classList.add("me-3");
-    values.textContent = disc.inventory_num + ' | ' + disc.album + ' | ' + disc.group;
+    const valuesNum = document.createElement('p');
+    const valuesAlbum = document.createElement('p');
+    const valuesGroup = document.createElement('p');
+    valuesNum.classList.add("mb-0");
+    valuesNum.classList.add("py-2");
+    valuesNum.classList.add("me-3");
+    valuesAlbum.classList.add("mb-0");
+    valuesAlbum.classList.add("py-2");
+    valuesAlbum.classList.add("me-3");
+    valuesGroup.classList.add("mb-0");
+    valuesGroup.classList.add("py-2");
+    valuesGroup.classList.add("me-3");
+
+    valuesNum.textContent = "Num Inventaire : " + disc.inventory_num;
+    valuesAlbum.textContent = "Album : " + disc.album;
+    valuesGroup.textContent = "Group : " + disc.group;
 
     const button = document.createElement('button');
     const poubelle = document.createElement('i');
@@ -86,14 +98,15 @@ function createBadge(disc) {
     button.setAttribute('type', 'button');
     button.classList.add("btn");
     button.classList.add("mt-0");
-    button.classList.add("btn-sm");
     button.classList.add("btn-light");
     button.id = "buttonDeleteLi";
     button.addEventListener('click', () => {
         deleteBadge(badge, numerosList, select, disc.id);
     });
 
-    badgeValues.appendChild(values);
+    badgeValues.appendChild(valuesNum);
+    badgeValues.appendChild(valuesAlbum);
+    badgeValues.appendChild(valuesGroup);
     badgeValues.appendChild(button);
 
     badge.appendChild(badgeValues);
