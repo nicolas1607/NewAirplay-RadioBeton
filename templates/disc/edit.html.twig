@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajouter un disque
+{% block title %}Modifier un disque
 {% endblock %}
 {% block body %}
 
@@ -62,14 +62,10 @@
 						</div>
 						<div class="row">
 							<div class="col-6">
-								<div id="valueNumInventory" class="form-group">
+								<div id="valueNumInventory" class="form-group" style="display: block;">
 									<label for="numInventory">Numéro d'inventaire</label>
-									<input name="numInventory" type="text" class="form-control" value={{numInventory}}
-										data-value={{numInventory}} readonly>
-								</div>
-								<div class="col text-center">
-									<button type="button" class="btn btn-outline-warning mt-3 py-3"
-										style="width: 12rem;" id="generateNumInventory">Générer n° inventaire</button>
+									<input name="numInventory" type="text" class="form-control"
+										value={{disc.numInventory}} data-value={{numInventory}} readonly />
 								</div>
 							</div>
 							<div class="col-6 mt-3 d-flex justify-content-center">

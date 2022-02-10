@@ -39,7 +39,11 @@ class DiscController extends AbstractController
 
         if ($addDiscForm->isSubmitted() && $addDiscForm->isValid()) {
             $disc = $addDiscForm->getData();
-            $disc->setNumInventory($numInventory);
+            if ($request->get('numInventory')) {
+                $disc->setNumInventory($numInventory);
+            } else {
+                $disc->setNumInventory(0);
+            }
 
             $this->em->persist($disc);
             $this->em->flush();
@@ -49,8 +53,7 @@ class DiscController extends AbstractController
 
         return $this->render('disc/add.html.twig', [
             'add_disc_form' => $addDiscForm->createView(),
-            'num_inventory' => $numInventory
-
+            'numInventory' => $numInventory
         ]);
     }
 
@@ -88,16 +91,24 @@ class DiscController extends AbstractController
     {
         $updateDiscForm = $this->createForm(DiscType::class, $id);
         $updateDiscForm->handleRequest($request);
+        $numInventory = $this->discRepo->generateNumInventory();
 
         if ($updateDiscForm->isSubmitted() && $updateDiscForm->isValid()) {
+            if ($request->get('numInventory') == 0) {
+                $id->setNumInventory($numInventory);
+            } else if ($request->get('numInventory') > 0) {
+                $id->setNumInventory($request->get('numInventory'));
+            } else {
+                $id->setNumInventory(0);
+            }
             $this->em->flush();
             return $this->redirect($_SERVER['HTTP_REFERER']);
         }
 
         return $this->render('disc/edit.html.twig', [
-            'numInventory' => $id->getNumInventory(),
+            'numInventory' => $numInventory,
+            'disc' => $id,
             'edit_disc_form' => $updateDiscForm->createView(),
-            'num_inventory' => $id->getNumInventory()
         ]);
     }
 

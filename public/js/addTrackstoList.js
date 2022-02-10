@@ -6,15 +6,15 @@ const select = document.querySelector('#select');
 const wrongInventoryNumMessage = document.querySelector('#wrong_inventory_number_alert');
 
 const alertMessage = document.querySelector('.alert-message');
-if(alertMessage){
-    setTimeout( () => {
+if (alertMessage) {
+    setTimeout(() => {
         alertMessage.remove();
     }, 1000);
 };
 
 const successMessage = document.querySelector('.success-message');
-if(successMessage){
-    setTimeout( () => {
+if (successMessage) {
+    setTimeout(() => {
         successMessage.remove();
     }, 2000);
 };
@@ -43,7 +43,7 @@ addNumero.addEventListener('click', (ev) => {
                     });
                 } else {
                     wrongInventoryNumMessage.hidden = false;
-                    setTimeout( () => {
+                    setTimeout(() => {
                         wrongInventoryNumMessage.hidden = true;
                     }, 1000);
                     numero.value = "";
@@ -52,7 +52,7 @@ addNumero.addEventListener('click', (ev) => {
     }
     else {
         wrongInventoryNumMessage.hidden = false;
-        setTimeout( () => {
+        setTimeout(() => {
             wrongInventoryNumMessage.hidden = true;
         }, 1000);
         numero.value = "";

@@ -88,3 +88,10 @@ a {
     transform: scale(1.2);
     color: black;
 }
+
+.alert {
+    width: 8rem;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+}
