@@ -29,7 +29,7 @@ class StatisticsController extends AbstractController
 
     /**
      * @Route("/statistics", name="statistics")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(Request $request): Response
     {

@@ -19,7 +19,7 @@ class LanguageController extends AbstractController
     
     /**
      * @Route("/language", name="language")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(): Response
     {
@@ -32,7 +32,7 @@ class LanguageController extends AbstractController
 
     /**
      * @Route("/language/add", name="add_language")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addLanguage(Request $request): Response 
     {
@@ -58,7 +58,7 @@ class LanguageController extends AbstractController
 
     /**
      * @Route("/language/modify/{id}", name="modify_language")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function modifyLanguage(Language $language, Request $request): Response 
     {
@@ -83,7 +83,7 @@ class LanguageController extends AbstractController
 
     /**
      * @Route("/language/delete/{id}", name="delete_language")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteType(Language $language): Response 
     {

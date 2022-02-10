@@ -22,7 +22,7 @@ class TypeController extends AbstractController
 
     /**
      * @Route("/type", name="type")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(): Response
     {
@@ -35,7 +35,7 @@ class TypeController extends AbstractController
 
     /**
      * @Route("/type/add/{id}", name="add_type")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addType(Request $request): Response
     {
@@ -60,7 +60,7 @@ class TypeController extends AbstractController
 
     /**
      * @Route("/type/modify/{id}", name="modify_form")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function modifyType(Type $type, Request $request): Response
     {
@@ -84,7 +84,7 @@ class TypeController extends AbstractController
 
     /**
      * @Route("/type/delete/{id}", name="delete_type")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteType(Type $type): Response
     {

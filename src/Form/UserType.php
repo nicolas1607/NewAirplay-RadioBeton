@@ -25,10 +25,11 @@ class UserType extends AbstractType
                 'label' => 'Roles',
                 'choices' => [
                     'bénévole' => 'ROLE_BENEVOLE',
-                    'Administrateur' => 'ROLE_ADMIN',
+                    'administrateur' => 'ROLE_ADMIN',
+                    'super-administrateur' => 'ROLE_SUPERADMIN',
                 ],
                 'expanded' => false,
-                'multiple' => false,
+                'multiple' => false
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,

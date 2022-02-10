@@ -16,7 +16,9 @@
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Disque</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="{{path('add_disc')}}">Saisie de disque</a>
+							{% if not is_granted('ROLE_BENEVOLE') %}
+								<a class="dropdown-item" href="{{path('add_disc')}}">Saisie de disque</a>
+							{% endif %}
 							<a class="dropdown-item" href="{{path('search_disc')}}">Recherche de disque</a>
 						</div>
 					</li>
@@ -28,19 +30,34 @@
 							<a class="dropdown-item" href="{{path('search_playlist')}}">Recherche de playlist</a>
 						</div>
 					</li>
-					{% if is_granted('ROLE_ADMIN') %}
-					<li class="nav-item">
-						<a class="nav-link" href="{{path('statistics')}}">Éditer des statistiques
 
+					{% if is_granted('ROLE_SUPERADMIN') %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('user') }}">
+							Les utilisateurs
 						</a>
 					</li>
 					{% endif %}
+
+					{% if not is_granted('ROLE_BENEVOLE') %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('statistics')}}">
+							Éditer des statistiques
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('modify_user', {'id': app.user.id} ) }}">
+							Mon profil
+						</a>
+					</li>
+					{% endif %}
+
 				{% endif %}
 
 			</ul>
 
 			{# lien inscription si non connecter #}
-			{% if app.user and is_granted('ROLE_ADMIN') %}
+			{% if app.user and not is_granted('ROLE_BENEVOLE') %}
 				<div>
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item">

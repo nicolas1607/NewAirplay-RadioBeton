@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
@@ -24,6 +25,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/user", name="user")
+     * @Security("is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(): Response
     {
@@ -36,6 +38,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/user/add", name="add_user")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addUser(Request $request, UserPasswordHasherInterface $encoder): Response
     {
@@ -53,6 +56,11 @@ class UserController extends AbstractController
 
             $this->em->persist($user);
             $this->em->flush();
+            
+            $this->addFlash(
+                'success',
+                'Yes ! Il y a une nouvelle ou un nouveau dans l\'équipe.'
+            );
 
             return $this->redirectToRoute('user');
         }
@@ -64,6 +72,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/user/modify/{id}", name="modify_user")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function modifyUser(User $user, Request $request, UserPasswordHasherInterface $encoder): Response
     {
@@ -74,12 +83,20 @@ class UserController extends AbstractController
         if ($modifyUserForm->isSubmitted() && $modifyUserForm->isValid()) {
             $user = $modifyUserForm->getData();
 
-            $password = $user->getPassword();
-            $passwordEncoded = $encoder->hashPassword($user, $password);
-            $user->setPassword($passwordEncoded);
+            if($encoder->needsRehash($user))
+            {
+                $password = $user->getPassword();
+                $passwordHashed = $encoder->hashPassword($user, $password);
+                $user->setPassword($passwordHashed);
+            }
 
             $this->em->persist($user);
             $this->em->flush();
+
+            $this->addFlash(
+                'success',
+                'Voilà ! les modif\' sont faites.'
+            );
 
             return $this->redirectToRoute('user');
         }
@@ -91,10 +108,18 @@ class UserController extends AbstractController
 
     /**
      * @Route("/user/delete/{id}", name="delete_user")
+     * @Security("is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteUser(User $user)
-    {
+    {  
+        $this->addFlash(
+            'success',
+            'Utilisateur supprimé !'
+        );
+
         $this->em->remove($user);
         $this->em->flush();
+
+        return $this->redirectToRoute('user');
     }
 }
