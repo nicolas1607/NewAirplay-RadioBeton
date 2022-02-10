@@ -5,11 +5,18 @@ const select = document.querySelector('#select');
 
 const wrongInventoryNumMessage = document.querySelector('#wrong_inventory_number_alert');
 
-const successMessage = document.querySelector('#playlist_success_message');
+const alertMessage = document.querySelector('.alert-message');
+if(alertMessage){
+    setTimeout( () => {
+        alertMessage.remove();
+    }, 1000);
+};
+
+const successMessage = document.querySelector('.success-message');
 if(successMessage){
     setTimeout( () => {
         successMessage.remove();
-    }, 3000);
+    }, 2000);
 };
 
 let validDisc = null;
@@ -39,6 +46,7 @@ addNumero.addEventListener('click', (ev) => {
                     setTimeout( () => {
                         wrongInventoryNumMessage.hidden = true;
                     }, 1000);
+                    numero.value = "";
                 }
             })
     }
@@ -47,6 +55,7 @@ addNumero.addEventListener('click', (ev) => {
         setTimeout( () => {
             wrongInventoryNumMessage.hidden = true;
         }, 1000);
+        numero.value = "";
     }
 });
 

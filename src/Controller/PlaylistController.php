@@ -134,34 +134,44 @@ class PlaylistController extends AbstractController
 
             $inventoryNum = $request->query->get('disc');
 
-            $disc = $this->em->getRepository(Disc::class)->findOneBy([
-                'num_inventory' => $inventoryNum
-            ]);
-
-            if($disc)
+            if($inventoryNum !== "")
             {
-                $relation = new PlaylistHasDisc;
-
-                $relation->setDisc($disc)
-                         ->setPlaylist($playlist);
-                
-                $playlist->addPlaylistHasDisc($relation);
-
-                $this->addFlash(
-                    'add_disc_to_existing_playlist_success',
-                    'Bibopalulla ! Le track a été ajouté à la playliste.'
-                );
+                $disc = $this->em->getRepository(Disc::class)->findOneBy([
+                    'num_inventory' => $inventoryNum
+                ]);
+    
+                if($disc)
+                {
+                    $relation = new PlaylistHasDisc;
+    
+                    $relation->setDisc($disc)
+                             ->setPlaylist($playlist);
+                    
+                    $playlist->addPlaylistHasDisc($relation);
+    
+                    $this->addFlash(
+                        'add_disc_to_existing_playlist_success',
+                        'Bibopalulla ! Le track a été ajouté à la playliste.'
+                    );
+                }
+                else
+                {
+                    $this->addFlash(
+                        'add_disc_to_existing_playlist_alert',
+                        'Oups ! Ce track n\'existe pas.'
+                    );
+                }
+    
+                $this->em->persist($playlist);
+                $this->em->flush();
             }
-            else
+            else 
             {
                 $this->addFlash(
                     'add_disc_to_existing_playlist_alert',
                     'Oups ! Ce track n\'existe pas.'
                 );
             }
-
-            $this->em->persist($playlist);
-            $this->em->flush();
         }
 
         return $this->redirectToRoute('show_playlist', ['id' => $playlist->getId()]);
