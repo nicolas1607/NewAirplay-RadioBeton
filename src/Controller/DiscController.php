@@ -56,7 +56,7 @@ class DiscController extends AbstractController
 
     /**
      * @Route("/disc/search", name="search_disc")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')", message="Vous n'avez pas l'accès autorisé")
      */
     public function search(Request $request): Response
     {

@@ -48,10 +48,11 @@
 							<td>{{ disc.album }}</td>
 							<td>{{ disc.label }}</td>
 							<td>
+							{% if is_granted('ROLE_ADMIN') %}
 								<a href="{{ path('edit_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark mt-2">Modifier</a>
 								<a href="{{ path('delete_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark mt-2">Supprimer</a>
+							{% endif %}
 							</td>
-
 						</tr>
 					</th>
 				</tr>

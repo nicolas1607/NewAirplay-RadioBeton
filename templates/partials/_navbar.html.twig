@@ -28,24 +28,33 @@
 							<a class="dropdown-item" href="{{path('search_playlist')}}">Recherche de playlist</a>
 						</div>
 					</li>
-
+					{% if is_granted('ROLE_ADMIN') %}
 					<li class="nav-item">
 						<a class="nav-link" href="{{path('statistics')}}">Éditer des statistiques
 
 						</a>
 					</li>
+					{% endif %}
 				{% endif %}
 
 			</ul>
 
 			{# lien inscription si non connecter #}
-			{% if not app.user %}
-				<div><ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link"href="{{path('add_user')}}"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Inscription</font></font></li>
+			{% if app.user and is_granted('ROLE_ADMIN') %}
+				<div>
+					<ul class="navbar-nav me-auto">
+						<li class="nav-item">
+							<a class="nav-link"href="{{path('add_user')}}">
+								<font style="vertical-align: inherit;">
+									<font style="vertical-align: inherit;">
+										Inscription
+									</font>
+								</font>
+							</a>
 						</li>
-					</a></li>
-			</ul>
-		</div>
-	{% endif %}
+					</ul>
+				</div>
+			{% endif %}
 
 	{# lien deconnection si connecter sinon s'idenfier #}
 	<div>
@@ -61,7 +70,8 @@
 				</li>
 			</a>
 		</li>
-	{% else %}
+		{% endif %}
+	{# {% if app.user %}
 		<li class="nav-item">
 			<a class="nav-link" href="{{path('app_login')}}">
 				<font style="vertical-align: inherit;">
@@ -70,7 +80,8 @@
 			</li>
 		</li>
 	</a>
-</li>{% endif %}</ul></div>{# lien du profil si connecter #}<div>{% if app.user %}<div class="row justify-content-center">
+</li>{% endif %} #}
+</ul></div>{# lien du profil si connecter #}<div>{% if app.user %}<div class="row justify-content-center">
 <a href="" class="text-white text-center text-decoration-none">
 	Profil
 </a></div>{% endif %}</div></div></div></nav>
