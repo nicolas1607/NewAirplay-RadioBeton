@@ -28,8 +28,8 @@
 	{{ form_end(searchDiscForm) }}
 </section>
 
+<section class="container">
 	<table class="table-search-disc table mt-5 text-center align-middle">
-	<section class="container">
 			<thead>
 				<tr>
 					<th>Numéro d'inventaire</th>
@@ -44,7 +44,13 @@
 				{% if discs %}
 					{% for disc in discs %}
 						<tr>
-							<td class="align-self-center">{{ disc.numInventory }}</td>
+							<td class="align-self-center">
+								{% if disc.numInventory %}
+									{{ disc.numInventory }}
+								{% else %}
+									#
+								{% endif %}
+							</td>
 							<td>{{ disc.groupe }}</td>
 							<td>{{ disc.album }}</td>
 							<td>{{ disc.label }}</td>
@@ -75,4 +81,42 @@
 			{% endif %}
 		</tbody>
 	</table>
-</section>{% endblock %}
+</section>
+
+{% if count > 15 %}
+	{% if currentPage != null and totalPages != null and parameters != null %}
+		<section class="container d-flex justify-content-center w-50">
+			<ul class="pagination overflow-scroll">
+				{% if currentPage != 1 %}
+					<li class="m-4 page-item">
+						<a href="{{ path('search_disc', {'page': (currentPage - 1), 'parameters': parameters}) }}" class="page-link">&lsaquo;</a>
+					</li>
+				{% endif %}
+
+				{% for i in 1..totalPages %}
+					{% if i == currentPage %} 
+						<li class="m-4 page-item disabled">
+							<a href="{{ path('search_disc', {'page': i, 'parameters': parameters}) }}" class="page-link">
+								{{ i }}
+							</a>
+						</li>
+					{% else %}
+						<li class="m-4 page-item">
+							<a href="{{ path('search_disc', {'page': i, 'parameters': parameters}) }}" class="page-link">
+								{{ i }}
+							</a>
+						</li>
+					{% endif %}
+				{% endfor %}
+				
+				<li class="m-4 page-item">
+					<a href="{{ path('search_disc', {'page': (currentPage + 1), 'parameters': parameters}) }}" class="page-link">
+						&rsaquo;
+					</a>
+				</li>
+			</ul>
+		</section>
+	{% endif %}
+{% endif %}
+
+{% endblock %}

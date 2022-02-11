@@ -9,6 +9,7 @@ use App\Repository\DiscRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -73,17 +74,89 @@ class DiscController extends AbstractController
 
         if ($searchDiscForm->isSubmitted() && $searchDiscForm->isValid()) {
             $search = $searchDiscForm->getData();
-            $discs = $this->discRepo->search($search->getNumInventory(), $search->getAlbum(), $search->getGroupe());
+            $discsQuery = $this->discRepo->search($search->getNumInventory(), $search->getAlbum(), $search->getGroupe());
+            
+            $parameters = [
+                $search->getNumInventory() ? $search->getNumInventory() : "", 
+                $search->getAlbum() ? $search->getAlbum() : "", 
+                $search->getGroupe() ? $search->getGroupe() : ""
+            ];
+            
+            $limit = 15;
+            $page = $request->query->get('page');
+            if($page === null){
+                $currentPage = 1;
+            } else {
+                $currentPage = $page;
+            }
+            $offset = ($currentPage - 1) * $limit;
+            $query = $this->em->createQuery($discsQuery->getDQL())
+                                ->setFirstResult($offset)
+                                ->setMaxResults($limit);
+            
+            $paginator = new Paginator($query, $fetchJoinCollection = false);
+            $discs = [];
+            foreach ($paginator as $disc) {
+                array_push($discs, $disc);
+            }
 
             return $this->render('disc/search.html.twig', [
                 'searchDiscForm' => $searchDiscForm->createView(),
                 'discs' => $discs,
+                'totalPages' => ceil($paginator->count() / $limit),
+                'currentPage' => $currentPage,
+                'issues' => $paginator->getIterator(),
+                'parameters' => $parameters,
+                'count' => $paginator->count()
+            ]);
+        }
+
+        if($request->query->get('page') && $request->query->get('parameters'))
+        {
+            $parameters = $request->query->get('parameters');
+            
+            $numInventory = $parameters[0];
+            $album = $parameters[1];
+            $groupe = $parameters[2];
+
+            $discsQuery = $this->discRepo->search($numInventory, $album, $groupe);
+            
+            $limit = 15;
+            $page = $request->query->get('page');
+            if($page === null){
+                $currentPage = 1;
+            } else {
+                $currentPage = $page;
+            }
+            $offset = ($currentPage - 1) * $limit;
+            $query = $this->em->createQuery($discsQuery->getDQL())
+                                ->setFirstResult($offset)
+                                ->setMaxResults($limit);
+
+            $paginator = new Paginator($query, $fetchJoinCollection = false);
+            $discs = [];
+            foreach ($paginator as $disc) {
+                array_push($discs, $disc);
+            }
+
+            return $this->render('disc/search.html.twig', [
+                'searchDiscForm' => $searchDiscForm->createView(),
+                'discs' => $discs,
+                'totalPages' => ceil($paginator->count() / $limit),
+                'currentPage' => $currentPage,
+                'issues' => $paginator->getIterator(),
+                'parameters' => $parameters,
+                'count' => $paginator->count()
             ]);
         }
 
         return $this->render('disc/search.html.twig', [
             'searchDiscForm' => $searchDiscForm->createView(),
-            'discs' => null
+            'discs' => null,
+            'currentPage' => null,
+            'totalPages' => null,
+            'count' => null,
+            'parameters' => []
         ]);
     }
 

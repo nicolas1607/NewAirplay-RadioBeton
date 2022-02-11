@@ -34,7 +34,7 @@ class PlaylistRepository extends ServiceEntityRepository
     // /**
     //  * @return [] Playlist Retournes la liste des playlists recherchées
     //  */
-    public function search($name, $animator, $date): array
+    public function search($name, $animator, $date): object
     {
         $search = "SELECT p FROM App:playlist p ";
 
@@ -57,7 +57,9 @@ class PlaylistRepository extends ServiceEntityRepository
         }
         $search .= " ORDER BY p.entry_date DESC";
 
+        // return $this->getEntityManager()
+        //     ->createQuery($search)->getResult();
         return $this->getEntityManager()
-            ->createQuery($search)->getResult();
+            ->createQuery($search);
     }
 }

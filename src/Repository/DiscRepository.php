@@ -43,12 +43,16 @@ class DiscRepository extends ServiceEntityRepository
     // /**
     //  * @return [] Disc Retournes la liste des disques recherchés
     //  */
-    public function search($numInventory, $album, $groupe): array
+    public function search($numInventory, $album, $groupe): object
     {
         $search = "SELECT d FROM App:disc d ";
-
+        
         if ($numInventory) {
-            $search .= "WHERE d.num_inventory = " . $numInventory;
+            $search .= "WHERE d.num_inventory = '" . $numInventory . "'";
+        }
+        elseif ($numInventory === 0) 
+        {
+            $search .= "WHERE d.num_inventory = '" . $numInventory . "'";
         }
         if ($album) {
             if (str_contains($search, 'WHERE')) {
@@ -67,7 +71,7 @@ class DiscRepository extends ServiceEntityRepository
         $search .= " ORDER BY d.num_inventory DESC";
 
         return $this->getEntityManager()
-            ->createQuery($search)->getResult();
+            ->createQuery($search);
     }
 
     // /**

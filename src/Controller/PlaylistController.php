@@ -9,6 +9,7 @@ use App\Entity\PlaylistHasDisc;
 use App\Form\SearchPlaylistType;
 use App\Repository\PlaylistRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -109,23 +110,94 @@ class PlaylistController extends AbstractController
      */
     public function search(Request $request): Response
     {
-
         $searchPlaylistForm = $this->createForm(SearchPlaylistType::class);
         $searchPlaylistForm->handleRequest($request);
-
+        
         if ($searchPlaylistForm->isSubmitted() && $searchPlaylistForm->isValid()) {
             $search = $searchPlaylistForm->getData();
-            $playlists = $this->playlistRepo->search($search->getName(), $search->getAnimator(), $search->getEntryDate());
+            $playlistsQuery = $this->playlistRepo->search($search->getName(), $search->getAnimator(), $search->getEntryDate());
+            
+            $parameters = [
+                $search->getName() ? $search->getName() : "", 
+                $search->getAnimator() ? $search->getAnimator() : "", 
+                $search->getEntryDate() ? $search->getEntryDate() : ""
+            ];
+           
+            $limit = 15;
+            $page = $request->query->get('page');
+            if($page === null){
+                $currentPage = 1;
+            } else {
+                $currentPage = $page;
+            }
+            $offset = ($currentPage - 1) * $limit;
+            $query = $this->em->createQuery($playlistsQuery->getDQL())
+                                ->setFirstResult($offset)
+                                ->setMaxResults($limit);
+            
+            $paginator = new Paginator($query, $fetchJoinCollection = false);
+            $playlists = [];
+            foreach ($paginator as $playlist) {
+                array_push($playlists, $playlist);
+            }
+            return $this->render('playlist/search.html.twig', [
+                'searchPlaylistForm' => $searchPlaylistForm->createView(),
+                'playlists' => $playlists,
+                'totalPages' => ceil($paginator->count() / $limit),
+                'currentPage' => $currentPage,
+                'issues' => $paginator->getIterator(),
+                'parameters' => $parameters,
+                'count' => $paginator->count()
+            ]);
+        }
+        
+        if($request->query->get('page') && $request->query->get('parameters'))
+        {
+            $parameters = $request->query->get('parameters');
+            
+            $name = $parameters[0];
+            $album = $parameters[1];
+            $entryDate = $parameters[2];
+
+            $playlistsQuery = $this->playlistRepo->search($name, $album, $entryDate);
+
+            $limit = 15;
+            $page = $request->query->get('page');
+            if($page === null){
+                $currentPage = 1;
+            } else {
+                $currentPage = $page;
+            }
+            $offset = ($currentPage - 1) * $limit;
+            $query = $this->em->createQuery($playlistsQuery->getDQL())
+                                ->setFirstResult($offset)
+                                ->setMaxResults($limit);
+
+            $paginator = new Paginator($query, $fetchJoinCollection = false);
+            $playlists = [];
+            foreach ($paginator as $playlist) {
+                array_push($playlists, $playlist);
+            }
 
             return $this->render('playlist/search.html.twig', [
                 'searchPlaylistForm' => $searchPlaylistForm->createView(),
-                'playlists' => $playlists
+                'playlists' => $playlists,
+                'totalPages' => ceil($paginator->count() / $limit),
+                'currentPage' => $currentPage,
+                'issues' => $paginator->getIterator(),
+                'parameters' => $parameters,
+                'count' => $paginator->count()
             ]);
         }
-
+        
         return $this->render('playlist/search.html.twig', [
             'searchPlaylistForm' => $searchPlaylistForm->createView(),
-            'playlists' => null
+            'playlists' => null,
+            'totalPages' => null,
+            'currentPage' => null,
+            'issues' => null,
+            'parameters' => [],
+            'count' => null
         ]);
     }
 
