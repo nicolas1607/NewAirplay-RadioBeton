@@ -54,6 +54,7 @@ class DiscRepository extends ServiceEntityRepository
         {
             $search .= "WHERE d.num_inventory = '" . $numInventory . "'";
         }
+
         if ($album) {
             if (str_contains($search, 'WHERE')) {
                 $search .= " AND d.album LIKE '%" . $album . "%'";
@@ -61,6 +62,7 @@ class DiscRepository extends ServiceEntityRepository
                 $search .= "WHERE d.album LIKE '%" . $album . "%'";
             }
         }
+
         if ($groupe) {
             if (str_contains($search, 'WHERE')) {
                 $search .= " AND d.groupe LIKE '%" . $groupe . "%'";

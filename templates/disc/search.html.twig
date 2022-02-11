@@ -44,8 +44,8 @@
 				{% if discs %}
 					{% for disc in discs %}
 						<tr>
-							<td class="align-self-center">
-								{% if disc.numInventory %}
+							<td>
+								{% if disc.numInventory is not null %}
 									{{ disc.numInventory }}
 								{% else %}
 									#
