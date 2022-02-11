@@ -22,7 +22,7 @@ class LeaveReasonController extends AbstractController
 
     /**
      * @Route("/leaveReason", name="leave_reason")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(): Response
     {
@@ -35,6 +35,7 @@ class LeaveReasonController extends AbstractController
 
     /**
      * @Route("/leaveReason/add", name="add_leaveReason")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addLeaveReason(Request $request): Response
     {
@@ -59,6 +60,7 @@ class LeaveReasonController extends AbstractController
 
     /**
      * @Route("/leaveReason/modify/{id}", name="modify_leaveReason")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function modifyGenre(LeaveReason $leaveReason, Request $request): Response
     {
@@ -82,6 +84,7 @@ class LeaveReasonController extends AbstractController
 
     /**
      * @Route("/leaveReason/delete/{id}", name="delete_leaveReason")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteLeaveReason(LeaveReason $id)
     {

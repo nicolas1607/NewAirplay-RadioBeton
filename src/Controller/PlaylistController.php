@@ -29,7 +29,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist", name="playlist")
-     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(): Response
     {
@@ -41,7 +41,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/add", name="playlist_add")
-     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addPlaylist(Request $request): Response
     {
@@ -52,32 +52,42 @@ class PlaylistController extends AbstractController
 
         if($date || $name || $animator || $discs)
         {
-            $playlist = new PlayList();
-
-            $playlist->setEntryDate(new \DateTime($date))
-                     ->setName($name)
-                     ->setAnimator($animator);
-
-            foreach($discs as $id)
+            if($discs)
             {
-                $relation = new PlaylistHasDisc;
-                
-                $disc = $this->em->getRepository(Disc::class)->findOneBy([
-                    'id' => $id
-                ]);
+                $playlist = new PlayList();
 
-                $playlist->addPlaylistHasDisc( $relation->setDisc($disc) );
+                $playlist->setEntryDate(new \DateTime($date))
+                        ->setName($name)
+                        ->setAnimator($animator);
+
+                foreach($discs as $id)
+                {
+                    $relation = new PlaylistHasDisc;
+                    
+                    $disc = $this->em->getRepository(Disc::class)->findOneBy([
+                        'id' => $id
+                    ]);
+
+                    $playlist->addPlaylistHasDisc( $relation->setDisc($disc) );
+                }
+            
+                $this->em->persist($playlist);
+                $this->em->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Rock\'n Roll ! Une nouvelle playlist vient d\'être créée !'
+                );
+
+                return $this->redirectToRoute('playlist_add');
             }
-        
-            $this->em->persist($playlist);
-            $this->em->flush();
-
-            $this->addFlash(
-                'playlist_success',
-                'Rock\'n Roll ! Une nouvelle playlist vient d\'être créée !'
-            );
-
-            return $this->redirectToRoute('playlist_add');
+            else
+            {
+                $this->addFlash(
+                    'alert',
+                    'Nope ! Il n\'y a aucun disque dans cette playlist.'
+                );
+            }
         }
 
         // Récupération des animateurs depuis la table 'playlist', pour ensuite les dédoublonner et les renvoyer vers le front
@@ -95,7 +105,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/search", name="search_playlist")
-     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function search(Request $request): Response
     {
@@ -121,7 +131,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/show/{id}", name="show_playlist")
-     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function show(Playlist $playlist): Response
     {
@@ -132,7 +142,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/add/disc/{playlist}", name="add_disc_playlist")
-     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addDisc(Request $request, Playlist $playlist): Response
     {
@@ -156,14 +166,14 @@ class PlaylistController extends AbstractController
                     $playlist->addPlaylistHasDisc($relation);
     
                     $this->addFlash(
-                        'add_disc_to_existing_playlist_success',
+                        'success',
                         'Bibopalulla ! Le track a été ajouté à la playliste.'
                     );
                 }
                 else
                 {
                     $this->addFlash(
-                        'add_disc_to_existing_playlist_alert',
+                        'alert',
                         'Oups ! Ce track n\'existe pas.'
                     );
                 }
@@ -174,7 +184,7 @@ class PlaylistController extends AbstractController
             else 
             {
                 $this->addFlash(
-                    'add_disc_to_existing_playlist_alert',
+                    'alert',
                     'Oups ! Ce track n\'existe pas.'
                 );
             }
@@ -185,7 +195,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/delete/{id}", name="delete_disc_playlist")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteDisc(Request $request, PlaylistHasDisc $id): Response
     {
@@ -193,7 +203,7 @@ class PlaylistController extends AbstractController
         $this->em->flush();
 
         $this->addFlash(
-            'delete_track_success',
+            'success',
             'Rock\'n Roll ! Le titre a été retiré de la playliste.'
         );
 
@@ -203,7 +213,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/request_disc/{numero}", name="request_disc")
-     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function requestDisc($numero)
     {

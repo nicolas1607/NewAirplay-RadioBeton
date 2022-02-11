@@ -23,7 +23,7 @@ class GenreController extends AbstractController
 
     /**
      * @Route("/genre", name="genre")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(): Response
     {
@@ -37,7 +37,7 @@ class GenreController extends AbstractController
 
     /**
      * @Route("/genre/add", name="add_genre")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addGenre(Request $request): Response
     {
@@ -62,7 +62,7 @@ class GenreController extends AbstractController
 
     /**
      * @Route("/genre/modify/{id}", name="modify_genre")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function modifyGenre(Genre $genre, Request $request): Response
     {
@@ -86,7 +86,7 @@ class GenreController extends AbstractController
 
     /**
      * @Route("/genre/delete/{id}", name="delete_genre")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteGenre(Genre $id)
     {

@@ -3,5 +3,75 @@
 {% block title %}Hello UserController!{% endblock %}
 
 {% block body %}
-    {{ form(modify_user_form) }}
+
+<div class="container">
+
+	<h1 class="h3 mb-3 font-weight-normal text-center">
+        Modification
+    </h1>
+
+	<div class="row justify-content-center">
+		<div class="col-6">
+			{{ form_start(modify_user_form) }}
+			<div class="my-custom-class-for-errors">
+				{{ form_errors(modify_user_form) }}
+			</div>
+			<div class="row">
+				<div class="col">
+					{{ form_row(modify_user_form.username, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+					
+                    {% if 'ROLE_SUPERADMIN' in app.user.roles %}
+                        {{ form_row(modify_user_form.roles, {'attr': {'class': 'mg-15 form-select mb-3'}}) }}
+					{% else %}
+                        {{ form_row(modify_user_form.roles, {
+                            'attr': {'class': 'mg-15 form-select mb-3'},
+                            'disabled': 'true'}
+                        ) }}
+                    {% endif %}
+
+                    {{ form_label(modify_user_form.password, 'Modifier le mot de passe', {'attr': {'class': 'mg-15 form-control mb-3'}})}}
+                    {% if modify_user_form.password.first.vars['errors']|length > 0 %}
+                        <ul class="list-unstyled">
+                            {% for error in modify_user_form.password.first.vars['errors'] %}
+                                <li class="alert alert-danger text-center p-1">
+                                    {{ error.message }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {{ form_widget(modify_user_form.password.first, {
+                        'attr': {'class': 'mg-15 form-control mb-3'},
+                        'value' : modify_user_form.password.first.vars.data
+                        })
+                    }}
+
+                    {% if modify_user_form.password.second.vars['errors']|length > 0 %}
+                        <ul class="list-unstyled">
+                            {% for error in modify_user_form.password.second.vars['errors'] %}
+                                <li class="alert alert-danger text-center p-1 my-1">
+                                    {{ error.message }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {{ form_widget(modify_user_form.password.second, {
+                        'attr': {'class': 'mg-15 form-control mb-3'},
+                        'value' : modify_user_form.password.second.vars.data
+                        })
+                    }}
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col text-center">
+					{{ form_row(modify_user_form.Ajouter, {'attr': {'class': 'btn btn-outline-warning py-3 px-5 mt-3 mb-5'}}) }}
+                </div>
+                </div>
+                    {{ form_end(modify_user_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 {% endblock %}

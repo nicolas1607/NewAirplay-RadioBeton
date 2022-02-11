@@ -21,7 +21,7 @@ class NationalityController extends AbstractController
     
     /**
      * @Route("/nationality", name="nationality")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function index(): Response
     {
@@ -34,7 +34,7 @@ class NationalityController extends AbstractController
 
     /**
      * @Route("/nationality/add", name="add_nationality")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function addNationality(Request $request): Response 
     {
@@ -60,7 +60,7 @@ class NationalityController extends AbstractController
 
     /**
      * @Route("/nationality/modify/{id}", name="modify_nationality")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function modifyNationality(Nationality $nationality, Request $request): Response 
     {
@@ -85,7 +85,7 @@ class NationalityController extends AbstractController
 
     /**
      * @Route("/nationality/delete/{id}", name="delete_nationality")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteNationality(Nationality $nationality): Response 
     {

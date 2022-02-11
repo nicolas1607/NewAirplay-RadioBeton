@@ -28,7 +28,7 @@ class DiscController extends AbstractController
 
     /**
      * @Route("/disc/add", name="add_disc")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function add(Request $request): Response
     {
@@ -48,6 +48,11 @@ class DiscController extends AbstractController
             $this->em->persist($disc);
             $this->em->flush();
 
+            $this->addFlash(
+                'success',
+                'Youpi ! Un nouveau son à écouter.'
+            );
+
             return $this->redirectToRoute('add_disc');
         }
 
@@ -59,11 +64,10 @@ class DiscController extends AbstractController
 
     /**
      * @Route("/disc/search", name="search_disc")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function search(Request $request): Response
     {
-
         $searchDiscForm = $this->createForm(SearchDiscType::class);
         $searchDiscForm->handleRequest($request);
 
@@ -85,7 +89,7 @@ class DiscController extends AbstractController
 
     /**
      * @Route("/disc/edit/{id}", name="edit_disc")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function edit(Request $request, Disc $id): Response
     {
@@ -114,14 +118,18 @@ class DiscController extends AbstractController
 
     /**
      * @Route("/disc/delete/{id}", name="delete_disc")
-     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function delete(Request $request, Disc $disc): Response
     {
         $this->em->remove($disc);
         $this->em->flush();
 
-        return $this->redirectToRoute('search_disc');
-        // return $this->redirect($request->headers->get('referer'));
+        $this->addFlash(
+            'success',
+            'Disque supprimé...'
+        );
+
+        return $this->redirect($request->headers->get('referer'));
     }
 }
