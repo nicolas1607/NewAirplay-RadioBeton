@@ -5,105 +5,105 @@
 
 {% block body %}
 
-	<h1 class="text-center">Répartition des disques diffusés</h1>
-	{% if name != "" %}
-		<h2 class="text-center">Playlist : {{name}}</h2>
-	{% else %}
-		<h2 class="text-center">Playlist : Statistiques</h2>
-	{% endif %}
+<h1 class="text-center">Répartition des disques diffusés</h1>
+{% if name != "" %}
+<h2 class="text-center">Playlist : {{name}}</h2>
+{% else %}
+<h2 class="text-center">Playlist : Statistiques</h2>
+{% endif %}
 
-	{% if dateStart != "" and dateEnd != "" %}
-		<h3 class="text-center">Airplay du {{dateStart}} au {{dateEnd}}</h3>
-	{% elseif dateStart != "" %}
-		<h3 class="text-center">Airplay à partir du {{dateStart}}</h3>
-	{% elseif dateEnd != "" %}
-		<h3 class="text-center">Airplay jusqu'au {{dateEnd}}</h3>
-	{% else %}
-		<h3 class="text-center">Airplay</h3>
-	{% endif %}
+{% if dateStart != "" and dateEnd != "" %}
+<h3 class="text-center">Airplay du {{dateStart}} au {{dateEnd}}</h3>
+{% elseif dateStart != "" %}
+<h3 class="text-center">Airplay à partir du {{dateStart}}</h3>
+{% elseif dateEnd != "" %}
+<h3 class="text-center">Airplay jusqu'au {{dateEnd}}</h3>
+{% else %}
+<h3 class="text-center">Airplay</h3>
+{% endif %}
 
-	{% if datePlaylist != "" %}
-		<p class="mb-0 text-center">Date d'entrée des disques à partir de : {{datePlaylist}}</p>
-	{% endif %}
+{% if datePlaylist != "" %}
+<p class="mb-0 text-center">Date d'entrée des disques à partir de : {{datePlaylist}}</p>
+{% endif %}
 
-	<table class="mt-4 mx-auto table">
-		<thead>
-			<tr>
-				<th>Catégories</th>
-				<th>Nombre de disque</th>
-				<th>Pourcentage</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% if resultsGenre %}
-				<tr>
-					<td>
-						<strong>Genre</strong>
-					</td>
-					<td></td>
-					<td></td>
-				</tr>
-				{% for genre in resultsGenre %}
-					<tr>
-						{% for key in genre|keys %}
-							{% if key == 2 %}
-								<td>{{ genre[key]|number_format(2, '.') }}%</td>
-							{% else %}
-								<td>{{ genre[key] }}</td>
-							{% endif %}
-						{% endfor %}
-					</tr>
-				{% endfor %}
+<table class="mt-4 mx-auto table">
+	<thead>
+		<tr>
+			<th>Catégories</th>
+			<th>Nombre de disque</th>
+			<th>Pourcentage</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% if resultsGenre %}
+		<tr>
+			<td>
+				<strong>Genre</strong>
+			</td>
+			<td></td>
+			<td></td>
+		</tr>
+		{% for genre in resultsGenre %}
+		<tr>
+			{% for key in genre|keys %}
+			{% if key == 2 %}
+			<td>{{ genre[key]|number_format(2, '.') }}%</td>
+			{% else %}
+			<td>{{ genre[key] }}</td>
 			{% endif %}
+			{% endfor %}
+		</tr>
+		{% endfor %}
+		{% endif %}
 
-			{% if resultsNatio %}
-				<tr>
-					<td>
-						<strong>Nationalité</strong>
-					</td>
-					<td></td>
-					<td></td>
-				</tr>
-				{% for natio in resultsNatio %}
-					<tr>
-						{% for key in natio|keys %}
-							{% if key == 2 %}
-								<td>{{ natio[key]|number_format(2, '.') }}%</td>
-							{% else %}
-								<td>{{ natio[key] }}</td>
-							{% endif %}
-						{% endfor %}
-					</tr>
-				{% endfor %}
+		{% if resultsNatio %}
+		<tr>
+			<td>
+				<strong>Nationalité</strong>
+			</td>
+			<td></td>
+			<td></td>
+		</tr>
+		{% for natio in resultsNatio %}
+		<tr>
+			{% for key in natio|keys %}
+			{% if key == 2 %}
+			<td>{{ natio[key]|number_format(2, '.') }}%</td>
+			{% else %}
+			<td>{{ natio[key] }}</td>
 			{% endif %}
+			{% endfor %}
+		</tr>
+		{% endfor %}
+		{% endif %}
 
-			{% if resultsType %}
-				<tr>
-					<td>
-						<strong>Type</strong>
-					</td>
-					<td></td>
-					<td></td>
-				</tr>
-				{% for type in resultsType %}
-					<tr>
-						{% for key in type|keys %}
-							{% if key == 2 %}
-								<td>{{ type[key]|number_format(2, '.') }}%</td>
-							{% else %}
-								<td>{{ type[key] }}</td>
-							{% endif %}
-						{% endfor %}
-					</tr>
-				{% endfor %}
+		{% if resultsType %}
+		<tr>
+			<td>
+				<strong>Type</strong>
+			</td>
+			<td></td>
+			<td></td>
+		</tr>
+		{% for type in resultsType %}
+		<tr>
+			{% for key in type|keys %}
+			{% if key == 2 %}
+			<td>{{ type[key]|number_format(2, '.') }}%</td>
+			{% else %}
+			<td>{{ type[key] }}</td>
 			{% endif %}
-		</tbody>
-	</table>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+		{% endif %}
+	</tbody>
+</table>
 
-	<style>
-		tr td {
-			text-align: center;
-		}
-	</style>
+<style>
+	tr td {
+		text-align: center;
+	}
+</style>
 
 {% endblock %}

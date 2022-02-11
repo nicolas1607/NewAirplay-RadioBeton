@@ -1,10 +1,14 @@
 // Gère le numéro d'inventaire à 0 ou non
-const numInventory = document.querySelector('#valueNumInventory input').value;
-document.querySelector('#valueNumInventory input').value = 0;
+const numInventory = document.querySelector('#valueNumInventory input').getAttribute('data-value');
+console.log(numInventory)
 
 const leaveDate = document.querySelector('#disc_leaveDate');
 leaveDate.addEventListener('change', () => {
-    document.querySelector('#valueNumInventory input').value = numInventory;
+    if (leaveDate.value == "") {
+        document.querySelector('#valueNumInventory input').value = null;
+    } else if (document.querySelector('#valueNumInventory input').value == 0) {
+        document.querySelector('#valueNumInventory input').value = numInventory;
+    }
 });
 
 // Gère le boutton 'Générer numéro d'inventaire'
@@ -15,11 +19,4 @@ if (generateNumInventory) {
         valueNumInventory.style.display = 'block';
         generateNumInventory.remove();
     });
-}
-
-console.log(document.querySelector('#valueNumInventory input').getAttribute('data-value'));
-
-if (document.querySelector('#valueNumInventory input').getAttribute('data-value')) {
-    document.querySelector('#valueNumInventory input').value = numInventory;
-    generateNumInventory.click();
 }

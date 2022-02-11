@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}AirPlay | nouvelle playliste
+{% block title %}AirPlay | nouvelle playlist
 {% endblock %}
 
 {% block body %}
@@ -47,9 +47,7 @@
 					</div>
 				</div>
 
-				<div>
-					<ul id="list-numeros" name="discs[]"></ul>
-				</div>
+				<div id="list-numeros" name="discs[]" class="row"></div>
 
 				<select multiple="multiple" name="discs[]" id="select" hidden></select>
 			</div>

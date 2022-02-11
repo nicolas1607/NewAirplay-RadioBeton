@@ -5,28 +5,28 @@
 
 {% block body %}
 
-	<section class="container">
-		<h2 class="text-center mb-5">Rechercher un disque</h2>
+<section class="container">
+	<h2 class="text-center mb-5">Rechercher un disque</h2>
 
-		{{ form_start(searchDiscForm) }}
-		<div class="row justify-content-center">
-			<div class="col-md-6 col-lg-4">
-				{{ form_row(searchDiscForm.num_inventory, {'attr': {'class': 'form-control mb-3'}}) }}
-			</div>
-			<div class="col-md-6 col-lg-4">
-				{{ form_row(searchDiscForm.groupe, {'attr': {'class': 'form-control mb-3'}}) }}
-			</div>
-			<div class="col-md-6 col-lg-4">
-				{{ form_row(searchDiscForm.album, {'attr': {'class': 'form-control mb-3'}}) }}
-			</div>
+	{{ form_start(searchDiscForm) }}
+	<div class="row justify-content-center">
+		<div class="col-md-6 col-lg-4">
+			{{ form_row(searchDiscForm.num_inventory, {'attr': {'class': 'form-control mb-3'}}) }}
 		</div>
-		<div class="row">
-			<div class="col text-center">
-				{{ form_row(searchDiscForm.submit) }}
-			</div>
+		<div class="col-md-6 col-lg-4">
+			{{ form_row(searchDiscForm.groupe, {'attr': {'class': 'form-control mb-3'}}) }}
 		</div>
-		{{ form_end(searchDiscForm) }}
-	</section>
+		<div class="col-md-6 col-lg-4">
+			{{ form_row(searchDiscForm.album, {'attr': {'class': 'form-control mb-3'}}) }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col text-center">
+			{{ form_row(searchDiscForm.submit) }}
+		</div>
+	</div>
+	{{ form_end(searchDiscForm) }}
+</section>
 
 	<section class="container">
 		<table class="table mt-5 text-center align-middle">
@@ -44,7 +44,13 @@
 				{% if discs %}
 					{% for disc in discs %}
 						<tr>
-							<td class="align-self-center">{{ disc.numInventory }}</td>
+							<td class="align-self-center">
+								{% if disc.numInventory %}
+									{{ disc.numInventory }}
+								{% else %}
+									#
+								{% endif %}
+							</td>
 							<td>{{ disc.groupe }}</td>
 							<td>{{ disc.album }}</td>
 							<td>{{ disc.label }}</td>
@@ -72,6 +78,45 @@
 					</th>
 				</tr>
 			{% endfor %}
-		{% endif %}
-	</tbody>
-</table></section>{% endblock %}
+			{% endif %}
+		</tbody>
+	</table>
+</section>
+
+{% if count > 15 %}
+	{% if currentPage != null and totalPages != null and parameters != null %}
+		<section class="container d-flex justify-content-center w-50">
+			<ul class="pagination overflow-scroll">
+				{% if currentPage != 1 %}
+					<li class="m-4 page-item">
+						<a href="{{ path('search_disc', {'page': (currentPage - 1), 'parameters': parameters}) }}" class="page-link">&lsaquo;</a>
+					</li>
+				{% endif %}
+
+				{% for i in 1..totalPages %}
+					{% if i == currentPage %} 
+						<li class="m-4 page-item disabled">
+							<a href="{{ path('search_disc', {'page': i, 'parameters': parameters}) }}" class="page-link">
+								{{ i }}
+							</a>
+						</li>
+					{% else %}
+						<li class="m-4 page-item">
+							<a href="{{ path('search_disc', {'page': i, 'parameters': parameters}) }}" class="page-link">
+								{{ i }}
+							</a>
+						</li>
+					{% endif %}
+				{% endfor %}
+				
+				<li class="m-4 page-item">
+					<a href="{{ path('search_disc', {'page': (currentPage + 1), 'parameters': parameters}) }}" class="page-link">
+						&rsaquo;
+					</a>
+				</li>
+			</ul>
+		</section>
+	{% endif %}
+{% endif %}
+
+{% endblock %}

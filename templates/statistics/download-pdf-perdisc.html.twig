@@ -5,60 +5,60 @@
 
 {% block body %}
 
-	<h1 class="text-center">Nombre de passage par disque</h1>
-	{% if name != "" %}
-		<h2 class="text-center">Playlist : {{name}}</h2>
-	{% else %}
-		<h2 class="text-center">Playlist : Statistiques</h2>
-	{% endif %}
+<h1 class="text-center">Nombre de passage par disque</h1>
+{% if name != "" %}
+<h2 class="text-center">Playlist : {{name}}</h2>
+{% else %}
+<h2 class="text-center">Playlist : Passage par disque</h2>
+{% endif %}
 
-	{% if dateStart != "" and dateEnd != "" %}
-		<h3 class="text-center">Airplay du {{dateStart}} au {{dateEnd}}</h3>
-	{% elseif dateStart != "" %}
-		<h3 class="text-center">Airplay à partir du {{dateStart}}</h3>
-	{% elseif dateEnd != "" %}
-		<h3 class="text-center">Airplay jusqu'au {{dateEnd}}</h3>
-	{% else %}
-		<h3 class="text-center">Airplay</h3>
-	{% endif %}
+{% if dateStart != "" and dateEnd != "" %}
+<h3 class="text-center">Airplay du {{dateStart}} au {{dateEnd}}</h3>
+{% elseif dateStart != "" %}
+<h3 class="text-center">Airplay à partir du {{dateStart}}</h3>
+{% elseif dateEnd != "" %}
+<h3 class="text-center">Airplay jusqu'au {{dateEnd}}</h3>
+{% else %}
+<h3 class="text-center">Airplay</h3>
+{% endif %}
 
-	{% if datePlaylist != "" %}
-		<p class="mb-0 text-center">Date d'entrée des disques à partir de : {{datePlaylist}}</p>
-	{% endif %}
+{% if datePlaylist != "" %}
+<p class="mb-0 text-center">Date d'entrée des disques à partir de : {{datePlaylist}}</p>
+{% endif %}
 
-	<table class="table">
-        <thead>
-            <tr>
-                <th>Nb de passage</th>
-                <th>Groupe</th>
-                <th>Album</th>
-                <th>Label</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if results %}
-            {% for disc in results %}
-            <tr>
-                {% if disc.natio == 2 %}
-                    <td><strong>{{ disc.nb }}</strong></td>
-                    <td><strong>{{ disc.groupe }}</strong></td>
-                    <td><strong>{{ disc.album }}</strong></td>
-                    <td><strong>{{ disc.label }}</strong></td>
-                {% else %}
-                    <td>{{ disc.nb }}</td>
-                    <td>{{ disc.groupe }}</td>
-                    <td>{{ disc.album }}</td>
-                    <td>{{ disc.label }}</td>
-                {% endif %}
-            </tr>
-            {% endfor %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nb de passage</th>
+            <th>Groupe</th>
+            <th>Album</th>
+            <th>Label</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if results %}
+        {% for disc in results %}
+        <tr>
+            {% if disc.natio == 2 %}
+            <td><strong>{{ disc.nb }}</strong></td>
+            <td><strong>{{ disc.groupe }}</strong></td>
+            <td><strong>{{ disc.album }}</strong></td>
+            <td><strong>{{ disc.label }}</strong></td>
+            {% else %}
+            <td>{{ disc.nb }}</td>
+            <td>{{ disc.groupe }}</td>
+            <td>{{ disc.album }}</td>
+            <td>{{ disc.label }}</td>
             {% endif %}
-        </tbody>
-    </table>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
 
-    <style>
-        tr td {
-            font-size: .8rem !important;
-        }
-    </style>
+<style>
+    tr td {
+        font-size: .8rem !important;
+    }
+</style>
 {% endblock %}

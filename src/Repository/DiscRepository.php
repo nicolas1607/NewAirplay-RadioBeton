@@ -43,12 +43,16 @@ class DiscRepository extends ServiceEntityRepository
     // /**
     //  * @return [] Disc Retournes la liste des disques recherchés
     //  */
-    public function search($numInventory, $album, $groupe): array
+    public function search($numInventory, $album, $groupe): object
     {
         $search = "SELECT d FROM App:disc d ";
-
+        
         if ($numInventory) {
-            $search .= "WHERE d.num_inventory = " . $numInventory;
+            $search .= "WHERE d.num_inventory = '" . $numInventory . "'";
+        }
+        elseif ($numInventory === 0) 
+        {
+            $search .= "WHERE d.num_inventory = '" . $numInventory . "'";
         }
         if ($album) {
             if (str_contains($search, 'WHERE')) {
@@ -67,7 +71,7 @@ class DiscRepository extends ServiceEntityRepository
         $search .= " ORDER BY d.num_inventory DESC";
 
         return $this->getEntityManager()
-            ->createQuery($search)->getResult();
+            ->createQuery($search);
     }
 
     // /**
@@ -86,11 +90,6 @@ class DiscRepository extends ServiceEntityRepository
 
         $search = $this->statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $nb);
         $search .= " GROUP BY d.id ORDER BY count(d.id) DESC";
-
-        // var_dump($search);
-        // var_dump($this->getEntityManager()
-        //     ->createQuery($search)
-        //     ->getResult());
 
         if ($nb) {
             return $this->getEntityManager()
@@ -256,9 +255,9 @@ class DiscRepository extends ServiceEntityRepository
         }
         if ($date) {
             if (str_contains($search, 'WHERE')) {
-                $search .= " AND pl.entry_date = '" . $date . "'";
+                $search .= " AND d.leave_date = '" . $date . "'";
             } else {
-                $search .= "WHERE pl.entry_date = '" . $date . "'";
+                $search .= "WHERE d.leave_date = '" . $date . "'";
             }
         }
         if ($natio) {
