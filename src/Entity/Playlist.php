@@ -35,7 +35,7 @@ class Playlist
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=PlaylistHasDisc::class, mappedBy="playlist", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=PlaylistHasDisc::class, mappedBy="playlist", cascade={"persist"}, orphanRemoval=true)
      */
     private $playlistHasDiscs;
 

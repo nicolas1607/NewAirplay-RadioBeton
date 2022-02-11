@@ -195,14 +195,61 @@ class DiscController extends AbstractController
      */
     public function delete(Request $request, Disc $disc): Response
     {
-        $this->em->remove($disc);
-        $this->em->flush();
+        if($disc)
+        {
+            $this->em->remove($disc);
+            $this->em->flush();
+            
+            $this->addFlash(
+                'success',
+                'Disque supprimé...'
+            );
+        }
+        else 
+        {
+            $this->addFlash(
+                'alert',
+                'Ha ? Il y a eu un problème...'
+            );
+        }
 
-        $this->addFlash(
-            'success',
-            'Disque supprimé...'
-        );
+        $searchDiscForm = $this->createForm(SearchDiscType::class);
+        $searchDiscForm->handleRequest($request);
 
-        return $this->redirect($request->headers->get('referer'));
+        $parameters = $request->query->get('parameters');
+
+        $numInventory = $parameters[0];
+        $album = $parameters[1];
+        $groupe = $parameters[2];
+
+        $discsQuery = $this->discRepo->search($numInventory, $album, $groupe);
+        
+        $limit = 15;
+        $page = $request->query->get('page');
+        if($page === null){
+            $currentPage = 1;
+        } else {
+            $currentPage = $page;
+        }
+        $offset = ($currentPage - 1) * $limit;
+        $query = $this->em->createQuery($discsQuery->getDQL())
+                            ->setFirstResult($offset)
+                            ->setMaxResults($limit);
+
+        $paginator = new Paginator($query, $fetchJoinCollection = false);
+        $discs = [];
+        foreach ($paginator as $disc) {
+            array_push($discs, $disc);
+        }
+
+        return $this->render('disc/search.html.twig', [
+            'searchDiscForm' => $searchDiscForm->createView(),
+            'discs' => $discs,
+            'totalPages' => ceil($paginator->count() / $limit),
+            'currentPage' => $currentPage,
+            'issues' => $paginator->getIterator(),
+            'parameters' => $parameters,
+            'count' => $paginator->count()
+        ]);
     }
 }
