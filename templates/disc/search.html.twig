@@ -44,11 +44,11 @@
 				{% if discs %}
 					{% for disc in discs %}
 						<tr>
-							<td class="align-self-center">
+							<td>
 								{% if disc.numInventory %}
 									{{ disc.numInventory }}
 								{% else %}
-									#
+									0
 								{% endif %}
 							</td>
 							<td>{{ disc.groupe }}</td>

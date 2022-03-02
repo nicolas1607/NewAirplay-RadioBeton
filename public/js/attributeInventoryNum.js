@@ -1,11 +1,11 @@
 // Gère le numéro d'inventaire à 0 ou non
 const numInventory = document.querySelector('#valueNumInventory input').getAttribute('data-value');
-console.log(numInventory)
 
 const leaveDate = document.querySelector('#disc_leaveDate');
 leaveDate.addEventListener('change', () => {
+    console.log(leaveDate);
     if (leaveDate.value == "") {
-        document.querySelector('#valueNumInventory input').value = null;
+        document.querySelector('#valueNumInventory input').value = 0;
     } else if (document.querySelector('#valueNumInventory input').value == 0) {
         document.querySelector('#valueNumInventory input').value = numInventory;
     }

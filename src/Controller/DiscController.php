@@ -171,15 +171,13 @@ class DiscController extends AbstractController
         $numInventory = $this->discRepo->generateNumInventory();
 
         if ($updateDiscForm->isSubmitted() && $updateDiscForm->isValid()) {
-            if ($request->get('numInventory') == 0) {
-                $id->setNumInventory($numInventory);
-            } else if ($request->get('numInventory') > 0) {
-                $id->setNumInventory($request->get('numInventory'));
-            } else {
+            if ($request->get('numInventory') === 0) {
                 $id->setNumInventory(0);
+            } else {
+                $id->setNumInventory($request->get('numInventory'));
             }
             $this->em->flush();
-            return $this->redirect($_SERVER['HTTP_REFERER']);
+            // return $this->redirect($_SERVER['HTTP_REFERER']);
         }
 
         return $this->render('disc/edit.html.twig', [
