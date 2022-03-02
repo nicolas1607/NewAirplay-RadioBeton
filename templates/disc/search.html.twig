@@ -64,12 +64,12 @@
 							<td>
 							{% if not is_granted('ROLE_BENEVOLE') %}
 								<a href="{{ path('edit_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark mt-2">Modifier</a>
-								<a href="{{ path('delete_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark mt-2">Supprimer</a>
+								<a href="{{ path('delete_disc', {'id': disc.id, 'page': currentPage, 'parameters': parameters}) }}" class="table-link btn btn-outline-dark mt-2">Supprimer</a>
 							{% else %}
 								<a href="{{ path('edit_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark mt-2" disabled>
 									Modifier
 								</a>
-								<a href="{{ path('delete_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark mt-2" disabled>
+								<a href="{{ path('delete_disc', {'id': disc.id, 'page': currentPage, 'parameters': parameters}) }}" class="table-link btn btn-outline-dark mt-2" disabled>
 									Supprimer
 								</a>
 							{% endif %}

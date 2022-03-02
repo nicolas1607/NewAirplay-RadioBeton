@@ -55,6 +55,9 @@
 								<a href="{{ path('show_playlist', {'id': pl.id}) }}" class="btn btn-outline-dark">
 									Gérer
 								</a>
+								<a href="{{ path('delete_playlist', {'id': pl.id, 'parameters': parameters}) }}" class="btn btn-outline-dark">
+									Supprimer
+								</a>
 							</td>
 						</tr>
 					{% endfor %}

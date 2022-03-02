@@ -266,14 +266,14 @@ class PlaylistController extends AbstractController
     }
 
     /**
-     * @Route("/playlist/delete/{id}", name="delete_disc_playlist")
+     * @Route("/playlist/delete/disc/{id}", name="delete_disc_playlist")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteDisc(Request $request, PlaylistHasDisc $id): Response
     {
         $this->em->remove($id);
         $this->em->flush();
-
+        
         $this->addFlash(
             'success',
             'Rock\'n Roll ! Le titre a été retiré de la playliste.'
@@ -281,6 +281,73 @@ class PlaylistController extends AbstractController
 
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/playlist/delete/{id}", name="delete_playlist")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @param Playlist $playlist
+     * @param Request $request
+     * @return void
+     */
+    public function deletePlaylist(Playlist $playlist, Request $request)
+    {
+        if($playlist)
+        {
+            $this->em->remove($playlist);
+            $this->em->flush();
+            
+            $this->addFlash(
+                'success',
+                'Rock\'n Roll ! La playlist a été effacée.'
+            );
+        }
+        else 
+        {
+            $this->addFlash(
+                'alert',
+                'Ha ? Il y a eu un problème...'
+            );
+        }
+
+        $searchPlaylistForm = $this->createForm(SearchPlaylistType::class);
+        $searchPlaylistForm->handleRequest($request);
+
+        $parameters = $request->query->get('parameters');
+            
+        $name = $parameters[0];
+        $album = $parameters[1];
+        $entryDate = $parameters[2];
+
+        $playlistsQuery = $this->playlistRepo->search($name, $album, $entryDate);
+
+        $limit = 15;
+        $page = $request->query->get('page');
+        if($page === null){
+            $currentPage = 1;
+        } else {
+            $currentPage = $page;
+        }
+        $offset = ($currentPage - 1) * $limit;
+        $query = $this->em->createQuery($playlistsQuery->getDQL())
+                            ->setFirstResult($offset)
+                            ->setMaxResults($limit);
+
+        $paginator = new Paginator($query, $fetchJoinCollection = false);
+        $playlists = [];
+        foreach ($paginator as $playlist) {
+            array_push($playlists, $playlist);
+        }
+
+        return $this->render('playlist/search.html.twig', [
+            'searchPlaylistForm' => $searchPlaylistForm->createView(),
+            'playlists' => $playlists,
+            'totalPages' => ceil($paginator->count() / $limit),
+            'currentPage' => $currentPage,
+            'issues' => $paginator->getIterator(),
+            'parameters' => $parameters,
+            'count' => $paginator->count()
+        ]);
     }
 
     /**
