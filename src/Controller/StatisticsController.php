@@ -40,6 +40,7 @@ class StatisticsController extends AbstractController
         $datePlaylist = $request->query->get('date_playlist');
         $nationality = $request->query->get('nationality');
         $language = $request->query->get('language');
+        $emprunt = $request->query->get('emprunt');
         $name = $request->query->get('name');
         $nb = $request->query->get('number');
         $format = $request->query->get('format');
@@ -48,9 +49,9 @@ class StatisticsController extends AbstractController
         // Statistiques
         if ($classement == 'stats') {
             $nb = null;
-            $resultsGenre = $this->discRepo->findStatGenre($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
-            $resultsNatio = $this->discRepo->findStatNatio($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
-            $resultsType = $this->discRepo->findStatType($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
+            $resultsGenre = $this->discRepo->findStatGenre($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $emprunt, $nb);
+            $resultsNatio = $this->discRepo->findStatNatio($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $emprunt, $nb);
+            $resultsType = $this->discRepo->findStatType($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $emprunt, $nb);
 
             // FORMAT PDF
             if ($format == "pdf") {
@@ -149,7 +150,7 @@ class StatisticsController extends AbstractController
 
         // Nombre de passage par disque
         elseif ($classement == 'nbPerDisc') {
-            $results = $this->discRepo->findNbPassagePerDisc($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $nb);
+            $results = $this->discRepo->findNbPassagePerDisc($animator, $dateStart, $dateEnd, $datePlaylist, $nationality, $language, $emprunt, $nb);
 
             // FORMAT EXCEL
             if ($format == "excel") {
@@ -232,9 +233,11 @@ class StatisticsController extends AbstractController
 
         // New classement
         else {
+            $emprunteurs = $this->discRepo->getLeaveNames();
             return $this->render('statistics/index.html.twig', [
                 'nationalities' => $nationalities,
-                'results' => null
+                'results' => null,
+                'emprunteurs' => $emprunteurs
             ]);
         }
     }

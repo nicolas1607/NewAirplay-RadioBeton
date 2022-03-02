@@ -41,6 +41,18 @@ class DiscRepository extends ServiceEntityRepository
     }
 
     // /**
+    //  * @return int Retournes la liste des emprunteurs
+    //  */
+    public function getLeaveNames(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                "SELECT d.leave_name FROM App:disc d WHERE d.leave_name!='NULL' GROUP BY d.leave_name"
+            )
+            ->getResult();
+    }
+
+    // /**
     //  * @return [] Disc Retournes la liste des disques recherchés
     //  */
     public function search($numInventory, $album, $groupe): object
@@ -77,7 +89,7 @@ class DiscRepository extends ServiceEntityRepository
     // /**
     //  * @return [] Disc Retournes la liste des disques et leur nb de passage en playlist
     //  */
-    public function findNbPassagePerDisc($animator, $startDate, $endDate, $date, $natio, $language, $nb)
+    public function findNbPassagePerDisc($animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb)
     {
         $search = "SELECT count(d.id) as nb, n.id as natio, d.groupe, d.album, d.label 
         FROM App:disc d 
@@ -88,7 +100,7 @@ class DiscRepository extends ServiceEntityRepository
         INNER JOIN App:nationality n
         WITH n.id = d.nationality ";
 
-        $search = $this->statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $nb);
+        $search = $this->statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb);
         $search .= " GROUP BY d.id ORDER BY count(d.id) DESC";
 
         if ($nb) {
@@ -106,10 +118,10 @@ class DiscRepository extends ServiceEntityRepository
     // /**
     //  * @return [] Disc Retournes la liste des genres et leur pourcentage
     //  */
-    public function findStatGenre($animator, $startDate, $endDate, $date, $natio, $language, $nb)
+    public function findStatGenre($animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb)
     {
         if ($nb) $count = $nb;
-        else $count = $this->findCount($animator, $startDate, $endDate, $date, $natio, $language, $nb)[0][1];
+        else $count = $this->findCount($animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb)[0][1];
 
         $search = "SELECT g.lib, count(d.genre), (count(d.genre)*100 / " . $count . ")
                    FROM App:disc d 
@@ -121,7 +133,7 @@ class DiscRepository extends ServiceEntityRepository
                    WITH g.id = d.genre ";
 
 
-        $search = $this->statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $nb);
+        $search = $this->statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb);
         $search .= " GROUP BY g.lib";
 
         if ($nb) {
@@ -139,10 +151,10 @@ class DiscRepository extends ServiceEntityRepository
     // /**
     //  * @return [] Disc Retournes la liste des nationalités et leur pourcentage
     //  */
-    public function findStatNatio($animator, $startDate, $endDate, $date, $natio, $language, $nb)
+    public function findStatNatio($animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb)
     {
         if ($nb) $count = $nb;
-        else $count = $this->findCount($animator, $startDate, $endDate, $date, $natio, $language, $nb)[0][1];
+        else $count = $this->findCount($animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb)[0][1];
 
         $search = "SELECT n.lib, count(d.nationality), (count(d.nationality)*100 / " . $count . ")
                    FROM App:disc d 
@@ -153,7 +165,7 @@ class DiscRepository extends ServiceEntityRepository
                    INNER JOIN App:nationality n
                    WITH n.id = d.nationality ";
 
-        $search = $this->statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $nb);
+        $search = $this->statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb);
         $search .= " GROUP BY n.lib";
 
         if ($nb) {
@@ -171,10 +183,10 @@ class DiscRepository extends ServiceEntityRepository
     // /**
     //  * @return [] Disc Retournes la liste des types et leur pourcentage
     //  */
-    public function findStatType($animator, $startDate, $endDate, $date, $natio, $language, $nb)
+    public function findStatType($animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb)
     {
         if ($nb) $count = $nb;
-        else $count = $this->findCount($animator, $startDate, $endDate, $date, $natio, $language, $nb)[0][1];
+        else $count = $this->findCount($animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb)[0][1];
 
         $search = "SELECT t.lib, count(d.type), (count(d.type)*100 / " . $count . ")
                    FROM App:disc d 
@@ -185,7 +197,7 @@ class DiscRepository extends ServiceEntityRepository
                    INNER JOIN App:type t
                    WITH t.id = d.type ";
 
-        $search = $this->statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $nb);
+        $search = $this->statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb);
         $search .= " GROUP BY t.lib";
 
         if ($nb) {
@@ -203,7 +215,7 @@ class DiscRepository extends ServiceEntityRepository
     // /**
     //  * @return [] Disc Retournes la liste des disques recherchés pour les statistiques
     //  */
-    public function findCount($animator, $startDate, $endDate, $date, $natio, $language, $nb)
+    public function findCount($animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb)
     {
         $search = "SELECT count(d) FROM App:disc d 
                    INNER JOIN App:playlisthasdisc phd 
@@ -211,7 +223,7 @@ class DiscRepository extends ServiceEntityRepository
                    INNER JOIN App:playlist pl
                    WITH pl.id = phd.playlist ";
 
-        $search = $this->statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $nb);
+        $search = $this->statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb);
 
         if ($nb) {
             return $this->getEntityManager()
@@ -228,7 +240,7 @@ class DiscRepository extends ServiceEntityRepository
     // /**
     //  * @return [] Disc Ajoutes les paramètres (WHERE/AND <param>) à la requête SQL
     //  */
-    public function statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $nb)
+    public function statistics($search, $animator, $startDate, $endDate, $date, $natio, $language, $emprunt, $nb)
     {
         if ($animator) {
             $search .= "WHERE d.animator = " . $animator;
@@ -272,6 +284,13 @@ class DiscRepository extends ServiceEntityRepository
                 $search .= " AND d.language = " . $language;
             } else {
                 $search .= "WHERE d.language = " . $language;
+            }
+        }
+        if ($emprunt) {
+            if (str_contains($search, 'WHERE')) {
+                $search .= " AND d.leave_name = '" . $emprunt . "'";
+            } else {
+                $search .= "WHERE d.leave_name = '" . $emprunt . "'";
             }
         }
         $search .= " AND d.num_inventory != '' ";

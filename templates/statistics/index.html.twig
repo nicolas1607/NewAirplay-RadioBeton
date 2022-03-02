@@ -26,7 +26,7 @@
             <div class="col-md-4">
                 <label for="date">Provenance</label>
                 <select class="form-control" name="nationality" class="form-select" id="nationality">
-                    <option></option>
+                    <option value="">**</option>
                     {% for nationality in nationalities %}
                         <option value="{{ nationality.id }}">{{ nationality.lib }}</option>
                     {% endfor %}
@@ -35,7 +35,7 @@
             <div class="col-md-4">
                 <label for="date">Langue</label>
                 <select class="form-control" name="language" class="form-select" id="language">
-                    <option></option>
+                    <option value="">**</option>
                     <option value="1">Français</option>
                     <option value="2">Autre</option>
                 </select>
@@ -52,6 +52,15 @@
             </div>
         </div>
         <div class="row justify-content-center my-3">
+            <div class="col-md-4">
+                <label for="emprunt">Nom de l'emprunteur</label>
+                <select class="form-select" method="POST" name="emprunt">
+                    <option value="">**</option>
+                    {% for emprunt in emprunteurs %}
+                        <option value={{emprunt['leave_name']}}>{{emprunt['leave_name']}}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <div class="col-md-4">
                 <label for="format">Format de l'export</label>
                 <select class="form-select" method="POST" name="format">
