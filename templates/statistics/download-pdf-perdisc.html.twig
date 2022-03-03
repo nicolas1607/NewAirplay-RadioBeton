@@ -29,7 +29,8 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Nb de passage</th>
+            <th style="width: 2rem;">N°</th>
+            <th>Passages</th>
             <th>Groupe</th>
             <th>Album</th>
             <th>Label</th>
@@ -37,20 +38,24 @@
     </thead>
     <tbody>
         {% if results %}
+        {% set i = 1 %}
         {% for disc in results %}
         <tr>
             {% if disc.natio == 2 %}
+            <td  style="width: 2rem;"><strong>{{ i }} |</strong></td>
             <td><strong>{{ disc.nb }}</strong></td>
             <td><strong>{{ disc.groupe }}</strong></td>
             <td><strong>{{ disc.album }}</strong></td>
             <td><strong>{{ disc.label }}</strong></td>
             {% else %}
+            <td  style="width: 2rem;">{{ i }} |</td>
             <td>{{ disc.nb }}</td>
             <td>{{ disc.groupe }}</td>
             <td>{{ disc.album }}</td>
             <td>{{ disc.label }}</td>
             {% endif %}
         </tr>
+        {% set i = i + 1 %}
         {% endfor %}
         {% endif %}
     </tbody>
