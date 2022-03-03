@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Disc;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Disc|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +15,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class DiscRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $em;
+    
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $em)
     {
         parent::__construct($registry, Disc::class);
+        $this->em = $em;
     }
 
     public function findAllAlbum(): array
@@ -43,37 +47,95 @@ class DiscRepository extends ServiceEntityRepository
     // /**
     //  * @return [] Disc Retournes la liste des disques recherchés
     //  */
-    public function search($numInventory, $album, $groupe): object
+    public function search($numInventory, $album, $groupe, $orderBy, $order): object
     {
-        $search = "SELECT d FROM App:disc d ";
+        // $search = "SELECT d FROM App:disc d ";
         
-        if ($numInventory) {
-            $search .= "WHERE d.num_inventory = '" . $numInventory . "'";
-        }
-        elseif ($numInventory === 0) 
+        // if ($numInventory) {
+        //     $search .= "WHERE d.num_inventory = '" . $numInventory . "'";
+        // }
+        // elseif ($numInventory === 0) 
+        // {
+        //     $search .= "WHERE d.num_inventory = '" . $numInventory . "'";
+        // }
+
+        // if ($album) {
+        //     if (str_contains($search, 'WHERE')) {
+        //         $search .= " AND d.album LIKE '%" . $album . "%'";
+        //     } else {
+        //         $search .= "WHERE d.album LIKE '%" . $album . "%'";
+        //     }
+        // }
+
+        // if ($groupe) {
+        //     if (str_contains($search, 'WHERE')) {
+        //         $search .= " AND d.groupe LIKE '%" . $groupe . "%'";
+        //     } else {
+        //         $search .= "WHERE d.groupe LIKE '%" . $groupe . "%'";
+        //     }
+        // }
+        // $search .= " ORDER BY d.num_inventory DESC";
+
+        // return $this->getEntityManager()
+        //     ->createQuery($search);
+
+        $search = $this->em->createQueryBuilder();
+
+        $search->select('d')
+               ->from('App\Entity\Disc', 'd');
+        
+        if($numInventory)
         {
-            $search .= "WHERE d.num_inventory = '" . $numInventory . "'";
+            $search->andWhere(
+                $search->expr()->eq('d.num_inventory', $search->expr()->literal($numInventory)),
+            );
+        }
+        elseif($numInventory === 0)
+        {
+            $search->andWhere(
+                $search->expr()->eq('d.num_inventory', $search->expr()->literal($numInventory)),
+            );
         }
 
-        if ($album) {
-            if (str_contains($search, 'WHERE')) {
-                $search .= " AND d.album LIKE '%" . $album . "%'";
-            } else {
-                $search .= "WHERE d.album LIKE '%" . $album . "%'";
+        if($album)
+        {
+            $search->andWhere(
+                $search->expr()->like('d.album', $search->expr()->literal('%'.$album.'%')),
+            );
+        }
+
+        if($groupe)
+        {
+            $search->andWhere(
+                $search->expr()->like('d.groupe', $search->expr()->literal('%'.$groupe.'%')),
+            );
+        }
+
+        if($orderBy)
+        {
+            if($orderBy === 'arrival')
+            {
+                $search->orderBy('d.arrival_date', $order);
+            }
+            elseif($orderBy === 'leave')
+            {
+                $search->orderBy('d.leave_date', $order);
+            }
+            elseif($orderBy === 'group')
+            {
+                $search->orderBy('d.groupe', $order);
+            }
+            elseif($orderBy === 'label')
+            {
+                $search->orderBy('d.label', $order);
+            }
+            elseif($orderBy === 'album')
+            {
+                $search->orderBy('d.album', $order);
             }
         }
 
-        if ($groupe) {
-            if (str_contains($search, 'WHERE')) {
-                $search .= " AND d.groupe LIKE '%" . $groupe . "%'";
-            } else {
-                $search .= "WHERE d.groupe LIKE '%" . $groupe . "%'";
-            }
-        }
-        $search .= " ORDER BY d.num_inventory DESC";
-
-        return $this->getEntityManager()
-            ->createQuery($search);
+        return $search->getQuery();
     }
 
     // /**
@@ -279,4 +341,24 @@ class DiscRepository extends ServiceEntityRepository
         $search .= " AND d.num_inventory != '' ";
         return $search;
     }
+
+    // public function searchDisc($data)
+    // {
+    //     $search = $this->em->createQueryBuilder();
+
+    //     $search->select('d')
+    //            ->from('App\Entity\Disc', 'd');
+
+    //     if($data)
+    //     {
+    //         $search->andWhere(
+    //             $search->expr()->orX( 
+    //                 $search->expr()->eq('d.num_inventory', $search->expr()->literal($data)),
+    //                 $search->expr()->eq('d.album', $search->expr()->literal($data))
+    //             )
+    //         );
+    //     }
+        
+    //     return $search->getQuery()->getResult();
+    // }
 }

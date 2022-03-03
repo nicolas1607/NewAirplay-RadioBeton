@@ -48,6 +48,7 @@ h1, h2, h3, h4, h5, h6, p, li, a, .card-text, #badgeValues > p{
 .fa-trash-can{
     color: black;
 }
+
 .fa-trash-can:hover{
     color: rgb(102, 102, 102);
 }
@@ -57,10 +58,11 @@ body{
     position: relative;
 
 }
+
 .main-containt{
     border: 10px solid #F7D117;
     position: fixed;
-    overflow: scroll;
+    overflow: auto;
     height: 100vh;
     width: 100%;
 }
@@ -87,6 +89,7 @@ body{
 #add-numero{
     border-radius: 7px;
 }
+
 #buttonDeleteLi{
     margin-top: 5px;
     border-radius: 7px;
@@ -95,16 +98,20 @@ body{
     top: 6px;
     right: 10px;
 }
+
 #buttonDeleteLi:hover{
     transform: scale(1.2);
 }
+
 #badgeValues{
     align-items: center;
     padding: 21px 10px;
 }
+
 .bg-radio{
     background-color: #F7D117;
 }
+
 a {
     text-decoration: none;
     color: lightgray;
@@ -163,4 +170,8 @@ a {
     justify-content: center;
     align-items: center;
     padding: 1rem 1rem !important;
+}
+
+.disabled {
+    pointer-events: none;
 }

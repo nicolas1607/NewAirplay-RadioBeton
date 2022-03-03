@@ -18,3 +18,8 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+.htaccess
+/migrations
+/public/files/
+/src/DataFixtures

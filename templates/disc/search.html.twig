@@ -10,14 +10,32 @@
 
 	{{ form_start(searchDiscForm) }}
 	<div class="row justify-content-center">
-		<div class="col-md-6 col-lg-4">
+		<div class="col-md-6 col-lg-3">
 			{{ form_row(searchDiscForm.num_inventory, {'attr': {'class': 'form-control mb-3'}}) }}
 		</div>
-		<div class="col-md-6 col-lg-4">
+		<div class="col-md-6 col-lg-3">
 			{{ form_row(searchDiscForm.groupe, {'attr': {'class': 'form-control mb-3'}}) }}
 		</div>
-		<div class="col-md-6 col-lg-4">
+		<div class="col-md-6 col-lg-3">
 			{{ form_row(searchDiscForm.album, {'attr': {'class': 'form-control mb-3'}}) }}
+		</div>
+		<div class="col-md-4">
+			<label for="order-by">Filtre</label>
+			<select class="form-control mb-3" name="order-by" id="order-by">
+				<option value="">---</option>
+				<option value="arrival">date de saisie</option>
+				<option value="leave">date de mise en écoute</option>
+				<option value="group">nom du groupe</option>
+				<option value="label">nom du label</option>
+				<option value="album">nom de l'album</option>
+			</select>
+		</div>
+		<div class="col-md-4">
+			<label for="order-by">Ordre</label>
+			<select class="form-control mb-3" name="order" id="order">
+				<option value="ASC">croissant</option>
+				<option value="DESC">décroissant</option>
+			</select>
 		</div>
 	</div>
 	<div class="row">
@@ -31,18 +49,19 @@
 <section class="container">
 	<table class="table-search-disc table mt-5 text-center align-middle">
 			<thead>
-				<tr>
-					<th>Numéro d'inventaire</th>
+				<tr class="row w-100">
+					<th>N° d'inventaire</th>
 					<th>Groupe</th>
 					<th>Album</th>
 					<th>Label</th>
-					<th>Date</th>
+					{# <th>Emprunteur | raison</th> #}
+					<th>Emprunteur | motif | date</th>
 					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% if discs %}
-					{% for disc in discs %}
+					{% for disc in discs %} {#|sort( (a,b) => b.arrivalDate > a.arrivalDate) %} #}
 						<tr>
 							<td>
 								{% if disc.numInventory is not null %}
@@ -55,22 +74,39 @@
 							<td>{{ disc.album }}</td>
 							<td>{{ disc.label }}</td>
 							<td>
+								{% if disc.leaveName %}
+									{{ disc.leaveName }} |
+								{% else %}
+									-- |
+								{% endif %}
+ 
+								{% if disc.leaveReason %}
+									{{ disc.leaveReason.lib }} |
+								{% else %}
+									-- |
+								{% endif %}
+							
 								{% if disc.leaveDate %}
 									{{ disc.leaveDate|format_datetime('short', 'none', locale='fr') }}
 								{% else %}
-									en écoute
+									--
 								{% endif %}
+								{# {{ disc.arrivalDate|format_datetime('short', 'none', locale='fr') }} #}
 							</td>
 							<td>
-							{% if not is_granted('ROLE_BENEVOLE') %}
-								<a href="{{ path('edit_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark mt-2">Modifier</a>
-								<a href="{{ path('delete_disc', {'id': disc.id, 'page': currentPage, 'parameters': parameters}) }}" class="table-link btn btn-outline-dark mt-2">Supprimer</a>
-							{% else %}
-								<a href="{{ path('edit_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark mt-2" disabled>
-									Modifier
+							{% if is_granted('ROLE_BENEVOLE') %}
+								<a href="#" class="table-link btn btn-outline-dark me-2 disabled">
+									<i class="fa-solid fa-pencil"></i>
 								</a>
-								<a href="{{ path('delete_disc', {'id': disc.id, 'page': currentPage, 'parameters': parameters}) }}" class="table-link btn btn-outline-dark mt-2" disabled>
-									Supprimer
+								<a href="#" class="table-link btn btn-outline-dark disabled">
+									<i class="fa-solid fa-trash-can"></i>
+								</a>
+							{% else %}
+								<a href="{{ path('edit_disc', {'id': disc.id}) }}" class="table-link btn btn-outline-dark me-2">
+									<i class="fa-solid fa-pencil"></i>		
+								</a>
+								<a href="{{ path('delete_disc', {'id': disc.id, 'page': currentPage, 'parameters': parameters}) }}" class="table-link btn btn-outline-dark delete">
+									<i class="fa-solid fa-trash-can"></i>
 								</a>
 							{% endif %}
 							</td>
@@ -86,7 +122,7 @@
 {% if count > 15 %}
 	{% if currentPage != null and totalPages != null and parameters != null %}
 		<section class="container d-flex justify-content-center w-50">
-			<ul class="pagination overflow-scroll">
+			<ul class="pagination overflow-auto">
 				{% if currentPage != 1 %}
 					<li class="m-4 page-item">
 						<a href="{{ path('search_disc', {'page': (currentPage - 1), 'parameters': parameters}) }}" class="page-link">&lsaquo;</a>

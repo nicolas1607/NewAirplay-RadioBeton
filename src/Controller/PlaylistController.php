@@ -106,7 +106,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/search", name="search_playlist")
-     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function search(Request $request): Response
     {
@@ -115,12 +115,21 @@ class PlaylistController extends AbstractController
         
         if ($searchPlaylistForm->isSubmitted() && $searchPlaylistForm->isValid()) {
             $search = $searchPlaylistForm->getData();
-            $playlistsQuery = $this->playlistRepo->search($search->getName(), $search->getAnimator(), $search->getEntryDate());
+
+            $playlistsQuery = $this->playlistRepo->search(
+                $search->getName(), 
+                $search->getAnimator(), 
+                $search->getEntryDate(),
+                $request->request->get('order-by'), 
+                $request->request->get('order')
+            );
             
             $parameters = [
                 $search->getName() ? $search->getName() : "", 
                 $search->getAnimator() ? $search->getAnimator() : "", 
-                $search->getEntryDate() ? $search->getEntryDate() : ""
+                $search->getEntryDate() ? $search->getEntryDate() : "",
+                $request->request->get('order-by') ? $request->request->get('order-by') : "",
+                $request->request->get('order') ? $request->request->get('order') : ""
             ];
            
             $limit = 15;
@@ -158,8 +167,10 @@ class PlaylistController extends AbstractController
             $name = $parameters[0];
             $album = $parameters[1];
             $entryDate = $parameters[2];
+            $orderBy = $parameters[3];
+            $order = $parameters[4];
 
-            $playlistsQuery = $this->playlistRepo->search($name, $album, $entryDate);
+            $playlistsQuery = $this->playlistRepo->search($name, $album, $entryDate, $orderBy, $order);
 
             $limit = 15;
             $page = $request->query->get('page');
@@ -267,7 +278,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/delete/disc/{id}", name="delete_disc_playlist")
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteDisc(Request $request, PlaylistHasDisc $id): Response
     {
@@ -318,8 +329,10 @@ class PlaylistController extends AbstractController
         $name = $parameters[0];
         $album = $parameters[1];
         $entryDate = $parameters[2];
+        $orderBy = $parameters[3];
+        $order = $parameters[4];
 
-        $playlistsQuery = $this->playlistRepo->search($name, $album, $entryDate);
+        $playlistsQuery = $this->playlistRepo->search($name, $album, $entryDate, $orderBy,$order);
 
         $limit = 15;
         $page = $request->query->get('page');
@@ -351,7 +364,7 @@ class PlaylistController extends AbstractController
     }
 
     /**
-     * @Route("/playlist/request_disc/{numero}", name="request_disc")
+     * @Route("/playlist/request_disc/{numero}", options={"expose"=true}, name="request_disc")
      * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function requestDisc($numero)

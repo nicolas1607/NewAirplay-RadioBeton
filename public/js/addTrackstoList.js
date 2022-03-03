@@ -1,18 +1,3 @@
-
-// const divCheck = document.querySelector('.checkBox');
-// const divChildCheck = divCheck.childNodes;
-
-// divChildCheck[1].classList.add('form-check');
-// divChildCheck[1].classList.add('form-switch');
-// divChildCheck[3].classList.add('form-check');
-// divChildCheck[3].classList.add('form-switch');
-// divChildCheck[5].classList.add('form-check');
-// divChildCheck[5].classList.add('form-switch');
-
-// const checkBox = document.querySelector('.form-check-input');
-// console.log(checkBox);
-// checkBox.setAttribute('role', 'switch');
-
 const numero = document.querySelector('#numero');
 const addNumero = document.querySelector('#add-numero');
 const numerosList = document.querySelector('#list-numeros');
@@ -36,34 +21,39 @@ if (successMessage) {
 
 let validDisc = null;
 
+// const routes = require('../../public/js/fos_js_routes.json');
+// import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+// Routing.setRoutingData(routes);
+
 addNumero.addEventListener('click', (ev) => {
     ev.preventDefault();
-
+    
     const value = numero.value;
-    const regex = new RegExp(/[0-9]/);
-
-    if (regex.test(value) && value !== '0') {
-        fetch('/playlist/request_disc/' + value, {
+    const regex = new RegExp(/[^<>/]/);
+    
+    if(value && regex.test(value) && value !== '0')
+    {
+        fetch(Routing.generate('request_disc', {'numero': value}), {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
             }
         })
-            .then(function (request) {
-                if (request.ok) {
-                    request.text().then((response) => {
-                        let disc = JSON.parse(response);
-                        createBadge(disc);
-                        createSelectOption(disc);
-                    });
-                } else {
-                    wrongInventoryNumMessage.hidden = false;
-                    setTimeout(() => {
-                        wrongInventoryNumMessage.hidden = true;
-                    }, 1000);
-                    numero.value = "";
-                }
-            })
+        .then(function (request) {
+            if (request.ok) {
+                request.text().then((response) => {
+                    let disc = JSON.parse(response);
+                    createBadge(disc);
+                    createSelectOption(disc);
+                });
+            } else {
+                wrongInventoryNumMessage.hidden = false;
+                setTimeout(() => {
+                    wrongInventoryNumMessage.hidden = true;
+                }, 1000);
+                numero.value = "";
+            }
+        })
     }
     else {
         wrongInventoryNumMessage.hidden = false;
@@ -81,7 +71,8 @@ function createBadge(disc) {
     badge.classList.add("col-md-4");
     badge.classList.add("card");
     badge.classList.add("bg-radio");
-    badge.classList.add("m-2");
+    badge.classList.add("m-1");
+    badge.classList.add("px-1");
     badge.setAttribute('data-index', index);
 
     const badgeValues = document.createElement('div');
@@ -92,13 +83,13 @@ function createBadge(disc) {
     const valuesGroup = document.createElement('p');
     valuesNum.classList.add("mb-0");
     valuesNum.classList.add("py-2");
-    valuesNum.classList.add("me-3");
+    // valuesNum.classList.add("me-3");
     valuesAlbum.classList.add("mb-0");
     valuesAlbum.classList.add("py-2");
-    valuesAlbum.classList.add("me-3");
+    // valuesAlbum.classList.add("me-3");
     valuesGroup.classList.add("mb-0");
     valuesGroup.classList.add("py-2");
-    valuesGroup.classList.add("me-3");
+    // valuesGroup.classList.add("me-3");
 
     valuesNum.textContent = "Num Inventaire : " + disc.inventory_num;
     valuesAlbum.textContent = "Album : " + disc.album;
@@ -113,6 +104,7 @@ function createBadge(disc) {
     button.setAttribute('type', 'button');
     button.classList.add("btn");
     button.classList.add("mt-0");
+    button.classList.add("px-2");
     button.classList.add("btn-light");
     button.id = "buttonDeleteLi";
     button.addEventListener('click', () => {

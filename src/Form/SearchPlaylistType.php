@@ -23,7 +23,7 @@ class SearchPlaylistType extends AbstractType
                 ]
             ])
             ->add('animator', TextType::class, [
-                'label' => 'Animateur',
+                'label' => 'Animateur.trice',
                 'required' => false,
                 'attr' => [
                     'class' => 'form-control'

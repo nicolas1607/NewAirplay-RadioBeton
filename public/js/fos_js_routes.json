@@ -1,0 +1,1 @@
+{"base_url":"","routes":{"request_disc":{"tokens":[["variable","\/","[^\/]++","numero",true],["text","\/request_disc"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"localhost","port":"","scheme":"http","locale":""}

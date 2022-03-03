@@ -20,8 +20,20 @@ security:
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\AppAuthenticator
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                username_parameter: username
+                password_parameter: password
+                target_path_parameter: home
+                failure_path_parameter: app_login
+                default_target_path: home
+                enable_csrf: true
+            entry_point: form_login
             logout:
                 path: app_logout
+                # where to redirect after logout
+                target: app_login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
