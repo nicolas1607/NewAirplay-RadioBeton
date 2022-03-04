@@ -17,9 +17,18 @@
             </div>
         </div>
         <div class="row justify-content-center my-3">
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <label for="date">Date d'entrée en playlist</label>
                 <input class="form-control" type="date" method="POST" placeholder="Choisissez une date de saisie" role="search" name="date_playlist">
+            </div>
+            <div class="col-md-4">
+                <label for="emprunt">Nom de l'emprunteur</label>
+                <select class="form-select" method="POST" name="emprunt">
+                    <option value="">**</option>
+                    {% for emprunt in emprunteurs %}
+                        <option value={{emprunt['leave_name']}}>{{emprunt['leave_name']}}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
         <div class="row justify-content-center my-3">
@@ -53,19 +62,11 @@
         </div>
         <div class="row justify-content-center my-3">
             <div class="col-md-4">
-                <label for="emprunt">Nom de l'emprunteur</label>
-                <select class="form-select" method="POST" name="emprunt">
-                    <option value="">**</option>
-                    {% for emprunt in emprunteurs %}
-                        <option value={{emprunt['leave_name']}}>{{emprunt['leave_name']}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-md-4">
                 <label for="format">Format de l'export</label>
                 <select class="form-select" method="POST" name="format">
                     <option value="pdf">Format PDF</option>
                     <option value="excel">Format Excel</option>
+                    <option value="txt">Format TXT</option>
                 </select>
             </div>
         </div>

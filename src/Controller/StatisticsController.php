@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Soundasleep\Html2Text;
 use App\Entity\Nationality;
 use App\Repository\DiscRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -146,6 +147,31 @@ class StatisticsController extends AbstractController
                 $writer->save($path);
                 return $this->file($path);
             }
+            else if ($format == "txt") {
+                // on donne un nom de fichier
+                $nomPDF = "";
+                if ($name != "" || $name != null) {
+                    $nomPDF = $name . '-' . substr(uniqid(), -4) . '.txt';
+                } elseif ($classement == "stats") {
+                    $nomPDF = 'Stats' . '-' . substr(uniqid(), -4) . '.txt';
+                }
+                $myfile = fopen($this->getParameter('txt') . "/" . $nomPDF, "w") or die("Unable to open file!");
+                // on renseigne le html => text
+                $html = $this->renderView('statistics/download-pdf.html.twig', [
+                    'nationalities' => $nationalities,
+                    'resultsGenre' => $resultsGenre,
+                    'resultsNatio' => $resultsNatio,
+                    'resultsType' => $resultsType,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
+                    'datePlaylist' => $datePlaylist,
+                    'name' => $name
+                ]);
+                $txt = Html2Text::convert($html);
+                fwrite($myfile, $txt);
+                fclose($myfile);
+                return $this->file($this->getParameter('txt') . "/" . $nomPDF);
+            }
         }
 
         // Nombre de passage par disque
@@ -228,6 +254,30 @@ class StatisticsController extends AbstractController
                     'Attachement' => true,
                 ]);
                 return new Response();
+            }
+            // FORMAT TXT
+            else if ($format == "txt") {
+                // on donne un nom de fichier
+                $nomPDF = "";
+                if ($name != "" || $name != null) {
+                    $nomPDF = $name . '-' . substr(uniqid(), -4) . '.txt';
+                } elseif ($classement == "nbPerDisc") {
+                    $nomPDF = 'NbPerDisc' . '-' . substr(uniqid(), -4) . '.txt';
+                }
+                $myfile = fopen($this->getParameter('txt') . "/" . $nomPDF, "w") or die("Unable to open file!");
+                // on renseigne le html => text
+                $html = $this->renderView('statistics/download-pdf-perdisc.html.twig', [
+                    'nationalities' => $nationalities,
+                    'results' => $results,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
+                    'datePlaylist' => $datePlaylist,
+                    'name' => $name
+                ]);
+                $txt = Html2Text::convert($html);
+                fwrite($myfile, $txt);
+                fclose($myfile);
+                return $this->file($this->getParameter('txt') . "/" . $nomPDF);
             }
         }
 
