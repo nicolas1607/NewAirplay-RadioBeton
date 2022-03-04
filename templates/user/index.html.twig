@@ -47,9 +47,9 @@
                         <td>{{ user.username }}</td>
                         <td>
                             {% if 'ROLE_SUPERADMIN' in user.roles %}
-                                super-administrateur
+                                super-administrateur.trice
                             {% elseif 'ROLE_ADMIN' in user.roles %}
-                                administrateur
+                                administrateur.trice
                             {% elseif 'ROLE_BENEVOLE' in user.roles %}
                                 bénévole
                             {% endif %}

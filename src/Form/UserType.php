@@ -19,14 +19,14 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => 'Saisissez un nom d\'utilisateur'
+                'label' => 'Saisissez un nom d\'utilisateur.trice'
             ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'Roles',
                 'choices' => [
                     'bénévole' => 'ROLE_BENEVOLE',
-                    'administrateur' => 'ROLE_ADMIN',
-                    'super-administrateur' => 'ROLE_SUPERADMIN',
+                    'administrateur.trice' => 'ROLE_ADMIN',
+                    'super-administrateur.trice' => 'ROLE_SUPERADMIN',
                 ],
                 'expanded' => false,
                 'multiple' => false

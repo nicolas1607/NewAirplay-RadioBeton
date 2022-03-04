@@ -25,8 +25,8 @@
 				</div>
 
 				<div class="col-4">
-					<label for="name">Animateur</label>
-					<input class="form-control" list="names-choice" id="name" name="name" placeholder="sélectionnez un animateur" required>
+					<label for="name">Animateur.trice</label>
+					<input class="form-control" list="names-choice" id="name" name="name" placeholder="sélectionnez un.e animateur.trice" required>
 					<datalist id="names-choice">
 						<option value="Jérôme"></option>
 						<option value="Léandro"></option>
@@ -40,16 +40,27 @@
 				<div class="col-md-6 my-3">
 					<label for="numero">Numéro d'inventaire</label>
 
-					<div class="d-flex"><input type="text" placeholder="Numéro d'inventaire" id="numero" class="form-control me-3">
-						<button type="submit" id="add-numero" class="btn btn-outline-dark">
+					<div class="d-flex">
+						<input type="text" 
+								placeholder="Numéro d'inventaire" 
+								id="numero" 
+								class="form-control me-3">
+						<button type="submit" 
+								id="add-numero" 
+								class="btn btn-outline-dark">
 							<i class="fas fa-plus"></i>
 						</button>
 					</div>
 				</div>
 
-				<div id="list-numeros" name="discs[]" class="row"></div>
+				<div id="list-numeros" 
+					name="discs[]" 
+					class="row w-100 gx-0"></div>
 
-				<select multiple="multiple" name="discs[]" id="select" hidden></select>
+				<select multiple="multiple" 
+						name="discs[]" 
+						id="select" 
+						hidden></select>
 			</div>
 
 			<div class="mt-5">

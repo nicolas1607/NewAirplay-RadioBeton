@@ -74,12 +74,24 @@ class DiscController extends AbstractController
 
         if ($searchDiscForm->isSubmitted() && $searchDiscForm->isValid()) {
             $search = $searchDiscForm->getData();
-            $discsQuery = $this->discRepo->search($search->getNumInventory(), $search->getAlbum(), $search->getGroupe());
+
+            // dd($request);
+            // dd( $search->getNumInventory(), $search->getAlbum(), $search->getGroupe(), $request->request->get('order') );
+
+            $discsQuery = $this->discRepo->search(
+                $search->getNumInventory(), 
+                $search->getAlbum(), 
+                $search->getGroupe(),
+                $request->request->get('order-by'), 
+                $request->request->get('order')
+            );
             
             $parameters = [
                 $search->getNumInventory() ? $search->getNumInventory() : "", 
                 $search->getAlbum() ? $search->getAlbum() : "", 
-                $search->getGroupe() ? $search->getGroupe() : ""
+                $search->getGroupe() ? $search->getGroupe() : "",
+                $request->request->get('order-by') ? $request->request->get('order-by') : "",
+                $request->request->get('order') ? $request->request->get('order') : ""
             ];
             
             $limit = 15;
@@ -118,8 +130,10 @@ class DiscController extends AbstractController
             $numInventory = $parameters[0];
             $album = $parameters[1];
             $groupe = $parameters[2];
+            $orderBy = $parameters[3];
+            $order = $parameters[4];
 
-            $discsQuery = $this->discRepo->search($numInventory, $album, $groupe);
+            $discsQuery = $this->discRepo->search($numInventory, $album, $groupe, $orderBy, $order);
             
             $limit = 15;
             $page = $request->query->get('page');
@@ -219,8 +233,10 @@ class DiscController extends AbstractController
         $numInventory = $parameters[0];
         $album = $parameters[1];
         $groupe = $parameters[2];
+        $orderBy = $parameters[3];
+        $order = $parameters[4];
 
-        $discsQuery = $this->discRepo->search($numInventory, $album, $groupe);
+        $discsQuery = $this->discRepo->search($numInventory, $album, $groupe, $orderBy, $order);
         
         $limit = 15;
         $page = $request->query->get('page');

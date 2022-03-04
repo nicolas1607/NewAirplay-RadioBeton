@@ -44,9 +44,13 @@
 		{% block javascripts %}
 			<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.1/js/bootstrap.min.js'></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js"></script>
-			<script src="/js/addTrackstoList.js"></script>
-			<script src="/js/attributeInventoryNum.js"></script>
-			<script src="/js/selectExportFormat.js"></script>
+			{# // <script src="/js/addTrackstoList.js"></script> #}
+			<script src="{{ absolute_url( asset('js/confirmBeforeDelete.js') ) }}"></script>
+			<script src="{{ absolute_url( asset('js/addTrackstoList.js') ) }}"></script>
+			<script src="{{ asset('/js/attributeInventoryNum.js') }}"></script>
+			<script src="{{ asset('/js/selectExportFormat.js') }}"></script>
+			<script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    		<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 		{% endblock %}
 
 	</div>
