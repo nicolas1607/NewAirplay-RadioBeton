@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Disc;
+use App\Entity\User;
 use App\Entity\Playlist;
 use App\Form\PlaylistType;
 use App\Entity\PlaylistHasDisc;
@@ -71,7 +72,7 @@ class PlaylistController extends AbstractController
 
                     $playlist->addPlaylistHasDisc( $relation->setDisc($disc) );
                 }
-            
+                
                 $this->em->persist($playlist);
                 $this->em->flush();
 
@@ -92,12 +93,13 @@ class PlaylistController extends AbstractController
         }
 
         // Récupération des animateurs depuis la table 'playlist', pour ensuite les dédoublonner et les renvoyer vers le front
-        $playlists = $this->em->getRepository(Playlist::class)->findAll();
+        $users = $this->em->getRepository(User::class)->findAll();
         $animatorsAll = [];
-        foreach ($playlists as $playlist) {
-            array_push($animatorsAll, $playlist->getAnimator());
+        foreach ($users as $user) {
+            array_push($animatorsAll, $user->getUsername());
         }
         $animators = array_unique($animatorsAll, SORT_REGULAR);
+
 
         return $this->render('playlist/add.html.twig', [
             'animators' => $animators
@@ -380,6 +382,23 @@ class PlaylistController extends AbstractController
             'inventory_num' => $disc->getNumInventory()
         ]);
 
+        // $discs = $this->em->getRepository(Disc::class)->searchDiscs($numero);
+        
+        // $results = [];
+        // foreach($discs as $disc)
+        // {
+        //     $result = [
+        //         'id' => $disc->getId(),
+        //         'group' => $disc->getGroupe(),
+        //         'album' => $disc->getAlbum(),
+        //         'inventory_num' => $disc->getNumInventory()
+        //     ];
+
+        //     array_push($results, $result);
+        // }
+
+        // $response = new JsonResponse($results);
+        
         if($response)
         {
             return $response;

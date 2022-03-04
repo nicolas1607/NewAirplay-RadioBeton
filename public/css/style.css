@@ -94,9 +94,9 @@ body{
     margin-top: 5px;
     border-radius: 7px;
     transition: .3s all;
-    position: absolute;
-    top: 6px;
-    right: 10px;
+    /* position: absolute; */
+    /* top: 6px;
+    right: 10px; */
 }
 
 #buttonDeleteLi:hover{
@@ -141,9 +141,9 @@ a {
 }
 
 .card-delete {
-    position: absolute;
+    /* position: absolute;
     right: 0;
-    top: 0;
+    top: 0; */
     padding: 1rem 1.5rem;
 }
 
