@@ -74,7 +74,7 @@
 										<a href="{{ path('show_playlist', {'id': pl.id}) }}" class="btn btn-outline-dark">
 											<i class="fa-solid fa-pencil"></i>
 										</a>
-										<a href="{{ path('delete_playlist', {'id': pl.id, 'parameters': parameters}) }}" class="btn btn-outline-dark delete">
+										<a href="{{ path('delete_playlist', {'id': pl.id, 'parameters': parameters}) }}" class="btn btn-outline-dark disabled">
 											<i class="fa-solid fa-trash-can"></i>
 										</a>
 									{% else %}

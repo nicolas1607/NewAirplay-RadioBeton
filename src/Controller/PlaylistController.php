@@ -108,7 +108,7 @@ class PlaylistController extends AbstractController
 
     /**
      * @Route("/playlist/search", name="search_playlist")
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
+     * @Security("is_granted('ROLE_BENEVOLE') or is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function search(Request $request): Response
     {
