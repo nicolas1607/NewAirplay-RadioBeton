@@ -25,11 +25,71 @@ let validDisc = null;
 // import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 // Routing.setRoutingData(routes);
 
+// const discsDatalist = document.querySelector('#discs-choice');
+
+// function createDatalistOption(disc){
+//     const option = document.createElement('option');
+//     option.setAttribute('value', disc.inventory_num + ' | ' + disc.album + ' | ' + disc.group);
+
+//     discsDatalist.appendChild(option);
+// }
+
+// function debounce(func, timeout = 1000){
+//     let timer;
+//     return (...args) => {
+//         clearTimeout(timer);
+//         timer = setTimeout(() => { func.apply(this, args); }, timeout);
+//     };
+// }
+
+// function requestDisc(){
+//     const value = numero.value;
+//     const regex = new RegExp(/[^<>/]/);
+
+//     if(value && regex.test(value) && value !== '0')
+//     {
+//         fetch(Routing.generate('request_disc', {'numero': value}), {
+//             method: 'get',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             }
+//         })
+//         .then(function (request) {
+//             if (request.ok) {
+//                 request.text().then((response) => {
+//                     let discs = JSON.parse(response);
+//                     discs.forEach( disc => {
+//                         createDatalistOption(disc);
+//                     })
+//                 });
+//             } else {
+//                 wrongInventoryNumMessage.hidden = false;
+//                 setTimeout(() => {
+//                     wrongInventoryNumMessage.hidden = true;
+//                 }, 1000);
+//                 numero.value = "";
+//             }
+//         })
+//     } else {
+//         wrongInventoryNumMessage.hidden = false;
+//         setTimeout(() => {
+//             wrongInventoryNumMessage.hidden = true;
+//         }, 1000);
+//         numero.value = "";
+//     }
+// }
+
+// const getDisc = debounce(() => requestDisc());
+
+// numero.addEventListener('keyup', () => {
+//     getDisc();
+// })
+
 addNumero.addEventListener('click', (ev) => {
     ev.preventDefault();
     
     const value = numero.value;
-    const regex = new RegExp(/[^<>/]/);
+    const regex = new RegExp(/[0-9]/);
     
     if(value && regex.test(value) && value !== '0')
     {
@@ -68,7 +128,7 @@ function createBadge(disc) {
     const index = Object.values(numerosList.children).length;
 
     const badge = document.createElement('div');
-    badge.classList.add("col-md-4");
+    badge.classList.add("col-md-auto");
     badge.classList.add("card");
     badge.classList.add("bg-radio");
     badge.classList.add("m-1");
@@ -95,6 +155,11 @@ function createBadge(disc) {
     valuesAlbum.textContent = "Album : " + disc.album;
     valuesGroup.textContent = "Group : " + disc.group;
 
+    const buttonBox = document.createElement('div');
+    buttonBox.classList.add("d-flex");
+    buttonBox.classList.add("justify-content-end");
+    buttonBox.classList.add("w-100");
+
     const button = document.createElement('button');
     const poubelle = document.createElement('i');
     poubelle.classList.add("fas");
@@ -114,7 +179,8 @@ function createBadge(disc) {
     badgeValues.appendChild(valuesNum);
     badgeValues.appendChild(valuesAlbum);
     badgeValues.appendChild(valuesGroup);
-    badgeValues.appendChild(button);
+    buttonBox.appendChild(button)
+    badgeValues.appendChild(buttonBox);
 
     badge.appendChild(badgeValues);
     numerosList.appendChild(badge);

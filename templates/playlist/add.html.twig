@@ -16,7 +16,7 @@
 			<div class="row">
 				<div class="col-4">
 					<label for="date">Date</label>
-					<input class="form-control" type="date" id="date" name="date" value="dd/mm/yyyy" min="1980-01-01" max="2050-12-31" required>
+					<input class="form-control" type="date" id="date" name="date" value="jj/mm/aaaa" min="1980-01-01" max="2050-12-31" required>
 				</div>
 
 				<div class="col-4">
@@ -26,17 +26,16 @@
 
 				<div class="col-4">
 					<label for="name">Animateur.trice</label>
-					<input class="form-control" list="names-choice" id="name" name="name" placeholder="sélectionnez un.e animateur.trice" required>
+					<input class="form-control" list="names-choice" id="name" name="name" placeholder="Sélectionnez un.e animateur.trice" value="{{ app.user.username }}" required>
 					<datalist id="names-choice">
-						<option value="Jérôme"></option>
-						<option value="Léandro"></option>
-						<option value="Edouard"></option>
-						<option value="Nicolas"></option>
+						{% for username in animators %}
+							<option value="{{ username }}"></option>
+						{% endfor %}
 					</datalist>
 				</div>
 			</div>
 
-			<div>
+			<div class="w-100">
 				<div class="col-md-6 my-3">
 					<label for="numero">Numéro d'inventaire</label>
 
@@ -44,7 +43,10 @@
 						<input type="text" 
 								placeholder="Numéro d'inventaire" 
 								id="numero" 
-								class="form-control me-3">
+								class="form-control me-3"
+								list="discs-choice">
+						{# <datalist id="discs-choice">
+						</datalist> #}
 						<button type="submit" 
 								id="add-numero" 
 								class="btn btn-outline-dark">
@@ -55,7 +57,7 @@
 
 				<div id="list-numeros" 
 					name="discs[]" 
-					class="row w-100 gx-0"></div>
+					class="row justify-content-center w-100 gx-0"></div>
 
 				<select multiple="multiple" 
 						name="discs[]" 

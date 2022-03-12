@@ -29,14 +29,11 @@
 			</div>
 		</form>
 
-		<div class="row">
+		<div class="row justify-content-center">
 			{% set i = 1 %}
 			{% for list in playlist.playlistHasDiscs %}
-				<div class="col-md-4">
+				<div class="col-md-auto gy-2">
 					<div class="card">
-						<a class="card-delete" href="{{ path('delete_disc_playlist', {'id': list.id}) }}" class="btn btn-secondary">
-							<i class="fa-solid fa-trash-can"></i>
-						</a>
 						<div class="card-body">
 							<h5 class="card-title">D{{ i }}
 								-
@@ -47,7 +44,11 @@
 								{{ list.disc.groupe }}</p>
 							<p class="card-text">Label :
 								{{ list.disc.label }}</p>
-
+							<div class="d-flex justify-content-end">
+								<a class="card-delete" href="{{ path('delete_disc_playlist', {'id': list.id}) }}" class="btn btn-secondary">
+									<i class="fa-solid fa-trash-can"></i>
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>

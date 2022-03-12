@@ -10,10 +10,10 @@
 		{{ form_start(searchPlaylistForm) }}
 		<div class="row justify-content-center">
 			<div class="col-md-6 col-lg-4">
-				{{ form_row(searchPlaylistForm.name , {'attr': {'class': 'form-control mb-3'}}) }}
+				{{ form_row(searchPlaylistForm.name , {'attr': {'class': 'form-control mb-3', 'placeholder': 'Saisissez un nom'}}) }}
 			</div>
 			<div class="col-md-6 col-lg-4">
-				{{ form_row(searchPlaylistForm.animator, {'attr': {'class': 'form-control mb-3'}}) }}
+				{{ form_row(searchPlaylistForm.animator, {'attr': {'class': 'form-control mb-3', 'placeholder': 'Saisissez un.e animateur.trice'}}) }}
 			</div>
 			<div class="col-md-6 col-lg-4">
 				{{ form_row(searchPlaylistForm.entry_date, {'attr': {'class': 'form-control mb-3'}}) }}
@@ -45,6 +45,7 @@
 	</section>
 
 	<section class="container">
+	{% if playlists %}
 		<table class="table mt-5 align-middle">
 			<thead>
 				<tr class="text-center">
@@ -55,7 +56,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% if playlists %}
+				{# {% if playlists %} #}
 					{% for pl in playlists %}
 						<tr class="text-center">
 							<td>{{ pl.entryDate|date("d/m/Y") }}</td>
@@ -95,10 +96,10 @@
 							</td>
 						</tr>
 					{% endfor %}
-				{% endif %}
+				{# {% endif %} #}
 			</tbody>
 		</table>
-
+	{% endif %}
 	</section>
 
 {% if count > 15 %}

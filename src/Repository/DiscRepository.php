@@ -361,7 +361,7 @@ class DiscRepository extends ServiceEntityRepository
         return $search;
     }
 
-    // public function searchDisc($data)
+    // public function searchDiscs($data)
     // {
     //     $search = $this->em->createQueryBuilder();
 
