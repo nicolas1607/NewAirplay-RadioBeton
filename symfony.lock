@@ -291,6 +291,9 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "soundasleep/html2text": {
+        "version": "2.0.0"
+    },
     "symfony/apache-pack": {
         "version": "1.0",
         "recipe": {
@@ -300,7 +303,7 @@
             "ref": "9d254a22efca7264203eea98b866f16f944b2f09"
         },
         "files": [
-            "./public/.htaccess"
+            "public/.htaccess"
         ]
     },
     "symfony/asset": {

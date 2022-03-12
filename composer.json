@@ -17,6 +17,7 @@
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpoffice/phpspreadsheet": "^1.21",
         "sensio/framework-extra-bundle": "^6.1",
+        "soundasleep/html2text": "^2.0",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "5.3.*",
         "symfony/console": "5.3.*",

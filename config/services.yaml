@@ -6,7 +6,7 @@
 parameters:
     excel: '%kernel.project_dir%/public/files/excel'
     pdf: '%kernel.project_dir%/public/files/pdf'
-    txt: '%kernel.project_dir%/public/statistics/txt'
+    txt: '%kernel.project_dir%/public/files/txt'
 
 services:
     # default configuration for services in *this* file
