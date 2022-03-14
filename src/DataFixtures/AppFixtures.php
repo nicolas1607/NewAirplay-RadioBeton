@@ -10,10 +10,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class AppFixtures extends Fixture
 {
     const FAKE_USERS = [
-        ['JSalmon', ['ROLE_SUPERADMIN'], 'superadmin_connexion'],
-        ['NMormiche', ['ROLE_ADMIN'], 'admin_connexion'],
-        ['ELamy', ['ROLE_ADMIN'], 'admin_connexion'],
-        ['LNicolas', ['ROLE_BENEVOLE'], 'benevole_connexion']
+        ['RadioBeton', ['ROLE_SUPERADMIN'], 'radiobeton93.6']
     ];
     
     private $hasher;

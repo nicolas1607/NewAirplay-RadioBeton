@@ -27,13 +27,13 @@
 
 		<div class="container">
 			{% for message in app.flashes('success') %}
-				<p class="mb-0 alert alert-success success-message mb-2">
+				<p class="mb-3 border border-0 rounded bg-success w-100 text-white text-center py-2 success-message" style="font-family: 'Montserrat'; font-style: normal;">
 					{{ message }}
 				</p>
 			{% endfor %}
 
 			{% for message in app.flashes('alert') %}
-				<p class="mb-0 alert alert-danger alert-message mb-2">
+				<p class="mb-3 border border-0 rounded bg-danger w-100 text-white text-center py-2 alert-message" style="font-family: 'Montserrat'; font-style: normal;">
 					{{ message }}
 				</p>
 			{% endfor %}
