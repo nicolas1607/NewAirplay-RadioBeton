@@ -28,8 +28,8 @@
 					<label for="name">Animateur.trice</label>
 					<input class="form-control" list="names-choice" id="name" name="name" placeholder="Sélectionnez un.e animateur.trice" value="{{ app.user.username }}" required>
 					<datalist id="names-choice">
-						{% for username in animators %}
-							<option value="{{ username }}"></option>
+						{% for name in animators %}
+							<option value="{{ name }}"></option>
 						{% endfor %}
 					</datalist>
 				</div>

@@ -15,7 +15,7 @@
 		</div>
 
 		<form action="{{ path('add_disc_playlist', {'playlist': playlist.id}) }}">
-			<div>
+			<div class="row justify-content-center w-100">
 				<div class="col-md-6 my-3">
 					<label for="numero">Numéro d'inventaire</label>
 
@@ -29,7 +29,7 @@
 			</div>
 		</form>
 
-		<div class="row justify-content-center">
+		<div class="row justify-content-center mb-5">
 			{% set i = 1 %}
 			{% for list in playlist.playlistHasDiscs %}
 				<div class="col-md-auto gy-2">

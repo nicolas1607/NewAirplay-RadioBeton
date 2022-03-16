@@ -37,13 +37,13 @@ class UserType extends AbstractType
                 'first_options' => [
                         'label' => 'Choisissez un mot de passe',
                         'attr' => [
-                            'class' => 'form-control mt-3'
+                            'class' => 'form-control mb-3'
                         ]
                 ],
                 'second_options' => [
                     'label' => 'Confirmez ce mot de passe',
                     'attr' => [
-                        'class' => 'form-control mt-3'
+                        'class' => 'form-control mb-3'
                     ]
                 ],
                 'required' => true

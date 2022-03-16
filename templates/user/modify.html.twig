@@ -7,7 +7,7 @@
 <div class="container">
 
 	<h1 class="h3 mb-3 font-weight-normal text-center">
-        Modification
+        {{ app.user.username }}
     </h1>
 
 	<div class="row justify-content-center">
@@ -18,18 +18,21 @@
 			</div>
 			<div class="row">
 				<div class="col">
-					{{ form_row(modify_user_form.username, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+                    {{ form_label(modify_user_form.username, "Nom d'utilisateur.trice", {'attr': {'class': 'mg-15 form-control mb-3'}})}}
+					{{ form_widget(modify_user_form.username, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
 					
+                    
+                    {{ form_label(modify_user_form.roles, "Role", {'attr': {'class': 'mg-15 form-control mb-3'}})}}
                     {% if 'ROLE_SUPERADMIN' in app.user.roles %}
-                        {{ form_row(modify_user_form.roles, {'attr': {'class': 'mg-15 form-select mb-3'}}) }}
+                        {{ form_widget(modify_user_form.roles, {'attr': {'class': 'mg-15 form-select mb-3'}}) }}
 					{% else %}
-                        {{ form_row(modify_user_form.roles, {
+                        {{ form_widget(modify_user_form.roles, {
                             'attr': {'class': 'mg-15 form-select mb-3'},
                             'disabled': 'true'}
                         ) }}
                     {% endif %}
 
-                    {{ form_label(modify_user_form.password, 'Modifier le mot de passe', {'attr': {'class': 'mg-15 form-control mb-3'}})}}
+                    {{ form_label(modify_user_form.password.first, 'Modifier le mot de passe', {'attr': {'class': 'mg-15 form-control mb-3'}})}}
                     {% if modify_user_form.password.first.vars['errors']|length > 0 %}
                         <ul class="list-unstyled">
                             {% for error in modify_user_form.password.first.vars['errors'] %}
@@ -44,7 +47,8 @@
                         'value' : modify_user_form.password.first.vars.data
                         })
                     }}
-
+                    
+                    {{ form_label(modify_user_form.password.second, 'Confirmer le nouveau mot de passe', {'attr': {'class': 'mg-15 form-control mb-3'}})}}
                     {% if modify_user_form.password.second.vars['errors']|length > 0 %}
                         <ul class="list-unstyled">
                             {% for error in modify_user_form.password.second.vars['errors'] %}
