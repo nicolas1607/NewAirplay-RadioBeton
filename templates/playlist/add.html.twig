@@ -5,12 +5,12 @@
 
 {% block body %}
 	<div class="container mb-2">
-		<p class="mb-0 alert alert-danger" id="wrong_inventory_number_alert" hidden>
+		<p class="mb-3 border border-0 rounded bg-danger w-100 text-white text-center py-2 message" id="wrong_inventory_number_alert" hidden>
 			Nope ! Le numéro est invalide.
 		</p>
 	</div>
 
-	<div class="container">
+	<div class="container mb-5">
 		<form class="" action="{{ path('playlist_add') }}" method="GET">
 
 			<div class="row">
@@ -28,14 +28,14 @@
 					<label for="name">Animateur.trice</label>
 					<input class="form-control" list="names-choice" id="name" name="name" placeholder="Sélectionnez un.e animateur.trice" value="{{ app.user.username }}" required>
 					<datalist id="names-choice">
-						{% for username in animators %}
-							<option value="{{ username }}"></option>
+						{% for name in animators %}
+							<option value="{{ name }}"></option>
 						{% endfor %}
 					</datalist>
 				</div>
 			</div>
 
-			<div class="w-100">
+			<div class="row justify-content-center w-100">
 				<div class="col-md-6 my-3">
 					<label for="numero">Numéro d'inventaire</label>
 
@@ -45,8 +45,6 @@
 								id="numero" 
 								class="form-control me-3"
 								list="discs-choice">
-						{# <datalist id="discs-choice">
-						</datalist> #}
 						<button type="submit" 
 								id="add-numero" 
 								class="btn btn-outline-dark">
@@ -65,8 +63,8 @@
 						hidden></select>
 			</div>
 
-			<div class="mt-5">
-				<button type="submit" class="btn btn-outline-warning">Ajouter</button>
+			<div class="d-flex justify-content-center mt-5">
+				<button type="submit" class="btn btn-outline-warning py-3 px-5">Ajouter</button>
 			</div>
 
 		</form>

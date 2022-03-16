@@ -3,48 +3,63 @@
 {% block title %}AirPlay | recherche d'une playlist{% endblock %}
 
 {% block body %}
+{# {{ dump(animators, playlists_names) }} #}
+<section class="container">
+	<h2 class="text-center mb-5">Rechercher une playlist</h2>
 
-	<section class="container">
-		<h2 class="text-center mb-5">Rechercher une playlist</h2>
-
-		{{ form_start(searchPlaylistForm) }}
-		<div class="row justify-content-center">
-			<div class="col-md-6 col-lg-4">
-				{{ form_row(searchPlaylistForm.name , {'attr': {'class': 'form-control mb-3', 'placeholder': 'Saisissez un nom'}}) }}
-			</div>
-			<div class="col-md-6 col-lg-4">
-				{{ form_row(searchPlaylistForm.animator, {'attr': {'class': 'form-control mb-3', 'placeholder': 'Saisissez un.e animateur.trice'}}) }}
-			</div>
-			<div class="col-md-6 col-lg-4">
-				{{ form_row(searchPlaylistForm.entry_date, {'attr': {'class': 'form-control mb-3'}}) }}
-			</div>
-			<div class="col-md-4">
-				<label for="order-by">Filtre</label>
-				<select class="form-control mb-3" name="order-by" id="order-by">
-					<option value="">---</option>
-					<option value="arrival">Date de saisie</option>
-					<option value="animator">Animateur</option>
-					<option value="name">Nom de la playlist</option>
-				</select>
-			</div>
-			<div class="col-md-4">
-				<label for="order-by">Ordre</label>
-				<select class="form-control mb-3" name="order" id="order">
-					<option value="ASC">croissant</option>
-					<option value="DESC">décroissant</option>
-				</select>
-			</div>
+	{{ form_start(searchPlaylistForm) }}
+	<div class="row justify-content-center">
+		<div class="col-md-6 col-lg-4">
+			{# {{ form_row(searchPlaylistForm.name , {'attr': {'class': 'form-control mb-3', 'placeholder': 'Saisissez un nom'}}) }} #}
+			<label for="name">Nom de la playlist</label>
+			<input class="form-control" list="names-choice" id="name" name="name" placeholder="Sélectionnez une playlist">
+			<datalist id="names-choice">
+				{% for name in playlists_names %}
+					<option value="{{ name }}"></option>
+				{% endfor %}
+			</datalist>
 		</div>
-		<div class="row">
-			<div class="col text-center">
-				{{ form_row(searchPlaylistForm.rechercher) }}
-			</div>
+		<div class="col-md-6 col-lg-4">
+			{# {{ form_row(searchPlaylistForm.animator, {'attr': {'class': 'form-control mb-3', 'placeholder': 'Saisissez un.e animateur.trice'}}) }} #}
+			<label for="name">Animateur.trice</label>
+			<input class="form-control" list="animators-choice" id="animator" name="animator" placeholder="Sélectionnez un.e animateur.trice">
+			<datalist id="animators-choice">
+				{% for animator in animators %}
+					<option value="{{ animator }}"></option>
+				{% endfor %}
+			</datalist>
+
 		</div>
-		{{ form_end(searchPlaylistForm) }}
+		<div class="col-md-6 col-lg-4">
+			{{ form_row(searchPlaylistForm.entry_date, {'attr': {'class': 'form-control mb-3'}}) }}
+		</div>
+		<div class="col-md-4">
+			<label for="order-by">Filtre</label>
+			<select class="form-control mb-3" name="order-by" id="order-by">
+				<option value="">---</option>
+				<option value="arrival">Date de saisie</option>
+				<option value="animator">Animateur.trice</option>
+				<option value="name">Nom de la playlist</option>
+			</select>
+		</div>
+		<div class="col-md-4">
+			<label for="order-by">Ordre</label>
+			<select class="form-control mb-3" name="order" id="order">
+				<option value="ASC">croissant</option>
+				<option value="DESC">décroissant</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col text-center">
+			{{ form_row(searchPlaylistForm.rechercher) }}
+		</div>
+	</div>
+	{{ form_end(searchPlaylistForm) }}
 
-	</section>
+</section>
 
-	<section class="container">
+<section class="container mb-5">
 	{% if playlists %}
 		<table class="table mt-5 align-middle">
 			<thead>
@@ -56,51 +71,49 @@
 				</tr>
 			</thead>
 			<tbody>
-				{# {% if playlists %} #}
-					{% for pl in playlists %}
-						<tr class="text-center">
-							<td>{{ pl.entryDate|date("d/m/Y") }}</td>
-							<td>{{ pl.animator }}</td>
-							<td>
-							{% if pl.name %}
-								{{ pl.name }}
-							{% else %}
-								###
-							{% endif %}
-							</td>
-							<td class="table-action">
-								{% if is_granted('ROLE_BENEVOLE') %}
-									{% if app.user.username is same as(pl.animator) %}
-										<a href="{{ path('show_playlist', {'id': pl.id}) }}" class="btn btn-outline-dark">
-											<i class="fa-solid fa-pencil"></i>
-										</a>
-										<a href="{{ path('delete_playlist', {'id': pl.id, 'parameters': parameters}) }}" class="btn btn-outline-dark disabled">
-											<i class="fa-solid fa-trash-can"></i>
-										</a>
-									{% else %}
-										<a href="#" class="btn btn-outline-dark disabled">
-											<i class="fa-solid fa-pencil"></i>
-										</a>
-										<a href="#" class="btn btn-outline-dark disabled">
-											<i class="fa-solid fa-trash-can"></i>
-										</a>
-									{% endif %}
-								{% else %}
+				{% for pl in playlists %}
+					<tr class="text-center">
+						<td>{{ pl.entryDate|date("d/m/Y") }}</td>
+						<td>{{ pl.animator }}</td>
+						<td>
+						{% if pl.name %}
+							{{ pl.name }}
+						{% else %}
+							###
+						{% endif %}
+						</td>
+						<td class="table-action">
+							{% if is_granted('ROLE_BENEVOLE') %}
+								{% if app.user.username is same as(pl.animator) %}
 									<a href="{{ path('show_playlist', {'id': pl.id}) }}" class="btn btn-outline-dark">
 										<i class="fa-solid fa-pencil"></i>
 									</a>
-									<a href="{{ path('delete_playlist', {'id': pl.id, 'parameters': parameters}) }}" class="btn btn-outline-dark delete">
+									<a href="{{ path('delete_playlist', {'id': pl.id, 'parameters': parameters}) }}" class="btn btn-outline-dark disabled">
+										<i class="fa-solid fa-trash-can"></i>
+									</a>
+								{% else %}
+									<a href="#" class="btn btn-outline-dark disabled">
+										<i class="fa-solid fa-pencil"></i>
+									</a>
+									<a href="#" class="btn btn-outline-dark disabled">
 										<i class="fa-solid fa-trash-can"></i>
 									</a>
 								{% endif %}
-							</td>
-						</tr>
-					{% endfor %}
-				{# {% endif %} #}
+							{% else %}
+								<a href="{{ path('show_playlist', {'id': pl.id}) }}" class="btn btn-outline-dark">
+									<i class="fa-solid fa-pencil"></i>
+								</a>
+								<a href="{{ path('delete_playlist', {'id': pl.id, 'parameters': parameters}) }}" class="btn btn-outline-dark delete">
+									<i class="fa-solid fa-trash-can"></i>
+								</a>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
 			</tbody>
 		</table>
 	{% endif %}
-	</section>
+</section>
 
 {% if count > 15 %}
 	{% if currentPage != null and totalPages != null and parameters != null %}

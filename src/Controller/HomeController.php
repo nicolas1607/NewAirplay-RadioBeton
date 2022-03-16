@@ -28,16 +28,13 @@ class HomeController extends AbstractController
     {
         $roles = $this->getUser()->getRoles();
 
-        foreach($roles as $role)
+        if(in_array('ROLE_BENEVOLE', $roles))
         {
-            if($role === 'ROLE_BENEVOLE')
-            {
-                return $this->redirectToRoute('playlist_add');
-            }
-            else 
-            {
-                return $this->redirectToRoute('add_disc');
-            }
+            return $this->redirectToRoute('playlist_add');
+        }
+        else
+        {
+            return $this->redirectToRoute('add_disc');
         }
     }
 }

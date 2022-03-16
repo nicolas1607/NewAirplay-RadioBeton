@@ -15,20 +15,20 @@ class SearchPlaylistType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, [
-                'label' => 'Nom de la playlist',
-                'required' => false,
-                'attr' => [
-                    'class' => 'form-control'
-                ]
-            ])
-            ->add('animator', TextType::class, [
-                'label' => 'Animateur.trice',
-                'required' => false,
-                'attr' => [
-                    'class' => 'form-control'
-                ]
-            ])
+            // ->add('name', TextType::class, [
+            //     'label' => 'Nom de la playlist',
+            //     'required' => false,
+            //     'attr' => [
+            //         'class' => 'form-control'
+            //     ]
+            // ])
+            // ->add('animator', TextType::class, [
+            //     'label' => 'Animateur.trice',
+            //     'required' => false,
+            //     'attr' => [
+            //         'class' => 'form-control'
+            //     ]
+            // ])
             ->add('entry_date', DateType::class, [
                 'label' => 'Date d\'arrivée',
                 'required' => false,

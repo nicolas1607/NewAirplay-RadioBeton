@@ -27,13 +27,13 @@
 
 		<div class="container">
 			{% for message in app.flashes('success') %}
-				<p class="mb-0 alert alert-success success-message mb-2">
+				<p class="mb-3 border border-0 rounded bg-success w-100 text-white text-center py-2 success-message" style="font-family: 'Montserrat'; font-style: normal;">
 					{{ message }}
 				</p>
 			{% endfor %}
 
 			{% for message in app.flashes('alert') %}
-				<p class="mb-0 alert alert-danger alert-message mb-2">
+				<p class="mb-3 border border-0 rounded bg-danger w-100 text-white text-center py-2 alert-message" style="font-family: 'Montserrat'; font-style: normal;">
 					{{ message }}
 				</p>
 			{% endfor %}
@@ -44,10 +44,9 @@
 		{% block javascripts %}
 			<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.1/js/bootstrap.min.js'></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js"></script>
-			{# // <script src="/js/addTrackstoList.js"></script> #}
-			<script src="{{ absolute_url( asset('js/manageInputsValues.js') ) }}"></script>
-			<script src="{{ absolute_url( asset('js/confirmBeforeDelete.js') ) }}"></script>
-			<script src="{{ absolute_url( asset('js/addTracksToList.js') ) }}"></script>
+			<script src="{{ asset('js/manageInputsValues.js') }}"></script>
+			<script src="{{ asset('js/confirmBeforeDelete.js') }}"></script>
+			<script src="{{ asset('js/addTracksToList.js') }}"></script>
 			<script src="{{ asset('/js/attributeInventoryNum.js') }}"></script>
 			<script src="{{ asset('/js/selectExportFormat.js') }}"></script>
 			<script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>

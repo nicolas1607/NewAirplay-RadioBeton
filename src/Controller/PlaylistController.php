@@ -93,10 +93,10 @@ class PlaylistController extends AbstractController
         }
 
         // Récupération des animateurs depuis la table 'playlist', pour ensuite les dédoublonner et les renvoyer vers le front
-        $users = $this->em->getRepository(User::class)->findAll();
+        $playlists = $this->em->getRepository(Playlist::class)->findAll();
         $animatorsAll = [];
-        foreach ($users as $user) {
-            array_push($animatorsAll, $user->getUsername());
+        foreach ($playlists as $playlist) {
+            array_push($animatorsAll, $playlist->getAnimator());
         }
         $animators = array_unique($animatorsAll, SORT_REGULAR);
 
@@ -114,24 +114,34 @@ class PlaylistController extends AbstractController
     {
         $searchPlaylistForm = $this->createForm(SearchPlaylistType::class);
         $searchPlaylistForm->handleRequest($request);
+
+        $playlists = $this->em->getRepository(Playlist::class)->findAll();
+        $animatorsAll = [];
+        $namesAll = [];
+        foreach ($playlists as $playlist) {
+            array_push($animatorsAll, $playlist->getAnimator());
+            array_push($namesAll, $playlist->getName());
+        }
+        $animators = array_unique($animatorsAll, SORT_REGULAR);
+        $names = array_unique($namesAll, SORT_REGULAR);
         
         if ($searchPlaylistForm->isSubmitted() && $searchPlaylistForm->isValid()) {
             $search = $searchPlaylistForm->getData();
 
             $playlistsQuery = $this->playlistRepo->search(
-                $search->getName(), 
-                $search->getAnimator(), 
+                $request->get('name'),
+                $request->get('animator'),
                 $search->getEntryDate(),
-                $request->request->get('order-by'), 
-                $request->request->get('order')
+                $request->get('order-by'), 
+                $request->get('order')
             );
             
             $parameters = [
-                $search->getName() ? $search->getName() : "", 
-                $search->getAnimator() ? $search->getAnimator() : "", 
+                $request->get('name') ? $request->get('name') : "", 
+                $request->get('animator') ? $request->get('animator') : "", 
                 $search->getEntryDate() ? $search->getEntryDate() : "",
-                $request->request->get('order-by') ? $request->request->get('order-by') : "",
-                $request->request->get('order') ? $request->request->get('order') : ""
+                $request->get('order-by') ? $request->get('order-by') : "",
+                $request->get('order') ? $request->get('order') : ""
             ];
            
             $limit = 15;
@@ -154,6 +164,8 @@ class PlaylistController extends AbstractController
             return $this->render('playlist/search.html.twig', [
                 'searchPlaylistForm' => $searchPlaylistForm->createView(),
                 'playlists' => $playlists,
+                'playlists_names' => $names,
+                'animators' => $animators,
                 'totalPages' => ceil($paginator->count() / $limit),
                 'currentPage' => $currentPage,
                 'issues' => $paginator->getIterator(),
@@ -195,6 +207,8 @@ class PlaylistController extends AbstractController
             return $this->render('playlist/search.html.twig', [
                 'searchPlaylistForm' => $searchPlaylistForm->createView(),
                 'playlists' => $playlists,
+                'playlists_names' => $names,
+                'animators' => $animators,
                 'totalPages' => ceil($paginator->count() / $limit),
                 'currentPage' => $currentPage,
                 'issues' => $paginator->getIterator(),
@@ -202,10 +216,12 @@ class PlaylistController extends AbstractController
                 'count' => $paginator->count()
             ]);
         }
-        
+
         return $this->render('playlist/search.html.twig', [
             'searchPlaylistForm' => $searchPlaylistForm->createView(),
             'playlists' => null,
+            'playlists_names' => $names,
+            'animators' => $animators,
             'totalPages' => null,
             'currentPage' => null,
             'issues' => null,
@@ -381,23 +397,6 @@ class PlaylistController extends AbstractController
             'album' => $disc->getAlbum(),
             'inventory_num' => $disc->getNumInventory()
         ]);
-
-        // $discs = $this->em->getRepository(Disc::class)->searchDiscs($numero);
-        
-        // $results = [];
-        // foreach($discs as $disc)
-        // {
-        //     $result = [
-        //         'id' => $disc->getId(),
-        //         'group' => $disc->getGroupe(),
-        //         'album' => $disc->getAlbum(),
-        //         'inventory_num' => $disc->getNumInventory()
-        //     ];
-
-        //     array_push($results, $result);
-        // }
-
-        // $response = new JsonResponse($results);
         
         if($response)
         {
