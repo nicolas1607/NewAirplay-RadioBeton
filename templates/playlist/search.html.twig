@@ -12,7 +12,7 @@
 		<div class="col-md-6 col-lg-4">
 			{# {{ form_row(searchPlaylistForm.name , {'attr': {'class': 'form-control mb-3', 'placeholder': 'Saisissez un nom'}}) }} #}
 			<label for="name">Nom de la playlist</label>
-			<input class="form-control" list="names-choice" id="name" name="name" placeholder="Sélectionnez une playlist">
+			<input class="form-control secure" list="names-choice" id="bname" name="name" placeholder="Sélectionnez une playlist">
 			<datalist id="names-choice">
 				{% for name in playlists_names %}
 					<option value="{{ name }}"></option>
@@ -22,7 +22,7 @@
 		<div class="col-md-6 col-lg-4">
 			{# {{ form_row(searchPlaylistForm.animator, {'attr': {'class': 'form-control mb-3', 'placeholder': 'Saisissez un.e animateur.trice'}}) }} #}
 			<label for="name">Animateur.trice</label>
-			<input class="form-control" list="animators-choice" id="animator" name="animator" placeholder="Sélectionnez un.e animateur.trice">
+			<input class="form-control secure" list="animators-choice" id="animator" name="animator" placeholder="Sélectionnez un.e animateur.trice">
 			<datalist id="animators-choice">
 				{% for animator in animators %}
 					<option value="{{ animator }}"></option>

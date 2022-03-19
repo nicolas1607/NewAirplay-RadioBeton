@@ -16,17 +16,17 @@
 			<div class="row">
 				<div class="col-4">
 					<label for="date">Date</label>
-					<input class="form-control" type="date" id="date" name="date" value="jj/mm/aaaa" min="1980-01-01" max="2050-12-31" required>
+					<input class="form-control secure" type="date" id="date" name="date" value="jj/mm/aaaa" min="1980-01-01" max="2050-12-31" required>
 				</div>
 
 				<div class="col-4">
 					<label for="title">Nom</label>
-					<input class="form-control" type="text" id="title" name="title" placeholder="Saissez un nom de playlist" required>
+					<input class="form-control secure" type="text" id="title" name="title" placeholder="Saissez un nom de playlist" required>
 				</div>
 
 				<div class="col-4">
 					<label for="name">Animateur.trice</label>
-					<input class="form-control" list="names-choice" id="name" name="name" placeholder="Sélectionnez un.e animateur.trice" value="{{ app.user.username }}" required>
+					<input class="form-control secure" list="names-choice" id="name" name="name" placeholder="Sélectionnez un.e animateur.trice" value="{{ app.user.username }}" required>
 					<datalist id="names-choice">
 						{% for name in animators %}
 							<option value="{{ name }}"></option>
