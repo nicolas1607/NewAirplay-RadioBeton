@@ -18,8 +18,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DiscController extends AbstractController
 {
-    private DiscRepository $discRepo;
-    private EntityManagerInterface $em;
+    private $discRepo;
+    private $em;
 
     public function __construct(DiscRepository $discRepo, EntityManagerInterface $em)
     {
@@ -79,33 +79,33 @@ class DiscController extends AbstractController
             // dd( $search->getNumInventory(), $search->getAlbum(), $search->getGroupe(), $request->request->get('order') );
 
             $discsQuery = $this->discRepo->search(
-                $search->getNumInventory(), 
-                $search->getAlbum(), 
+                $search->getNumInventory(),
+                $search->getAlbum(),
                 $search->getGroupe(),
-                $request->request->get('order-by'), 
+                $request->request->get('order-by'),
                 $request->request->get('order')
             );
-            
+
             $parameters = [
-                $search->getNumInventory() ? $search->getNumInventory() : "", 
-                $search->getAlbum() ? $search->getAlbum() : "", 
+                $search->getNumInventory() ? $search->getNumInventory() : "",
+                $search->getAlbum() ? $search->getAlbum() : "",
                 $search->getGroupe() ? $search->getGroupe() : "",
                 $request->request->get('order-by') ? $request->request->get('order-by') : "",
                 $request->request->get('order') ? $request->request->get('order') : ""
             ];
-            
+
             $limit = 15;
             $page = $request->query->get('page');
-            if($page === null){
+            if ($page === null) {
                 $currentPage = 1;
             } else {
                 $currentPage = $page;
             }
             $offset = ($currentPage - 1) * $limit;
             $query = $this->em->createQuery($discsQuery->getDQL())
-                                ->setFirstResult($offset)
-                                ->setMaxResults($limit);
-            
+                ->setFirstResult($offset)
+                ->setMaxResults($limit);
+
             $paginator = new Paginator($query, $fetchJoinCollection = false);
             $discs = [];
             foreach ($paginator as $disc) {
@@ -123,10 +123,9 @@ class DiscController extends AbstractController
             ]);
         }
 
-        if($request->query->get('page') && $request->query->get('parameters'))
-        {
+        if ($request->query->get('page') && $request->query->get('parameters')) {
             $parameters = $request->query->get('parameters');
-            
+
             $numInventory = $parameters[0];
             $album = $parameters[1];
             $groupe = $parameters[2];
@@ -134,18 +133,18 @@ class DiscController extends AbstractController
             $order = $parameters[4];
 
             $discsQuery = $this->discRepo->search($numInventory, $album, $groupe, $orderBy, $order);
-            
+
             $limit = 15;
             $page = $request->query->get('page');
-            if($page === null){
+            if ($page === null) {
                 $currentPage = 1;
             } else {
                 $currentPage = $page;
             }
             $offset = ($currentPage - 1) * $limit;
             $query = $this->em->createQuery($discsQuery->getDQL())
-                                ->setFirstResult($offset)
-                                ->setMaxResults($limit);
+                ->setFirstResult($offset)
+                ->setMaxResults($limit);
 
             $paginator = new Paginator($query, $fetchJoinCollection = false);
             $discs = [];
@@ -207,18 +206,15 @@ class DiscController extends AbstractController
      */
     public function delete(Request $request, Disc $disc): Response
     {
-        if($disc)
-        {
+        if ($disc) {
             $this->em->remove($disc);
             $this->em->flush();
-            
+
             $this->addFlash(
                 'success',
                 'Disque supprimé...'
             );
-        }
-        else 
-        {
+        } else {
             $this->addFlash(
                 'alert',
                 'Ha ? Il y a eu un problème...'
@@ -237,18 +233,18 @@ class DiscController extends AbstractController
         $order = $parameters[4];
 
         $discsQuery = $this->discRepo->search($numInventory, $album, $groupe, $orderBy, $order);
-        
+
         $limit = 15;
         $page = $request->query->get('page');
-        if($page === null){
+        if ($page === null) {
             $currentPage = 1;
         } else {
             $currentPage = $page;
         }
         $offset = ($currentPage - 1) * $limit;
         $query = $this->em->createQuery($discsQuery->getDQL())
-                            ->setFirstResult($offset)
-                            ->setMaxResults($limit);
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
 
         $paginator = new Paginator($query, $fetchJoinCollection = false);
         $discs = [];

@@ -11,6 +11,7 @@
 	{% block stylesheets %}
 	<link rel="stylesheet" href="{{asset('css/style.css')}}">
 	<link rel="stylesheet" href="https://bootswatch.com/5/litera/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.css" rel="stylesheet">
 	<link rel="icon" type="image/png" href="{{asset('img/logo2.png')}}" />	
@@ -27,13 +28,13 @@
 
 		<div class="container">
 			{% for message in app.flashes('success') %}
-				<p class="mb-3 border border-0 rounded bg-success w-100 text-white text-center py-2 success-message" style="font-family: 'Montserrat'; font-style: normal;">
+				<p class="animate__animated animate__fadeIn mb-3 border border-0 rounded bg-success w-auto text-white text-center py-2 success-message" style="font-family: 'Montserrat'; font-style: normal;">
 					{{ message }}
 				</p>
 			{% endfor %}
 
 			{% for message in app.flashes('alert') %}
-				<p class="mb-3 border border-0 rounded bg-danger w-100 text-white text-center py-2 alert-message" style="font-family: 'Montserrat'; font-style: normal;">
+				<p class="animate__animated animate__fadeInRight mb-3 border border-0 rounded bg-danger w-auto text-white text-center py-2 alert-message" style="font-family: 'Montserrat'; font-style: normal;">
 					{{ message }}
 				</p>
 			{% endfor %}
@@ -44,16 +45,23 @@
 		{% block javascripts %}
 			<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.1/js/bootstrap.min.js'></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js"></script>
-			<script src="{{ asset('js/manageInputsValues.js') }}"></script>
-			<script src="{{ asset('js/confirmBeforeDelete.js') }}"></script>
-			<script src="{{ asset('js/addTracksToList.js') }}"></script>
-			<script src="{{ asset('/js/attributeInventoryNum.js') }}"></script>
+			<script src="{{ absolute_url( asset('js/confirmBeforeDelete.js') ) }}"></script>
 			<script src="{{ asset('/js/selectExportFormat.js') }}"></script>
 			<script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
     		<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 		{% endblock %}
 
 	</div>
+
+	<script>
+		setTimeout(() => {
+			const success = document.querySelector('.bg-success');
+			const danger = document.querySelector('.bg-danger');
+			if (success) success.className = "animate__animated animate__fadeOut mb-3 border border-0 rounded bg-success w-auto text-white text-center py-2 success-message";
+		}, 3000);
+	</script>
 </body>
+
+
 
 </html>

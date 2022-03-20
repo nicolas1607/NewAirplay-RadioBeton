@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
 {
-    private EntityManagerInterface $em;
+    private $em;
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -56,13 +56,13 @@ class UserController extends AbstractController
 
             $this->em->persist($user);
             $this->em->flush();
-            
+
             $this->addFlash(
                 'success',
                 'Yes ! Il y a une nouvelle ou un nouveau dans l\'équipe.'
             );
 
-            return $this->redirectToRoute('user');
+            return $this->redirectToRoute('add_user');
         }
 
         return $this->render('user/add.html.twig', [
@@ -83,8 +83,7 @@ class UserController extends AbstractController
         if ($modifyUserForm->isSubmitted() && $modifyUserForm->isValid()) {
             $user = $modifyUserForm->getData();
 
-            if($encoder->needsRehash($user))
-            {
+            if ($encoder->needsRehash($user)) {
                 $password = $user->getPassword();
                 $passwordHashed = $encoder->hashPassword($user, $password);
                 $user->setPassword($passwordHashed);
@@ -111,7 +110,7 @@ class UserController extends AbstractController
      * @Security("is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
     public function deleteUser(User $user)
-    {  
+    {
         $this->addFlash(
             'success',
             'Utilisateur supprimé !'

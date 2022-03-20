@@ -15,8 +15,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  */
 class PlaylistRepository extends ServiceEntityRepository
 {
-    private EntityManagerInterface $em;
-    
+    private $em;
+
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $em)
     {
         parent::__construct($registry, Playlist::class);
@@ -69,41 +69,32 @@ class PlaylistRepository extends ServiceEntityRepository
         $search = $this->em->createQueryBuilder();
 
         $search->select('pl')
-               ->from('App\Entity\Playlist', 'pl');
-        
-        if($name)
-        {
+            ->from('App\Entity\Playlist', 'pl');
+
+        if ($name) {
             $search->andWhere(
-                $search->expr()->like('pl.name', $search->expr()->literal('%'.$name.'%')),
+                $search->expr()->like('pl.name', $search->expr()->literal('%' . $name . '%')),
             );
         }
 
-        if($animator)
-        {
+        if ($animator) {
             $search->andWhere(
-                $search->expr()->like('pl.animator', $search->expr()->literal('%'.$animator.'%')),
+                $search->expr()->like('pl.animator', $search->expr()->literal('%' . $animator . '%')),
             );
         }
 
-        if($date)
-        {
+        if ($date) {
             $search->andWhere(
                 $search->expr()->eq('pl.entry_date', $search->expr()->literal($date->format('Y-m-d H:i:s'))),
             );
         }
 
-        if($orderBy)
-        {
-            if($orderBy === 'arrival')
-            {
+        if ($orderBy) {
+            if ($orderBy === 'arrival') {
                 $search->orderBy('pl.entry_date', $order);
-            }
-            elseif($orderBy === 'animator')
-            {
+            } elseif ($orderBy === 'animator') {
                 $search->orderBy('pl.animator', $order);
-            }
-            elseif($orderBy === 'name')
-            {
+            } elseif ($orderBy === 'name') {
                 $search->orderBy('pl.name', $order);
             }
         }

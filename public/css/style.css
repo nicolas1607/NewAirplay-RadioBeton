@@ -178,3 +178,11 @@ a {
     font-family: "Montserrat";
 	font-style: normal;
 }
+
+.bg-success,
+.bg-danger {
+    position: absolute;
+    right: 4rem;
+    top: 8rem;
+    padding: 2rem 1rem;
+}

@@ -23,33 +23,32 @@ let validDisc = null;
 
 addNumero.addEventListener('click', (ev) => {
     ev.preventDefault();
-    
+
     const value = numero.value;
     const regex = new RegExp(/[0-9]/);
-    
-    if(value && regex.test(value) && value !== '0')
-    {
-        fetch(Routing.generate('request_disc', {'numero': value}), {
+
+    if (value && regex.test(value) && value !== '0') {
+        fetch(Routing.generate('request_disc', { 'numero': value }), {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
             }
         })
-        .then(function (request) {
-            if (request.ok) {
-                request.text().then((response) => {
-                    let disc = JSON.parse(response);
-                    createBadge(disc);
-                    createSelectOption(disc);
-                });
-            } else {
-                wrongInventoryNumMessage.hidden = false;
-                setTimeout(() => {
-                    wrongInventoryNumMessage.hidden = true;
-                }, 1000);
-                numero.value = "";
-            }
-        })
+            .then(function (request) {
+                if (request.ok) {
+                    request.text().then((response) => {
+                        let disc = JSON.parse(response);
+                        createBadge(disc);
+                        createSelectOption(disc);
+                    });
+                } else {
+                    wrongInventoryNumMessage.hidden = false;
+                    setTimeout(() => {
+                        wrongInventoryNumMessage.hidden = true;
+                    }, 1000);
+                    numero.value = "";
+                }
+            })
     }
     else {
         wrongInventoryNumMessage.hidden = false;

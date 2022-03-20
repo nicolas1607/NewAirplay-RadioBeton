@@ -10,13 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class LanguageController extends AbstractController
 {
-    private EntityManagerInterface $em;
+    private $em;
 
-    public function __construct(EntityManagerInterface $em) 
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
-    
+
     /**
      * @Route("/language", name="language")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
@@ -24,7 +24,7 @@ class LanguageController extends AbstractController
     public function index(): Response
     {
         $languages = $this->em->getRepository(Language::class)->findAll();
-        
+
         return $this->render('nationality/index.html.twig', [
             'languages' => $languages,
         ]);
@@ -34,15 +34,14 @@ class LanguageController extends AbstractController
      * @Route("/language/add", name="add_language")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
-    public function addLanguage(Request $request): Response 
+    public function addLanguage(Request $request): Response
     {
         $language = new Language;
         $addLanguageForm = $this->createForm(LanguageType::class, $nationality);
 
         $addLanguageForm->handleRequest($request);
 
-        if($addLanguageForm->isSubmitted() && $addLanguageForm->isValid())
-        {
+        if ($addLanguageForm->isSubmitted() && $addLanguageForm->isValid()) {
             $language = $addLanguageForm->getData();
 
             $this->em->persist($language);
@@ -60,14 +59,13 @@ class LanguageController extends AbstractController
      * @Route("/language/modify/{id}", name="modify_language")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
-    public function modifyLanguage(Language $language, Request $request): Response 
+    public function modifyLanguage(Language $language, Request $request): Response
     {
         $modifyLanguageForm = $this->createForm(LanguageType::class, $nationality);
 
         $modifyLanguageForm->handleRequest($request);
 
-        if($modifyLanguageForm->isSubmitted() && $modifyLanguageForm->isValid())
-        {
+        if ($modifyLanguageForm->isSubmitted() && $modifyLanguageForm->isValid()) {
             $language = $modifyLanguageForm->getData();
 
             $this->em->persist($language);
@@ -85,7 +83,7 @@ class LanguageController extends AbstractController
      * @Route("/language/delete/{id}", name="delete_language")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN')", message="Vous n'avez pas l'accès autorisé")
      */
-    public function deleteType(Language $language): Response 
+    public function deleteType(Language $language): Response
     {
         $this->em->remove($language);
         $this->em->flush();

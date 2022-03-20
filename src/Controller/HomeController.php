@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
-    private EntityManagerInterface $em;
+    private $em;
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -28,13 +28,12 @@ class HomeController extends AbstractController
     {
         $roles = $this->getUser()->getRoles();
 
-        if(in_array('ROLE_BENEVOLE', $roles))
-        {
-            return $this->redirectToRoute('playlist_add');
-        }
-        else
-        {
-            return $this->redirectToRoute('add_disc');
+        foreach ($roles as $role) {
+            if ($role === 'ROLE_BENEVOLE') {
+                return $this->redirectToRoute('playlist_add');
+            } else {
+                return $this->redirectToRoute('add_disc');
+            }
         }
     }
 }

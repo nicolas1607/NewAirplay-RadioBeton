@@ -15,8 +15,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  */
 class DiscRepository extends ServiceEntityRepository
 {
-    private EntityManagerInterface $em;
-    
+    private $em;
+
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $em)
     {
         parent::__construct($registry, Disc::class);
@@ -62,7 +62,7 @@ class DiscRepository extends ServiceEntityRepository
     public function search($numInventory, $album, $groupe, $orderBy, $order): object
     {
         // $search = "SELECT d FROM App:disc d ";
-        
+
         // if ($numInventory) {
         //     $search .= "WHERE d.num_inventory = '" . $numInventory . "'";
         // }
@@ -94,55 +94,40 @@ class DiscRepository extends ServiceEntityRepository
         $search = $this->em->createQueryBuilder();
 
         $search->select('d')
-               ->from('App\Entity\Disc', 'd');
-        
-        if($numInventory)
-        {
+            ->from('App\Entity\Disc', 'd');
+
+        if ($numInventory) {
+            $search->andWhere(
+                $search->expr()->eq('d.num_inventory', $search->expr()->literal($numInventory)),
+            );
+        } elseif ($numInventory === 0) {
             $search->andWhere(
                 $search->expr()->eq('d.num_inventory', $search->expr()->literal($numInventory)),
             );
         }
-        elseif($numInventory === 0)
-        {
+
+        if ($album) {
             $search->andWhere(
-                $search->expr()->eq('d.num_inventory', $search->expr()->literal($numInventory)),
+                $search->expr()->like('d.album', $search->expr()->literal('%' . $album . '%')),
             );
         }
 
-        if($album)
-        {
+        if ($groupe) {
             $search->andWhere(
-                $search->expr()->like('d.album', $search->expr()->literal('%'.$album.'%')),
+                $search->expr()->like('d.groupe', $search->expr()->literal('%' . $groupe . '%')),
             );
         }
 
-        if($groupe)
-        {
-            $search->andWhere(
-                $search->expr()->like('d.groupe', $search->expr()->literal('%'.$groupe.'%')),
-            );
-        }
-
-        if($orderBy)
-        {
-            if($orderBy === 'arrival')
-            {
+        if ($orderBy) {
+            if ($orderBy === 'arrival') {
                 $search->orderBy('d.arrival_date', $order);
-            }
-            elseif($orderBy === 'leave')
-            {
+            } elseif ($orderBy === 'leave') {
                 $search->orderBy('d.leave_date', $order);
-            }
-            elseif($orderBy === 'group')
-            {
+            } elseif ($orderBy === 'group') {
                 $search->orderBy('d.groupe', $order);
-            }
-            elseif($orderBy === 'label')
-            {
+            } elseif ($orderBy === 'label') {
                 $search->orderBy('d.label', $order);
-            }
-            elseif($orderBy === 'album')
-            {
+            } elseif ($orderBy === 'album') {
                 $search->orderBy('d.album', $order);
             }
         }
@@ -352,9 +337,9 @@ class DiscRepository extends ServiceEntityRepository
         }
         if ($emprunt) {
             if (str_contains($search, 'WHERE')) {
-                $search .= " AND d.leave_name = '" . $emprunt . "'";
+                $search .= " AND pl.animator = '" . $emprunt . "'";
             } else {
-                $search .= "WHERE d.leave_name = '" . $emprunt . "'";
+                $search .= "WHERE pl.animator = '" . $emprunt . "'";
             }
         }
         $search .= " AND d.num_inventory != '' ";
@@ -377,7 +362,7 @@ class DiscRepository extends ServiceEntityRepository
     //             )
     //         );
     //     }
-        
+
     //     return $search->getQuery()->getResult();
     // }
 }

@@ -20,8 +20,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PlaylistController extends AbstractController
 {
-    private EntityManagerInterface $em;
-    private PlaylistRepository $playlistRepo;
+    private $em;
+    private $playlistRepo;
 
     public function __construct(EntityManagerInterface $em, PlaylistRepository $playlistRepo)
     {
@@ -52,27 +52,24 @@ class PlaylistController extends AbstractController
         $animator = $request->query->get('name');
         $discs = $request->query->get('discs');
 
-        if($date || $name || $animator || $discs)
-        {
-            if($discs)
-            {
+        if ($date || $name || $animator || $discs) {
+            if ($discs) {
                 $playlist = new PlayList();
 
                 $playlist->setEntryDate(new \DateTime($date))
-                        ->setName($name)
-                        ->setAnimator($animator);
+                    ->setName($name)
+                    ->setAnimator($animator);
 
-                foreach($discs as $id)
-                {
+                foreach ($discs as $id) {
                     $relation = new PlaylistHasDisc;
-                    
+
                     $disc = $this->em->getRepository(Disc::class)->findOneBy([
                         'id' => $id
                     ]);
 
-                    $playlist->addPlaylistHasDisc( $relation->setDisc($disc) );
+                    $playlist->addPlaylistHasDisc($relation->setDisc($disc));
                 }
-                
+
                 $this->em->persist($playlist);
                 $this->em->flush();
 
@@ -82,9 +79,7 @@ class PlaylistController extends AbstractController
                 );
 
                 return $this->redirectToRoute('playlist_add');
-            }
-            else
-            {
+            } else {
                 $this->addFlash(
                     'alert',
                     'Nope ! Il n\'y a aucun disque dans cette playlist.'
@@ -124,7 +119,7 @@ class PlaylistController extends AbstractController
         }
         $animators = array_unique($animatorsAll, SORT_REGULAR);
         $names = array_unique($namesAll, SORT_REGULAR);
-        
+
         if ($searchPlaylistForm->isSubmitted() && $searchPlaylistForm->isValid()) {
             $search = $searchPlaylistForm->getData();
 
@@ -132,30 +127,30 @@ class PlaylistController extends AbstractController
                 $request->get('name'),
                 $request->get('animator'),
                 $search->getEntryDate(),
-                $request->get('order-by'), 
+                $request->get('order-by'),
                 $request->get('order')
             );
-            
+
             $parameters = [
-                $request->get('name') ? $request->get('name') : "", 
-                $request->get('animator') ? $request->get('animator') : "", 
+                $request->get('name') ? $request->get('name') : "",
+                $request->get('animator') ? $request->get('animator') : "",
                 $search->getEntryDate() ? $search->getEntryDate() : "",
                 $request->get('order-by') ? $request->get('order-by') : "",
                 $request->get('order') ? $request->get('order') : ""
             ];
-           
+
             $limit = 15;
             $page = $request->query->get('page');
-            if($page === null){
+            if ($page === null) {
                 $currentPage = 1;
             } else {
                 $currentPage = $page;
             }
             $offset = ($currentPage - 1) * $limit;
             $query = $this->em->createQuery($playlistsQuery->getDQL())
-                                ->setFirstResult($offset)
-                                ->setMaxResults($limit);
-            
+                ->setFirstResult($offset)
+                ->setMaxResults($limit);
+
             $paginator = new Paginator($query, $fetchJoinCollection = false);
             $playlists = [];
             foreach ($paginator as $playlist) {
@@ -173,11 +168,10 @@ class PlaylistController extends AbstractController
                 'count' => $paginator->count()
             ]);
         }
-        
-        if($request->query->get('page') && $request->query->get('parameters'))
-        {
+
+        if ($request->query->get('page') && $request->query->get('parameters')) {
             $parameters = $request->query->get('parameters');
-            
+
             $name = $parameters[0];
             $album = $parameters[1];
             $entryDate = $parameters[2];
@@ -188,15 +182,15 @@ class PlaylistController extends AbstractController
 
             $limit = 15;
             $page = $request->query->get('page');
-            if($page === null){
+            if ($page === null) {
                 $currentPage = 1;
             } else {
                 $currentPage = $page;
             }
             $offset = ($currentPage - 1) * $limit;
             $query = $this->em->createQuery($playlistsQuery->getDQL())
-                                ->setFirstResult($offset)
-                                ->setMaxResults($limit);
+                ->setFirstResult($offset)
+                ->setMaxResults($limit);
 
             $paginator = new Paginator($query, $fetchJoinCollection = false);
             $playlists = [];
@@ -251,39 +245,33 @@ class PlaylistController extends AbstractController
 
             $inventoryNum = $request->query->get('disc');
 
-            if($inventoryNum !== "")
-            {
+            if ($inventoryNum !== "") {
                 $disc = $this->em->getRepository(Disc::class)->findOneBy([
                     'num_inventory' => $inventoryNum
                 ]);
-    
-                if($disc)
-                {
+
+                if ($disc) {
                     $relation = new PlaylistHasDisc;
-    
+
                     $relation->setDisc($disc)
-                             ->setPlaylist($playlist);
-                    
+                        ->setPlaylist($playlist);
+
                     $playlist->addPlaylistHasDisc($relation);
-    
+
                     $this->addFlash(
                         'success',
                         'Bibopalulla ! Le track a été ajouté à la playliste.'
                     );
-                }
-                else
-                {
+                } else {
                     $this->addFlash(
                         'alert',
                         'Oups ! Ce track n\'existe pas.'
                     );
                 }
-    
+
                 $this->em->persist($playlist);
                 $this->em->flush();
-            }
-            else 
-            {
+            } else {
                 $this->addFlash(
                     'alert',
                     'Oups ! Ce track n\'existe pas.'
@@ -302,7 +290,7 @@ class PlaylistController extends AbstractController
     {
         $this->em->remove($id);
         $this->em->flush();
-        
+
         $this->addFlash(
             'success',
             'Rock\'n Roll ! Le titre a été retiré de la playliste.'
@@ -321,18 +309,15 @@ class PlaylistController extends AbstractController
      */
     public function deletePlaylist(Playlist $playlist, Request $request)
     {
-        if($playlist)
-        {
+        if ($playlist) {
             $this->em->remove($playlist);
             $this->em->flush();
-            
+
             $this->addFlash(
                 'success',
                 'Rock\'n Roll ! La playlist a été effacée.'
             );
-        }
-        else 
-        {
+        } else {
             $this->addFlash(
                 'alert',
                 'Ha ? Il y a eu un problème...'
@@ -343,26 +328,26 @@ class PlaylistController extends AbstractController
         $searchPlaylistForm->handleRequest($request);
 
         $parameters = $request->query->get('parameters');
-            
+
         $name = $parameters[0];
         $album = $parameters[1];
         $entryDate = $parameters[2];
         $orderBy = $parameters[3];
         $order = $parameters[4];
 
-        $playlistsQuery = $this->playlistRepo->search($name, $album, $entryDate, $orderBy,$order);
+        $playlistsQuery = $this->playlistRepo->search($name, $album, $entryDate, $orderBy, $order);
 
         $limit = 15;
         $page = $request->query->get('page');
-        if($page === null){
+        if ($page === null) {
             $currentPage = 1;
         } else {
             $currentPage = $page;
         }
         $offset = ($currentPage - 1) * $limit;
         $query = $this->em->createQuery($playlistsQuery->getDQL())
-                            ->setFirstResult($offset)
-                            ->setMaxResults($limit);
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
 
         $paginator = new Paginator($query, $fetchJoinCollection = false);
         $playlists = [];
@@ -397,9 +382,25 @@ class PlaylistController extends AbstractController
             'album' => $disc->getAlbum(),
             'inventory_num' => $disc->getNumInventory()
         ]);
-        
-        if($response)
-        {
+
+        // $discs = $this->em->getRepository(Disc::class)->searchDiscs($numero);
+
+        // $results = [];
+        // foreach($discs as $disc)
+        // {
+        //     $result = [
+        //         'id' => $disc->getId(),
+        //         'group' => $disc->getGroupe(),
+        //         'album' => $disc->getAlbum(),
+        //         'inventory_num' => $disc->getNumInventory()
+        //     ];
+
+        //     array_push($results, $result);
+        // }
+
+        // $response = new JsonResponse($results);
+
+        if ($response) {
             return $response;
         }
     }

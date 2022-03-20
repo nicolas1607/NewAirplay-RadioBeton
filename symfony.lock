@@ -1,4 +1,7 @@
 {
+    "composer/package-versions-deprecated": {
+        "version": "1.11.99.4"
+    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -121,6 +124,12 @@
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
+    "laminas/laminas-eventmanager": {
+        "version": "3.4.0"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.4.1"
+    },
     "maennchen/zipstream-php": {
         "version": "2.1.0"
     },
@@ -168,9 +177,6 @@
     },
     "phpspec/prophecy": {
         "version": "v1.15.0"
-    },
-    "phpstan/phpdoc-parser": {
-        "version": "1.2.0"
     },
     "phpunit/php-code-coverage": {
         "version": "9.2.10"

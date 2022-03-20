@@ -19,8 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class StatisticsController extends AbstractController
 {
-    private EntityManagerInterface $em;
-    private DiscRepository $discRepo;
+    private $em;
+    private $discRepo;
 
     public function __construct(EntityManagerInterface $em, DiscRepository $discRepo)
     {
@@ -146,8 +146,7 @@ class StatisticsController extends AbstractController
                 }
                 $writer->save($path);
                 return $this->file($path);
-            }
-            else if ($format == "txt") {
+            } else if ($format == "txt") {
                 // on donne un nom de fichier
                 $nomPDF = "";
                 if ($name != "" || $name != null) {
