@@ -53,7 +53,7 @@
         <div class="row justify-content-center my-3">
             <div class="col-md-4">
                 <label for="name">Nom de la playlist</label>
-                <input class="form-control" type="text" method="POST" placeholder="Nommez votre playlist" name="name"></input>
+                <input class="form-control secure" type="text" method="POST" placeholder="Nommez votre playlist" name="name"></input>
             </div>
             <div class="col-md-4">
                 <label for="date">Nombre de titres</label>
@@ -97,5 +97,19 @@
             select.value = stat;
         });
     });
+
+    {# Secure inputs values #}
+	const inputsToSecure = document.querySelectorAll('.secure');
+	const notWantedCharacters = new RegExp(/[<|>|/|\?]/);
+
+	inputsToSecure.forEach(input => {
+		input.addEventListener('change', () => {
+			input.value.split('').forEach((character, index) => {
+				if (character.match(notWantedCharacters)) {
+					input.value = input.value.slice(0, index);
+				}
+			})
+		})
+	})
 </script>
 {% endblock %}

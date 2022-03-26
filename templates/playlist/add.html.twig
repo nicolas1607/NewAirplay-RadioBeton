@@ -21,12 +21,12 @@
 
 				<div class="col-4">
 					<label for="title">Nom</label>
-					<input class="form-control" type="text" id="title" name="title" placeholder="Saissez un nom de playlist" required>
+					<input class="form-control secure" type="text" id="title" name="title" placeholder="Saissez un nom de playlist" required>
 				</div>
 
 				<div class="col-4">
 					<label for="name">Animateur.trice</label>
-					<input class="form-control" list="names-choice" id="name" name="name" placeholder="Sélectionnez un.e animateur.trice" value="{{ app.user.username }}" required>
+					<input class="form-control secure" list="names-choice" id="name" name="name" placeholder="Sélectionnez un.e animateur.trice" value="{{ app.user.username }}" required>
 					<datalist id="names-choice">
 						{% for name in animators %}
 							<option value="{{ name }}"></option>
@@ -43,7 +43,7 @@
 						<input type="text" 
 								placeholder="Numéro d'inventaire" 
 								id="numero" 
-								class="form-control me-3"
+								class="form-control secure me-3"
 								list="discs-choice">
 						<button type="submit" 
 								id="add-numero" 
@@ -71,6 +71,20 @@
 	</div>
 
 	<script>
+		{# Secure inputs values #}
+		const inputsToSecure = document.querySelectorAll('.secure');
+		const notWantedCharacters = new RegExp(/[<|>|/|\?]/);
+
+		inputsToSecure.forEach(input => {
+			input.addEventListener('change', () => {
+				input.value.split('').forEach((character, index) => {
+					if (character.match(notWantedCharacters)) {
+						input.value = input.value.slice(0, index);
+					}
+				})
+			})
+		})
+
 		{# Manage input values #}
 		const animatorNameInput = document.querySelector('#name');
 		animatorNameInput.addEventListener('change', () => {

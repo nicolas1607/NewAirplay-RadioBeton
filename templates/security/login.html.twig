@@ -29,10 +29,10 @@
 				<h1 class="h3 mb-3 font-weight-normal text-center">S'identifier</h1>
 				<label for="inputUsername" class="mb-1">Nom d'utilisateur</label>
 				<input type="text" value="{{ last_username }}" name="username" id="inputUsername"
-					class="form-control mb-3" autocomplete="username" required autofocus>
+					class="form-control secure mb-3" autocomplete="username" required autofocus>
 
 				<label for="inputPassword" class="mb-1">Mot de passe</label>
-				<input type="password" name="password" id="inputPassword" class="form-control"
+				<input type="password" name="password" id="inputPassword" class="form-control secure"
 					autocomplete="current-password" required>
 
 				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -49,4 +49,20 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	{# Secure inputs values #}
+	const inputsToSecure = document.querySelectorAll('.secure');
+	const notWantedCharacters = new RegExp(/[<|>|/|\?]/);
+
+	inputsToSecure.forEach(input => {
+		input.addEventListener('change', () => {
+			input.value.split('').forEach((character, index) => {
+				if (character.match(notWantedCharacters)) {
+					input.value = input.value.slice(0, index);
+				}
+			})
+		})
+	})
+</script>
 {% endblock %}

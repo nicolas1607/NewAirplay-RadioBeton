@@ -12,19 +12,34 @@
 			</div>
 			<div class="row">
 				<div class="col">
-					{{ form_row(add_user_form.username, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+					{{ form_row(add_user_form.username, {'attr': {'class': 'mg-15 form-control secure mb-3'}}) }}
 					{{ form_row(add_user_form.roles, {'attr': {'class': 'mg-15 form-select mb-3'}}) }}
-					{{ form_row(add_user_form.password, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
-                    
+					{{ form_row(add_user_form.password, {'attr': {'class': 'mg-15 form-control secure mb-3'}}) }}
 				</div>
 			</div>
 			<div class="row justify-content-center">
 				<div class="col text-center">
 					{{ form_row(add_user_form.Ajouter, {'attr': {'class': 'btn btn-outline-warning py-3 px-5 mt-3 mb-5'}}) }}
-                    </div>
                 </div>
                 {{ form_end(add_user_form) }}
             </div>
         </div>
     </div>
+</div>
+
+<script>
+	{# Secure inputs values #}
+	const inputsToSecure = document.querySelectorAll('.secure');
+	const notWantedCharacters = new RegExp(/[<|>|/|\?]/);
+
+	inputsToSecure.forEach(input => {
+		input.addEventListener('change', () => {
+			input.value.split('').forEach((character, index) => {
+				if (character.match(notWantedCharacters)) {
+					input.value = input.value.slice(0, index);
+				}
+			})
+		})
+	})
+</script>
 {% endblock %}

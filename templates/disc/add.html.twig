@@ -13,12 +13,12 @@
 			<div class="form-disc">
 				<div class="form-column">
 					<div class="row">
-						{{ form_row(add_disc_form.album, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+						{{ form_row(add_disc_form.album, {'attr': {'class': 'mg-15 form-control secure mb-3'}}) }}
 						<div class="col-6">
-							{{ form_row(add_disc_form.groupe , {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+							{{ form_row(add_disc_form.groupe , {'attr': {'class': 'mg-15 form-control secure mb-3'}}) }}
 						</div>
 						<div class="col-6">
-							{{ form_row(add_disc_form.label, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+							{{ form_row(add_disc_form.label, {'attr': {'class': 'mg-15 form-control secure mb-3'}}) }}
 						</div>
 					</div>
 					<div class="row">
@@ -39,15 +39,15 @@
 			<div class="form-column">
 				<div class="row">
 					<div class="col-6">
-						{{ form_row(add_disc_form.arrivalDate, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+						{{ form_row(add_disc_form.arrivalDate, {'attr': {'class': 'mg-15 form-control secure mb-3'}}) }}
 					</div>
 					<div class="col-6">
-						{{ form_row(add_disc_form.leaveDate, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+						{{ form_row(add_disc_form.leaveDate, {'attr': {'class': 'mg-15 form-control secure mb-3'}}) }}
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-6">
-						{{ form_row(add_disc_form.leaveName, {'attr': {'class': 'mg-15 form-control mb-3'}}) }}
+						{{ form_row(add_disc_form.leaveName, {'attr': {'class': 'mg-15 form-control secure mb-3'}}) }}
 					</div>
 					<div class="col-6">
 						{{ form_row(add_disc_form.leaveReason, {'attr': {'class': 'mg-15 form-select mb-1'}}) }}
@@ -65,7 +65,7 @@
 							<div class="col-6">
 								<div id="valueNumInventory" class="form-group">
 									<label for="numInventory">Numéro d'inventaire</label>
-									<input name="numInventory" type="text" class="form-control" placeholder="0"
+									<input name="numInventory" type="text" class="form-control secure" placeholder="0"
 										data-value={{numInventory}} readonly />
 								</div>
 								<div class="col text-center">
@@ -102,6 +102,20 @@
 	checkBox.setAttribute('role', 'switch');
 </script>
 <script>
+	{# Secure inputs values #}
+	const inputsToSecure = document.querySelectorAll('.secure');
+	const notWantedCharacters = new RegExp(/[<|>|/|\?]/);
+
+	inputsToSecure.forEach(input => {
+		input.addEventListener('change', () => {
+			input.value.split('').forEach((character, index) => {
+				if (character.match(notWantedCharacters)) {
+					input.value = input.value.slice(0, index);
+				}
+			})
+		})
+	})
+
 	{# Attribute inventory numero #}
 	// Gère le numéro d'inventaire à 0 ou non
 	const numInventory = document.querySelector('#valueNumInventory input').getAttribute('data-value');

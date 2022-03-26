@@ -11,13 +11,13 @@
 	{{ form_start(searchDiscForm) }}
 	<div class="row justify-content-center">
 		<div class="col-md-6 col-lg-3">
-			{{ form_row(searchDiscForm.num_inventory, {'attr': {'class': 'form-control mb-3', 'placeholder': 'Saisissez un numéro'}}) }}
+			{{ form_row(searchDiscForm.num_inventory, {'attr': {'class': 'form-control secure mb-3', 'placeholder': 'Saisissez un numéro'}}) }}
 		</div>
 		<div class="col-md-6 col-lg-3">
-			{{ form_row(searchDiscForm.groupe, {'attr': {'class': 'form-control mb-3', 'placeholder': 'Saisissez un groupe'}}) }}
+			{{ form_row(searchDiscForm.groupe, {'attr': {'class': 'form-control secure mb-3', 'placeholder': 'Saisissez un groupe'}}) }}
 		</div>
 		<div class="col-md-6 col-lg-3">
-			{{ form_row(searchDiscForm.album, {'attr': {'class': 'form-control mb-3', 'placeholder': 'Saisissez un album'}}) }}
+			{{ form_row(searchDiscForm.album, {'attr': {'class': 'form-control secure mb-3', 'placeholder': 'Saisissez un album'}}) }}
 		</div>
 		<div class="col-md-4">
 			<label for="order-by">Filtre</label>
@@ -155,5 +155,21 @@
 		</section>
 	{% endif %}
 {% endif %}
+
+<script>
+	{# Secure inputs values #}
+	const inputsToSecure = document.querySelectorAll('.secure');
+	const notWantedCharacters = new RegExp(/[<|>|/|\?]/);
+
+	inputsToSecure.forEach(input => {
+		input.addEventListener('change', () => {
+			input.value.split('').forEach((character, index) => {
+				if (character.match(notWantedCharacters)) {
+					input.value = input.value.slice(0, index);
+				}
+			})
+		})
+	})
+</script>
 
 {% endblock %}
