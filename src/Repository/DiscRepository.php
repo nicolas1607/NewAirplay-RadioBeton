@@ -309,9 +309,9 @@ class DiscRepository extends ServiceEntityRepository
             }
         } elseif ($endDate) {
             if (str_contains($search, 'WHERE')) {
-                $search .= " AND pl.entry_date < '" . $endDate . "'";
+                $search .= " AND pl.entry_date > '" . $endDate . "'";
             } else {
-                $search .= "WHERE pl.entry_date < '" . $endDate . "'";
+                $search .= "WHERE pl.entry_date > '" . $endDate . "'";
             }
         }
         if ($date) {

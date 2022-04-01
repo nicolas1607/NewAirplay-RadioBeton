@@ -81,7 +81,7 @@ class DiscType extends AbstractType
                 'widget' => 'single_text'
             ])
             ->add('leaveDate', DateType::class, [
-                'label' => 'Date d\'entrée en playlist',
+                'label' => 'Date d\'entrée en progra',
                 'widget' => 'single_text',
                 'required' => false
             ])
