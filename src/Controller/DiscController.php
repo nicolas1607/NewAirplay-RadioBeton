@@ -75,9 +75,6 @@ class DiscController extends AbstractController
         if ($searchDiscForm->isSubmitted() && $searchDiscForm->isValid()) {
             $search = $searchDiscForm->getData();
 
-            // dd($request);
-            // dd( $search->getNumInventory(), $search->getAlbum(), $search->getGroupe(), $request->request->get('order') );
-
             $discsQuery = $this->discRepo->search(
                 $search->getNumInventory(), 
                 $search->getAlbum(), 

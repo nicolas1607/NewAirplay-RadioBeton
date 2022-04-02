@@ -139,7 +139,7 @@ class DiscRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return [] Disc Retournes la liste des disques et leur nb de passage en playlist
+    //  * @return [] Disc Retourne la liste des disques et leur nb de passage en playlist
     //  */
     public function findNbPassagePerDisc($animator, $startDate, $endDate, $date, $natio, $language, $nb)
     {
@@ -168,7 +168,7 @@ class DiscRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return [] Disc Retournes la liste des genres et leur pourcentage
+    //  * @return [] Disc Retourne la liste des genres et leur pourcentage
     //  */
     public function findStatGenre($animator, $startDate, $endDate, $date, $natio, $language, $nb)
     {
@@ -299,29 +299,29 @@ class DiscRepository extends ServiceEntityRepository
         }
         if ($startDate) {
             if (str_contains($search, 'WHERE')) {
-                $search .= " AND pl.entry_date > '" . $startDate . "'";
+                $search .= " AND pl.entry_date >= '" . $startDate . "'";
             } else {
-                $search .= "WHERE pl.entry_date > '" . $startDate . "'";
+                $search .= "WHERE pl.entry_date >= '" . $startDate . "'";
             }
             if ($endDate) {
                 if (str_contains($search, 'WHERE')) {
-                    $search .= " AND pl.entry_date < '" . $endDate . "'";
+                    $search .= " AND pl.entry_date <= '" . $endDate . "'";
                 } else {
-                    $search .= "WHERE pl.entry_date < '" . $endDate . "'";
+                    $search .= "WHERE pl.entry_date <= '" . $endDate . "'";
                 }
             }
         } elseif ($endDate) {
             if (str_contains($search, 'WHERE')) {
-                $search .= " AND pl.entry_date < '" . $endDate . "'";
+                $search .= " AND pl.entry_date <= '" . $endDate . "'";
             } else {
-                $search .= "WHERE pl.entry_date < '" . $endDate . "'";
+                $search .= "WHERE pl.entry_date <= '" . $endDate . "'";
             }
         }
         if ($date) {
             if (str_contains($search, 'WHERE')) {
-                $search .= " AND d.leave_date = '" . $date . "'";
+                $search .= " AND d.leave_date >= '" . $date . "'";
             } else {
-                $search .= "WHERE d.leave_date = '" . $date . "'";
+                $search .= "WHERE d.leave_date >= '" . $date . "'";
             }
         }
         if ($natio) {
@@ -339,6 +339,8 @@ class DiscRepository extends ServiceEntityRepository
             }
         }
         $search .= " AND d.num_inventory != '' ";
+        
+        // dd($search);
         return $search;
     }
 

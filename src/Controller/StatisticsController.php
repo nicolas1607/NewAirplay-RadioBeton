@@ -185,7 +185,7 @@ class StatisticsController extends AbstractController
                 $optionsPdf->setIsRemoteEnabled(true);
                 $optionsPdf->setIsHtml5ParserEnabled(true);
                 $optionsPdf->isRemoteEnabled(true);
-
+                // dd( file_exists(dirname(__FILE__, 3) . '\public\css\stylePDF.css') );
                 // on instancie domPDf - on lui passe les options
                 $domPdf = new Dompdf($optionsPdf);
                 $content = stream_context_create([
