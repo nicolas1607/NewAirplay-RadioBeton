@@ -61,8 +61,8 @@
 							{{ form_row(add_disc_form.aucard, {'attr': {'class': 'form-check-input mg-15 mb-1'}}) }}
 							{{ form_row(add_disc_form.ferarock, {'attr': {'class': 'form-check-input mg-15 mb-1'}}) }}
 						</div>
-						<div class="row">
-							<div class="col-6">
+						<div class="row justify-content-end">
+							{# <div class="col-6">
 								<div id="valueNumInventory" class="form-group">
 									<label for="numInventory">Numéro d'inventaire</label>
 									<input name="numInventory" type="text" class="form-control" placeholder="0"
@@ -72,8 +72,8 @@
 									<button type="button" class="btn btn-outline-warning mt-3 py-3"
 										style="width: 12rem;" id="generateNumInventory">Générer n° inventaire</button>
 								</div>
-							</div>
-							<div class="col-6 mt-3 d-flex justify-content-center">
+							</div> #}
+							<div class="col-6 mt-3 d-flex justify-content-end">
 								{{ form_row(add_disc_form.submit, {'attr': {'style': 'width: 12rem; margin:auto'}}) }}
 							</div>
 						</div>
@@ -85,7 +85,9 @@
 	</div>
 </div>
 
+{% endblock %}
 
-<script src="/js/checkBoxes.js"></script>
-
+{% block jvascripts %}
+	<script src="{{ asset('/js/checkBoxes.js') }}"></script>
+	{# // <script src="{{ asset('/js/attributeInventoryNum.js') }}"></script> #}
 {% endblock %}

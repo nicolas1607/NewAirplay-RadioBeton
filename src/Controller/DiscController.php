@@ -40,19 +40,34 @@ class DiscController extends AbstractController
 
         if ($addDiscForm->isSubmitted() && $addDiscForm->isValid()) {
             $disc = $addDiscForm->getData();
-            if ($request->get('numInventory')) {
-                $disc->setNumInventory($numInventory);
-            } else {
+            // if ($request->get('numInventory')) {
+            //     $disc->setNumInventory($numInventory);
+            // } else {
+            //     $disc->setNumInventory(0);
+            // }
+            if($disc->getLeaveDate()){
+                $disc->setNumInventory(
+                    $this->discRepo->generateNumInventory()
+                );
+            }else{
                 $disc->setNumInventory(0);
             }
 
             $this->em->persist($disc);
             $this->em->flush();
-
+            
             $this->addFlash(
                 'success',
                 'Youpi ! Un nouveau son à écouter.'
             );
+            
+            if($disc->getLeaveDate())
+            {
+                $this->addFlash(
+                    'success',
+                    'Et voici son numéro d\'inventaire --->  '.$disc->getNumInventory().' !'
+                );
+            }
 
             return $this->redirectToRoute('add_disc');
         }
@@ -189,6 +204,8 @@ class DiscController extends AbstractController
             } else {
                 $id->setNumInventory(0);
             }
+
+            $this->em->persist($id);
             $this->em->flush();
             return $this->redirect($_SERVER['HTTP_REFERER']);
         }
